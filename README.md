@@ -1,13 +1,12 @@
 # Intro
-
-Welcome to your project to provision modules in AWS using `big-config` and `deps-new`.
+Use big-config to manage your dotfiles
 
 ``` shell
 bb tasks
 
-bb build -- alpha prod
+bb build exec -- macos silicon just backup
 
-bb build -- beta prod
+bb build exec -- macos silicon just install
 ```
 
 ## License
