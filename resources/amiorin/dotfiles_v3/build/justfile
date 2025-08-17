@@ -5,9 +5,12 @@ help:
 # backup dotfiles
 backup:
     cp {{target}}/.config/fish/config.fish config.fish
+    rsync -a --delete {{target}}/.doom.d/ dotfiles/doomemacs/
 
 
 # install dotfiles
 install:
     mkdir -p {{target}}/.config/fish
     cp config.fish {{target}}/.config/fish/config.fish
+    mkdir -p {{target}}/.doom.d
+    rsync -a dotfiles/doomemacs/ ~/.doom.d

@@ -12,7 +12,7 @@
 
 (defn data-fn
   [data]
-  (assoc data :target "/Users/amiorin"))
+  (assoc data :target (System/getProperty "user.home")))
 
 (defn template-fn
   [edn _data]
