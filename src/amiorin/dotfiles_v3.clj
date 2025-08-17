@@ -12,7 +12,7 @@
 
 (defn data-fn
   [data]
-  data)
+  (assoc data :target "/Users/amiorin"))
 
 (defn template-fn
   [edn _data]
@@ -22,8 +22,8 @@
   [_edn _data])
 
 (defn opts->dir
-  [_opts]
-  "/Users/amiorin")
+  [{:keys [::module ::profile ::bc/target-dir]}]
+  (or target-dir (format "dist/%s/%s" profile module)))
 
 (defn build-fn [{:keys [::module ::profile] :as opts}]
   (binding [*out* (java.io.StringWriter.)]
@@ -63,5 +63,5 @@
      (run-steps step-fns opts))))
 
 (comment
-  (run-steps "build -- alpha prod"
+  (run-steps "build -- macos silicon"
              {::bc/env :repl}))

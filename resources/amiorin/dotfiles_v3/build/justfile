@@ -1,0 +1,13 @@
+# list of all recipes
+help:
+    @just -f {{ justfile() }} --list --unsorted
+
+# backup dotfiles
+backup:
+    cp {{target}}/.config/fish/config.fish config.fish
+
+
+# install dotfiles
+install:
+    mkdir -p {{target}}/.config/fish
+    cp config.fish {{target}}/.config/fish/config.fish
