@@ -1,0 +1,9 @@
+sync_frequency = 0
+inline_height = 15
+show_help = false
+enter_accept = true
+style = "full"
+
+[sync]
+records = true
+

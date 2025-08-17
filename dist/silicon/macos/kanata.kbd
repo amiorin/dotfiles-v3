@@ -1,0 +1,55 @@
+(defcfg
+  macos-dev-names-include (
+    "TMKB T68SE"
+  )
+)
+
+(defsrc
+/	.	,	m	n		b	v	c	x	z
+'	;	l	k	j		g	f	d	s	a
+[	p	o	i	u		t	r	e	w	q
+		0	9	8		6	5	4
+h	y	7
+
+)
+
+(deflayer zero
+q	w	e	r	t		y	u	i	o	p
+a	s	d	f	g		h	j	k	l	bspc
+z	x	c	v	b		n	m	,	.	'
+		@ls	@tab	@one		@two	@ret	@rs
+@cw	XX	XX
+)
+
+(deflayer one
+f2	f6	f7	f8	f10 		f11	f12	,	.	'
+f1	f3	f4	f5	f9  		lft	down	up	rght	bspc
+1	2	3	4	5   		6	7	8	9	0
+		XX	XX	XX		@two	lalt	@rs
+@cw	XX	XX
+)
+
+(deflayer two
++	S-6	{	}	S-5		S-7	S-,	S-.	S-4	S-\
+_	S-'	S-9	S-0	S-1		S-/	S-;	S-2	S-`	bspc
+-	=	[	]	S-3		S-8	;	`	\	/
+		@ls	lalt	@one		XX	XX	XX
+@cw	XX	XX
+)
+
+(defalias
+  one (tap-hold-press 0 200 esc (layer-while-held one))
+  two (tap-hold-press 0 200 spc (layer-while-held two))
+  tab (tap-hold-press 0 200 tab lmeta)
+  ret (tap-hold-press 0 200 ret lctl)
+  ls  (tap-hold-press 0 200 -   lsft)
+  rs  (tap-hold-press 0 200 /   lsft)
+  cw  (caps-word 2000)
+)
+
+(defoverrides
+  (lmet i) (lsft lmet [)
+  (lmet o) (lsft lmet ])
+  (lmet ,) (lsft lctl pgup)
+  (lmet .) (lsft lctl pgdn)
+)
