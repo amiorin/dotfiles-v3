@@ -1,5 +1,6 @@
 {:data-fn amiorin.dotfiles-v3/data-fn
  :template-fn amiorin.dotfiles-v3/template-fn
  :post-process-fn amiorin.dotfiles-v3/post-process-fn
- :transform [["build" ""
-              {"projectile" ".projectile"}]]}
+ :transform [["build" ".config/fish"
+              {"config.fish" "config.fish"}
+              :only]]}
