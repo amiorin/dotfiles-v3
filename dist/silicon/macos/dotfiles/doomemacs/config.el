@@ -80,7 +80,7 @@
 (setq lsp-auto-guess-root t)
 
 ;; discover projects
-(setq projectile-project-search-path '(("~/workspaces" . 3) ("~/code/personal" . 2)))
+(setq projectile-project-search-path '(("~/code/of" . 2) ("~/code/personal" . 2)))
 (setq projectile-auto-discover t)
 ;; create test files if needed
 (setq projectile-create-missing-test-files t)
