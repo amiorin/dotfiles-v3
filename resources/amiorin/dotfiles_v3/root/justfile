@@ -4,6 +4,7 @@ help:
 
 # backup dotfiles
 backup:
+    cp {{target}}/.gitconfig dotfiles/git/gitconfig
     cp {{target}}/.config/fish/config.fish config.fish
     cp {{target}}/.config/skhd/skhdrc skhdrc
     cp {{target}}/.local/bin/24-bit-color.sh 24-bit-color.sh
@@ -22,6 +23,8 @@ backup:
 
 # install dotfiles
 install:
+    cp dotfiles/git/gitconfig {{target}}/.gitconfig
+
     mkdir -p {{target}}/.config/fish
     cp config.fish {{target}}/.config/fish/config.fish
 
