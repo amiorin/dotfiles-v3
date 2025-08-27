@@ -22,3 +22,4 @@
   :recipe (:host nil
            :repo "https://codeberg.org/joostkremers/visual-fill-column.git"
            :files ("visual-fill-column.el")))
+(package! adoc-mode)

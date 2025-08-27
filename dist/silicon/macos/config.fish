@@ -99,7 +99,7 @@ if status is-interactive
     end
     alias emacs=$EDITOR
     alias e=$EDITOR
-    alias ze="zellij attach --create ALBERTO@silicon"
+    alias ze="zellij attach --create AMIORIN@silicon"
 
 
     set -g fish_greeting
