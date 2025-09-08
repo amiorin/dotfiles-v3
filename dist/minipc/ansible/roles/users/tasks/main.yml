@@ -1,0 +1,11 @@
+---
+- name: Copy terminfo for ghostty
+  ansible.builtin.copy:
+    src: files/xterm-ghostty
+    dest: /home/{{ ansible_user }}/.xterm-ghostty
+
+- name: Install terminfo for ghostty
+  ansible.builtin.shell: tic -x .xterm-ghostty
+  args:
+    chdir: /home/{{ ansible_user }}
+    creates: .terminfo/x/xterm-ghostty

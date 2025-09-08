@@ -1,16 +1,13 @@
 (ns amiorin.dotfiles-v3
   (:require
    [aero.core :as aero]
-   [babashka.fs :as fs]
    [big-config :as bc]
    [big-config.core :as core]
    [big-config.lock :as lock]
    [big-config.run :as run]
    [big-config.step :as step]
    [big-config.step-fns :as step-fns]
-   [cheshire.core :as json]
    [clojure.java.io :as io]
-   [amiorin.user-data :as user-data]
    [org.corfield.new :as new]))
 
 (defn data-fn
@@ -19,30 +16,16 @@
 
 (defn template-fn
   [edn {:keys [module] :as _data}]
-  (if (#{"alpha" "gamma"} module)
+  (if (#{"minipc"} module)
     (merge edn {:root module})
     edn))
 
-(defn render-module [{:keys [profile module target-dir]}]
-  (-> module
-      (->> (format "amiorin.%s/render"))
-      symbol
-      requiring-resolve
-      (apply [profile])
-      (json/generate-string {:pretty true})
-      (->> (spit (format "%s/main.tf.json" target-dir)))))
-
 (defn post-process-fn
-  [_edn {:keys [module target-dir] :as data}]
-  (cond (#{"alpha"} module) (let [user-data-file (format "%s/files/user_data.sh" target-dir)]
-                                 (fs/create-dirs (fs/parent user-data-file))
-                                 (-> (user-data/render "amiorin/dotfiles_v3/files/user_data.sh")
-                                     (->> (spit user-data-file))))
-        (#{"beta"} module) (render-module data)))
+  [_edn _data])
 
 (defn opts->dir
   [{:keys [::module ::profile ::bc/target-dir]}]
-  (or target-dir (format "dist/%s/%s" profile module)))
+  (or target-dir (format "dist/%s/%s" module profile)))
 
 (defn build-fn [{:keys [::module ::profile] :as opts}]
   (binding [*out* (java.io.StringWriter.)]
@@ -51,13 +34,12 @@
                  :target-dir (opts->dir opts)
                  :module module
                  :profile profile
-                 :overwrite true}))
+                 :overwrite :delete}))
   (core/ok opts))
 
 (defn opts-fn [opts]
   (merge opts {::lock/lock-keys [::module ::profile]
-               ::run/shell-opts {:dir (opts->dir opts)
-                                 :extra-env {"AWS_PROFILE" "default"}}}))
+               ::run/shell-opts {:dir (opts->dir opts)}}))
 
 (defn run-steps
   ([s]
@@ -81,6 +63,6 @@
          run-steps (step/->run-steps build-fn)]
      (run-steps step-fns opts))))
 
-(comment
-  (run-steps "build -- alpha prod"
-             {::bc/env :repl}))
+(comment)
+(run-steps "build -- minipc ansible"
+           {::bc/env :repl})
