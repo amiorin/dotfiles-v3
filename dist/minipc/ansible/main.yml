@@ -11,4 +11,10 @@
     - default.config.yml
   roles:
     - role: users
+
+- hosts: root
+  vars_files:
+    - default.config.yml
+  roles:
+    - role: fish
       become: true

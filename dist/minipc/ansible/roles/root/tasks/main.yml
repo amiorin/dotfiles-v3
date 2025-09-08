@@ -33,3 +33,14 @@
     groups:
       - docker
   loop: "{{ users }}"
+
+- name: Provision asdf
+  args:
+    executable: /bin/bash
+    creates: /usr/local/bin/asdf
+  ansible.builtin.shell: >-
+    curl -L https://github.com/asdf-vm/asdf/releases/download/v0.18.0/asdf-v0.18.0-linux-$(dpkg --print-architecture).tar.gz -o asdf.tar.gz \
+    && mkdir -p ~/.config/fish/completions \
+    && tar zxvf asdf.tar.gz \
+    && mv asdf /usr/local/bin \
+    && rm asdf.tar.gz

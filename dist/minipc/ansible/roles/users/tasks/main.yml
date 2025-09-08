@@ -9,3 +9,70 @@
   args:
     chdir: /home/{{ ansible_user }}
     creates: .terminfo/x/xterm-ghostty
+
+- name: Provision devbox
+  args:
+    executable: /bin/bash
+    creates: /home/{{ ansible_user }}/.local/share/devbox/global/default/.devbox/nix/profile/default/bin/emacs
+  ansible.builtin.shell: >-
+    source /etc/profile.d/nix.sh
+    && nix profile add github:jetify-com/devbox/latest
+    && devbox global add --disable-plugin
+    fish
+    emacs
+    zellij
+    ripgrep
+    starship
+    direnv
+    gh
+    fd
+    fzf
+    atuin
+    just
+    git
+    cmake
+    libtool
+    socat
+    zoxide
+    pixi
+    eza
+    zip
+    unzip
+    d2
+    clojure-lsp
+    stow
+    && devbox global run -- true
+
+- name: Provision asdf
+  args:
+    executable: /bin/bash
+    creates: /home/{{ ansible_user }}/.tool-versions-foo
+  ansible.builtin.shell: >-
+    source /etc/profile.d/nix.sh \
+    && source /etc/profile.d/Z50-devbox.sh \
+    && asdf plugin add java https://github.com/halcyon/asdf-java.git \
+    && asdf install java latest:temurin-21 \
+    && asdf set --home java latest:temurin-21 \
+    && asdf plugin add duckdb https://github.com/amiorin/asdf-duckdb.git \
+    && asdf install duckdb latest \
+    && asdf set --home duckdb latest \
+    && asdf plugin add hugo https://github.com/Edditoria/asdf-hugo.git \
+    && asdf install hugo latest:extended \
+    && asdf set --home hugo latest:extended \
+    && asdf plugin add golang https://github.com/asdf-community/asdf-golang.git \
+    && asdf install golang latest \
+    && asdf set --home golang latest \
+    && asdf plugin add nodejs https://github.com/asdf-vm/asdf-nodejs.git \
+    && asdf install nodejs latest \
+    && asdf set --home nodejs latest \
+    && asdf plugin add clojure https://github.com/asdf-community/asdf-clojure.git \
+    && asdf install clojure latest \
+    && asdf set --home clojure latest \
+    && asdf plugin add babashka https://github.com/pitch-io/asdf-babashka.git \
+    && asdf install babashka latest \
+    && asdf set --home babashka latest \
+    && asdf plugin add opentofu https://github.com/virtualroot/asdf-opentofu.git \
+    && asdf install opentofu latest \
+    && asdf set --home opentofu latest \
+    && mkdir -p ~/.config/fish/completions \
+    && asdf completion fish > ~/.config/fish/completions/asdf.fish
