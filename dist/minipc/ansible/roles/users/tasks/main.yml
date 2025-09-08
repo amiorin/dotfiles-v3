@@ -46,7 +46,7 @@
 - name: Provision asdf
   args:
     executable: /bin/bash
-    creates: /home/{{ ansible_user }}/.tool-versions-foo
+    creates: /home/{{ ansible_user }}/.tool-versions
   ansible.builtin.shell: >-
     source /etc/profile.d/nix.sh \
     && source /etc/profile.d/Z50-devbox.sh \

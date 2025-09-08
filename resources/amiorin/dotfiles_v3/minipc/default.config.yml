@@ -4,3 +4,5 @@ users:
     uid: 1000
   - name: alberto
     uid: 1002
+  - name: amiorin
+    uid: 1003

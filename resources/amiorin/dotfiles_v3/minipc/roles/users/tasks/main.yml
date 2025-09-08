@@ -46,10 +46,10 @@
 - name: Provision asdf
   args:
     executable: /bin/bash
-    creates: /home/{{ ansible_user }}/.tool-versions-foo
+    creates: /home/{{ ansible_user }}/.tool-versions
   ansible.builtin.shell: >-
     source /etc/profile.d/nix.sh \
-    source /etc/profile.d/Z50-devbox.sh \
+    && source /etc/profile.d/Z50-devbox.sh \
     && asdf plugin add java https://github.com/halcyon/asdf-java.git \
     && asdf install java latest:temurin-21 \
     && asdf set --home java latest:temurin-21 \
@@ -75,4 +75,4 @@
     && asdf install opentofu latest \
     && asdf set --home opentofu latest \
     && mkdir -p ~/.config/fish/completions \
-    asdf completion fish > ~/.config/fish/completions/asdf.fish
+    && asdf completion fish > ~/.config/fish/completions/asdf.fish
