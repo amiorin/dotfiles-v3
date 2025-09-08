@@ -1,17 +1,7 @@
 # Intro
 
-Welcome to your project to provision modules in AWS using `big-config` and `deps-new`.
-
 ``` shell
-bb tasks
-
-bb build -- alpha prod
-
-bb build -- beta prod
+bb build exec -- minipc ansible ansible-galaxy install -r requirements.yml
+alias ansible-playbook="bb build exec -- minipc ansible ansible-playbook"
+ansible-playbook main.yml
 ```
-
-## License
-
-Copyright © 2025 Amiorin
-
-amiorin/dotfiles-v3 is released under the [MIT License](https://opensource.org/licenses/MIT).

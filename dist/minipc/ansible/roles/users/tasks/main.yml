@@ -45,34 +45,50 @@
 
 - name: Provision asdf
   args:
-    executable: /bin/bash
     creates: /home/{{ ansible_user }}/.tool-versions
   ansible.builtin.shell: >-
-    source /etc/profile.d/nix.sh \
-    && source /etc/profile.d/Z50-devbox.sh \
-    && asdf plugin add java https://github.com/halcyon/asdf-java.git \
-    && asdf install java latest:temurin-21 \
-    && asdf set --home java latest:temurin-21 \
-    && asdf plugin add duckdb https://github.com/amiorin/asdf-duckdb.git \
-    && asdf install duckdb latest \
-    && asdf set --home duckdb latest \
-    && asdf plugin add hugo https://github.com/Edditoria/asdf-hugo.git \
-    && asdf install hugo latest:extended \
-    && asdf set --home hugo latest:extended \
-    && asdf plugin add golang https://github.com/asdf-community/asdf-golang.git \
-    && asdf install golang latest \
-    && asdf set --home golang latest \
-    && asdf plugin add nodejs https://github.com/asdf-vm/asdf-nodejs.git \
-    && asdf install nodejs latest \
-    && asdf set --home nodejs latest \
-    && asdf plugin add clojure https://github.com/asdf-community/asdf-clojure.git \
-    && asdf install clojure latest \
-    && asdf set --home clojure latest \
-    && asdf plugin add babashka https://github.com/pitch-io/asdf-babashka.git \
-    && asdf install babashka latest \
-    && asdf set --home babashka latest \
-    && asdf plugin add opentofu https://github.com/virtualroot/asdf-opentofu.git \
-    && asdf install opentofu latest \
-    && asdf set --home opentofu latest \
-    && mkdir -p ~/.config/fish/completions \
+    . /etc/profile.d/nix.sh
+    && . /etc/profile.d/Z50-devbox.sh
+    && asdf plugin add java https://github.com/halcyon/asdf-java.git
+    && asdf install java latest:temurin-21
+    && asdf set --home java latest:temurin-21
+    && asdf plugin add duckdb https://github.com/amiorin/asdf-duckdb.git
+    && asdf install duckdb latest
+    && asdf set --home duckdb latest
+    && asdf plugin add hugo https://github.com/Edditoria/asdf-hugo.git
+    && asdf install hugo latest:extended
+    && asdf set --home hugo latest:extended
+    && asdf plugin add golang https://github.com/asdf-community/asdf-golang.git
+    && asdf install golang latest
+    && asdf set --home golang latest
+    && asdf plugin add nodejs https://github.com/asdf-vm/asdf-nodejs.git
+    && asdf install nodejs latest
+    && asdf set --home nodejs latest
+    && asdf plugin add clojure https://github.com/asdf-community/asdf-clojure.git
+    && asdf install clojure latest
+    && asdf set --home clojure latest
+    && asdf plugin add babashka https://github.com/pitch-io/asdf-babashka.git
+    && asdf install babashka latest
+    && asdf set --home babashka latest
+    && asdf plugin add opentofu https://github.com/virtualroot/asdf-opentofu.git
+    && asdf install opentofu latest
+    && asdf set --home opentofu latest
+    && mkdir -p ~/.config/fish/completions
     && asdf completion fish > ~/.config/fish/completions/asdf.fish
+
+- name: Synchronization of src on the control machine to dest on the remote hosts
+  ansible.posix.synchronize:
+    src: dotfiles/
+    dest: .dotfiles/
+    delete: true
+    recursive: true
+  changed_when: false
+
+- name: "Create symbolic links with stow"
+  ansible.builtin.shell: >-
+    . /etc/profile.d/nix.sh
+    && . /etc/profile.d/Z50-devbox.sh
+    && stow -v -d ~/.dotfiles -t ~ {{ item }}
+  loop:
+    - fish
+  changed_when: false
