@@ -11,8 +11,9 @@
     src: files/{{ item }}
     dest: /etc/profile.d/{{ item }}
   loop:
-    - direnv.sh
     - Z50-devbox.sh
+    - direnv.sh
+    - ssh-agent.sh
 
 - name: Install docker
   ansible.builtin.shell: >-

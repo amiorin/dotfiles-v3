@@ -173,32 +173,14 @@
 
 (let ((user (getenv "ZELLIJ_SESSION_NAME")))
   (cond
-   ((string-prefix-p "ALBERTO" user)
-    (progn (set-git-name "Alberto Miorin")
-           (set-git-email "109069886+alberto-of@users.noreply.github.com")
-           (setq display-line-numbers-type t)))
-   ((string-prefix-p "AMIORIN" user)
+   ((string-prefix-p "vscode" user)
     (progn (set-git-name "Alberto Miorin")
            (set-git-email "32617+amiorin@users.noreply.github.com")
            (setq display-line-numbers-type t)))
-   ((string-prefix-p "VALERY" user)
-    (progn (set-git-name "Valery Lavrentiev")
-           (set-git-email "142409766+val-lavrentiev@users.noreply.github.com")
-           ;; swap M-x with evil-ex. We M-x more often than :%s
-           (map! :nv ":" #'execute-extended-command)
-           (map! :leader :nv ":" #'evil-ex)))
-   ((string-prefix-p "RAFAEL" user)
-    (progn (set-git-name "Rafael Lobo")
-           (set-git-email "180167615+rafael-lobo-onefootball@users.noreply.github.com")
-           ;; swap M-x with evil-ex. We M-x more often than :%s
-           (map! :nv ":" #'execute-extended-command)
-           (map! :leader :nv ":" #'evil-ex)))
-   ((string-prefix-p "FACUNDO" user)
-    (progn (set-git-name "Facundo Diaz")
-           (set-git-email "161857284+fdiaz-onefootball@users.noreply.github.com")
-           ;; swap M-x with evil-ex. We M-x more often than :%s
-           (map! :nv ":" #'execute-extended-command)
-           (map! :leader :nv ":" #'evil-ex)))))
+   (t
+    (progn (set-git-name "Alberto Miorin")
+           (set-git-email "32617+amiorin@users.noreply.github.com")
+           (setq display-line-numbers-type t)))))
 
 (map! :map 'override "s-s" #'save-buffer)
 (map! :map 'override "s-t" #'open-term-on-right)
