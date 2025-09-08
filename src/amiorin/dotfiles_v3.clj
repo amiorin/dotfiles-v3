@@ -1,6 +1,8 @@
 (ns amiorin.dotfiles-v3
   (:require
    [aero.core :as aero]
+   [amiorin.ansible :as ansible]
+   [babashka.fs :as fs]
    [big-config :as bc]
    [big-config.core :as core]
    [big-config.lock :as lock]
@@ -21,7 +23,13 @@
     edn))
 
 (defn post-process-fn
-  [_edn _data])
+  [_edn {:keys [target-dir]}]
+  (doseq [tpl-name ["default.config.yml" "inventory.ini"]]
+    (let [tpl-file (format "amiorin/dotfiles_v3/selmer/%s" tpl-name)
+          dest (format "%s/%s" target-dir tpl-name)]
+      (fs/create-dirs (fs/parent dest))
+      (-> (ansible/render tpl-file)
+          (->> (spit dest))))))
 
 (defn opts->dir
   [{:keys [::module ::profile ::bc/target-dir]}]
@@ -63,6 +71,6 @@
          run-steps (step/->run-steps build-fn)]
      (run-steps step-fns opts))))
 
-(comment)
-(run-steps "build -- minipc ansible"
-           {::bc/env :repl})
+(comment
+  (run-steps "build -- minipc ansible"
+             {::bc/env :repl}))

@@ -1,0 +1,5 @@
+---
+users:
+{% for i in users %}  - name: {{ i.name }}
+    uid: {{ i.uid }}
+{% endfor %}

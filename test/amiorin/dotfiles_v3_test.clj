@@ -1,5 +1,6 @@
 (ns amiorin.dotfiles-v3-test
   (:require
+   [amiorin.dotfiles-v3 :refer [run-steps]]
    [babashka.fs :as fs]
    [babashka.process :refer [shell]]
    [big-config :as bc]
@@ -8,7 +9,6 @@
    [clojure.spec.alpha :as s]
    [clojure.string :as str]
    [clojure.test :refer [deftest is testing]]
-   [amiorin.dotfiles-v3 :refer [run-steps]]
    [org.corfield.new]))
 
 (deftest valid-template-test
