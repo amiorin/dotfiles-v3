@@ -2,20 +2,18 @@
 - name: Copy terminfo for ghostty
   ansible.builtin.copy:
     src: files/xterm-ghostty
-    dest: /home/{{ ansible_user }}/.xterm-ghostty
+    dest: .xterm-ghostty
 
 - name: Install terminfo for ghostty
   ansible.builtin.shell: tic -x .xterm-ghostty
   args:
-    chdir: /home/{{ ansible_user }}
     creates: .terminfo/x/xterm-ghostty
 
 - name: Provision devbox
   args:
-    executable: /bin/bash
-    creates: /home/{{ ansible_user }}/.local/share/devbox/global/default/.devbox/nix/profile/default/bin/emacs
+    creates: .local/share/devbox/global/default/.devbox/nix/profile/default/bin/emacs
   ansible.builtin.shell: >-
-    source /etc/profile.d/nix.sh
+    . /etc/profile.d/nix.sh
     && nix profile add github:jetify-com/devbox/latest
     && devbox global add --disable-plugin
     fish
@@ -45,7 +43,7 @@
 
 - name: Provision asdf
   args:
-    creates: /home/{{ ansible_user }}/.tool-versions
+    creates: .tool-versions
   ansible.builtin.shell: >-
     . /etc/profile.d/nix.sh
     && . /etc/profile.d/Z50-devbox.sh
