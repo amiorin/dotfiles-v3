@@ -1,0 +1,47 @@
+keybinds clear-defaults=true {
+    normal {
+        bind "Super Ctrl n" { NewPane; }
+        bind "Super Ctrl t" { NewTab; }
+        bind "Super Ctrl w" { CloseFocus; }
+        bind "Super Ctrl i" { GoToPreviousTab; }
+        bind "Super Ctrl o" { GoToNextTab; }
+        bind "Super Ctrl h" { MoveFocus "Left"; }
+        bind "Super Ctrl l" { MoveFocus "Right"; }
+        bind "Super Ctrl j" { MoveFocus "Down"; }
+        bind "Super Ctrl k" { MoveFocus "Up"; }
+        bind "Super Ctrl d" { Detach; }
+        bind "Super Ctrl ," { MoveTab "Left"; }
+        bind "Super Ctrl ." { MoveTab "Right"; }
+        bind "Super Ctrl x" { PreviousSwapLayout; }
+        bind "Super Ctrl c" { NextSwapLayout; }
+        bind "Super Ctrl u" { Clear; }
+        bind "Super Ctrl z" { GoToTab 1; }
+        bind "Super Ctrl x" { GoToTab 2; }
+        bind "Super Ctrl c" { GoToTab 3; }
+        bind "Super Ctrl v" { GoToTab 4; }
+        bind "Super Ctrl b" { GoToTab 5; }
+        bind "Super Ctrl e" { EditScrollback; }
+        bind "Super Ctrl f" { TogglePaneFrames; }
+        bind "Super Ctrl s" {
+            LaunchOrFocusPlugin "zellij:session-manager" {
+                floating true
+                move_to_focused_tab true
+            };
+        }
+    }
+}
+
+plugins {
+    tab-bar { path "tab-bar"; }
+    status-bar { path "status-bar"; }
+    strider { path "strider"; }
+    compact-bar { path "compact-bar"; }
+    session-manager { path "session-manager"; }
+}
+
+default_layout "minimal"
+scrollback_editor "/home/vscode/.local/bin/happy-emacs"
+session_serialization false
+default_shell "/home/vscode/.local/share/devbox/global/default/.devbox/nix/profile/default/bin/fish"
+show_startup_tips false
+show_release_notes false

@@ -77,7 +77,7 @@
 - name: Synchronization of src on the control machine to dest on the remote hosts
   ansible.posix.synchronize:
     src: dotfiles/
-    dest: .dotfiles/
+    dest: dotfiles/
     delete: true
     recursive: true
   changed_when: false
@@ -86,7 +86,13 @@
   ansible.builtin.shell: >-
     . /etc/profile.d/nix.sh
     && . /etc/profile.d/Z50-devbox.sh
-    && stow -v -d ~/.dotfiles -t ~ {{ item }}
+    && stow -v -d ~/dotfiles -t ~ {{ item }}
   loop:
+    - atuin
+    - direnv
+    - doomemacs
     - fish
+    - git
+    - starship
+    - zellij
   changed_when: false

@@ -1,0 +1,14 @@
+inline_height = 15
+show_help = false
+enter_accept = true
+style = "full"
+search_mode = "fulltext"
+
+[sync]
+records = true
+
+[keys]
+scroll_exits = false
+
+[dotfiles]
+enabled = true
