@@ -89,5 +89,5 @@
     && export PATH=~/.asdf/shims:$PATH
     && bb build exec -- silicon macos just install
   args:
-    chdir: code/personal/dotfiles-v3/main
+    chdir: code/personal/dotfiles-v3/minipc
     creates: ~/.config/fish/config.fish

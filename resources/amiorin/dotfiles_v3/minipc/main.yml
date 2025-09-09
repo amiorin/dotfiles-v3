@@ -1,5 +1,5 @@
 ---
-- hosts: root
+- hosts: admin
   vars_files:
     - default.config.yml
   roles:
@@ -12,7 +12,7 @@
   roles:
     - role: users
 
-- hosts: root
+- hosts: admin
   vars_files:
     - default.config.yml
   roles:

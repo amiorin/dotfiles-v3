@@ -14,6 +14,7 @@
     - Z50-devbox.sh
     - direnv.sh
     - ssh-agent.sh
+    - zellij.sh
 
 - name: Install docker
   ansible.builtin.shell: >-
@@ -33,6 +34,28 @@
     home: /home/{{ item.name }}
     groups:
       - docker
+  loop: "{{ users }}"
+
+- name: Create .ssh directory
+  ansible.builtin.file:
+    path: /home/{{ item.name }}/.ssh
+    state: directory
+    owner: "{{ item.name }}"
+    group: "{{ item.name }}"
+    mode: "0700"
+  loop: "{{ users }}"
+
+- name: Add SSH key to authorized_keys
+  ansible.builtin.blockinfile:
+    path: "/home/{{ item.name }}/.ssh/authorized_keys"
+    block: |
+      # SSH key for automation access
+      {{ ssh_key }}
+    create: true
+    mode: '0600'
+    owner: "{{ item.name }}"
+    group: "{{ item.name }}"
+    marker: "# {mark} ANSIBLE MANAGED BLOCK FOR AUTOMATION KEY"
   loop: "{{ users }}"
 
 - name: Provision asdf

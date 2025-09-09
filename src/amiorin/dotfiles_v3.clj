@@ -28,7 +28,7 @@
     (let [tpl-file (format "amiorin/dotfiles_v3/selmer/%s" tpl-name)
           dest (format "%s/%s" target-dir tpl-name)]
       (fs/create-dirs (fs/parent dest))
-      (-> (ansible/render tpl-file)
+      (-> (ansible/render tpl-file ansible/default-users)
           (->> (spit dest))))))
 
 (defn opts->dir
