@@ -1,0 +1,14 @@
+---
+- name: Forcefully remove a user and their home directory
+  hosts: root
+  become: true
+  tasks:
+    - name: Force removal of users and their home directory
+      ansible.builtin.user:
+        name: '{{ item }}'
+        state: absent
+        force: yes
+        remove: yes
+      loop:
+        - alberto
+        - amiorin

@@ -77,9 +77,9 @@
 - name: Clone the dotfiles
   ansible.builtin.git:
     repo: git@github.com:amiorin/dotfiles-v3.git
-    dest: code/personal/dotfiles-v3/main
+    dest: code/personal/dotfiles-v3/minipc
     single_branch: true
-    version: main
+    version: minipc
     accept_newhostkey: true
 
 - name: Install dotfiles
@@ -88,7 +88,6 @@
     && . /etc/profile.d/Z50-devbox.sh
     && export PATH=~/.asdf/shims:$PATH
     && bb build exec -- silicon macos just install
-    && touch .done
   args:
     chdir: code/personal/dotfiles-v3/main
-    creates: .done
+    creates: ~/.config/fish/config.fish
