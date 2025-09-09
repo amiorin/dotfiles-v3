@@ -40,6 +40,8 @@ plugins {
 }
 
 default_layout "minimal"
+scrollback_editor "/home/vscode/.local/bin/happy-emacs"
 session_serialization false
+default_shell "/home/vscode/.local/share/devbox/global/default/.devbox/nix/profile/default/bin/fish"
 show_startup_tips false
 show_release_notes false

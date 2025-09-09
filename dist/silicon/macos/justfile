@@ -4,58 +4,24 @@ help:
 
 # backup dotfiles
 backup:
-    cp /Users/amiorin/.config/fish/config.fish config.fish
-    cp /Users/amiorin/.config/skhd/skhdrc skhdrc
-    cp /Users/amiorin/.local/bin/24-bit-color.sh 24-bit-color.sh
-    cp /Users/amiorin/.config/wezterm/wezterm.lua wezterm.lua
-    cp /Users/amiorin/.config/ghostty/config dotfiles/ghostty/config
-    cp /Users/amiorin/.config/kitty/kitty.conf dotfiles/kitty/kitty.conf
-    cp /Users/amiorin/.config/kitty/current-theme.conf dotfiles/kitty/current-theme.conf
-    cp /Users/amiorin/.config/direnv/direnv.toml direnv.toml
-    cp /Users/amiorin/.config/atuin/config.toml dotfiles/atuin/config.toml
-    cp /Users/amiorin/.config/starship.toml dotfiles/starship/starship.toml
-    cp /Users/amiorin/.aerospace.toml dotfiles/aerospace/aerospace.toml
-    cp /Users/amiorin/.local/bin/dev dotfiles/bin/dev
-    cp /Users/amiorin/.config/zellij/config.kdl dotfiles/zellij/config.kdl
-    cp /Users/amiorin/.config/zellij/layouts/minimal.kdl dotfiles/zellij/layouts/minimal.kdl
-    rsync -a --delete /Users/amiorin/.doom.d/ dotfiles/doomemacs/
+    cp /home/vscode/.config/fish/config.fish dotfiles/fish/config.fish
+    cp /home/vscode/.config/direnv/direnv.toml dotfiles/direnv/direnv.toml
+    cp /home/vscode/.config/zellij/config.kdl dotfiles/zellij/config.kdl
+    cp /home/vscode/.config/zellij/layouts/minimal.kdl dotfiles/zellij/layouts/minimal.kdl
+    cp /home/vscode/.doom.d/config.el dotfiles/doomemacs/config.el
+    cp /home/vscode/.doom.d/init.el dotfiles/doomemacs/init.el
+    cp /home/vscode/.doom.d/packages.el dotfiles/doomemacs/packages.el
+    rsync -a --delete /home/vscode/.doom.d/modules/lang/protobuf/ dotfiles/doomemacs/modules/lang/protobuf
+    cp /home/vscode/.config/atuin/config.toml dotfiles/atuin/config.toml
+    cp /home/vscode/.config/starship.toml dotfiles/starship/starship.toml
 
 # install dotfiles
 install:
-    mkdir -p /Users/amiorin/.config/fish
-    cp config.fish /Users/amiorin/.config/fish/config.fish
-
-    mkdir -p /Users/amiorin/.config/skhd
-    cp skhdrc /Users/amiorin/.config/skhd/skhdrc
-
-    mkdir -p /Users/amiorin/.config/wezterm
-    cp wezterm.lua /Users/amiorin/.config/wezterm/wezterm.lua
-
-    mkdir -p /Users/amiorin/.config/ghostty
-    cp dotfiles/ghostty/config /Users/amiorin/.config/ghostty/config
-
-    mkdir -p /Users/amiorin/.config/kitty
-    cp dotfiles/kitty/kitty.conf /Users/amiorin/.config/kitty/kitty.conf
-    cp dotfiles/kitty/current-theme.conf /Users/amiorin/.config/kitty/current-theme.conf
-
-    mkdir -p /Users/amiorin/.config/direnv
-    cp direnv.toml /Users/amiorin/.config/direnv/direnv.toml
-
-    mkdir -p /Users/amiorin/.config/atuin
-    cp dotfiles/atuin/config.toml /Users/amiorin/.config/atuin/config.toml
-
-    cp dotfiles/starship/starship.toml /Users/amiorin/.config/starship.toml
-
-    mkdir -p /Users/amiorin/.local/bin
-    cp 24-bit-color.sh /Users/amiorin/.local/bin/24-bit-color.sh
-
-    cp dotfiles/aerospace/aerospace.toml /Users/amiorin/.aerospace.toml
-
-    cp dotfiles/bin/dev /Users/amiorin/.local/bin/dev
-
-    mkdir -p /Users/amiorin/.config/zellij/layouts
-    cp dotfiles/zellij/config.kdl /Users/amiorin/.config/zellij/config.kdl
-    cp dotfiles/zellij/layouts/minimal.kdl /Users/amiorin/.config/zellij/layouts/minimal.kdl
-
-    mkdir -p /Users/amiorin/.doom.d
-    rsync -a dotfiles/doomemacs/ ~/.doom.d
+    rsync -a dotfiles/bin/ /home/vscode/.local/bin
+    cp dotfiles/starship/starship.toml /home/vscode/.config/starship.toml
+    rsync -a dotfiles/atuin/ /home/vscode/.config/atuin
+    cp dotfiles/git/gitconfig /home/vscode/.gitconfig
+    rsync -a dotfiles/fish/ /home/vscode/.config/fish
+    rsync -a dotfiles/direnv/ /home/vscode/.config/direnv
+    rsync -a dotfiles/zellij/ /home/vscode/.config/zellij
+    rsync -a dotfiles/doomemacs/ /home/vscode/.doom.d

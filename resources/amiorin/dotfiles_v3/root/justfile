@@ -4,58 +4,24 @@ help:
 
 # backup dotfiles
 backup:
-    cp {{target}}/.config/fish/config.fish config.fish
-    cp {{target}}/.config/skhd/skhdrc skhdrc
-    cp {{target}}/.local/bin/24-bit-color.sh 24-bit-color.sh
-    cp {{target}}/.config/wezterm/wezterm.lua wezterm.lua
-    cp {{target}}/.config/ghostty/config dotfiles/ghostty/config
-    cp {{target}}/.config/kitty/kitty.conf dotfiles/kitty/kitty.conf
-    cp {{target}}/.config/kitty/current-theme.conf dotfiles/kitty/current-theme.conf
-    cp {{target}}/.config/direnv/direnv.toml direnv.toml
-    cp {{target}}/.config/atuin/config.toml dotfiles/atuin/config.toml
-    cp {{target}}/.config/starship.toml dotfiles/starship/starship.toml
-    cp {{target}}/.aerospace.toml dotfiles/aerospace/aerospace.toml
-    cp {{target}}/.local/bin/dev dotfiles/bin/dev
+    cp {{target}}/.config/fish/config.fish dotfiles/fish/config.fish
+    cp {{target}}/.config/direnv/direnv.toml dotfiles/direnv/direnv.toml
     cp {{target}}/.config/zellij/config.kdl dotfiles/zellij/config.kdl
     cp {{target}}/.config/zellij/layouts/minimal.kdl dotfiles/zellij/layouts/minimal.kdl
-    rsync -a --delete {{target}}/.doom.d/ dotfiles/doomemacs/
+    cp {{target}}/.doom.d/config.el dotfiles/doomemacs/config.el
+    cp {{target}}/.doom.d/init.el dotfiles/doomemacs/init.el
+    cp {{target}}/.doom.d/packages.el dotfiles/doomemacs/packages.el
+    rsync -a --delete {{target}}/.doom.d/modules/lang/protobuf/ dotfiles/doomemacs/modules/lang/protobuf
+    cp {{target}}/.config/atuin/config.toml dotfiles/atuin/config.toml
+    cp {{target}}/.config/starship.toml dotfiles/starship/starship.toml
 
 # install dotfiles
 install:
-    mkdir -p {{target}}/.config/fish
-    cp config.fish {{target}}/.config/fish/config.fish
-
-    mkdir -p {{target}}/.config/skhd
-    cp skhdrc {{target}}/.config/skhd/skhdrc
-
-    mkdir -p {{target}}/.config/wezterm
-    cp wezterm.lua {{target}}/.config/wezterm/wezterm.lua
-
-    mkdir -p {{target}}/.config/ghostty
-    cp dotfiles/ghostty/config {{target}}/.config/ghostty/config
-
-    mkdir -p {{target}}/.config/kitty
-    cp dotfiles/kitty/kitty.conf {{target}}/.config/kitty/kitty.conf
-    cp dotfiles/kitty/current-theme.conf {{target}}/.config/kitty/current-theme.conf
-
-    mkdir -p {{target}}/.config/direnv
-    cp direnv.toml {{target}}/.config/direnv/direnv.toml
-
-    mkdir -p {{target}}/.config/atuin
-    cp dotfiles/atuin/config.toml {{target}}/.config/atuin/config.toml
-
+    rsync -a dotfiles/bin/ {{target}}/.local/bin
     cp dotfiles/starship/starship.toml {{target}}/.config/starship.toml
-
-    mkdir -p {{target}}/.local/bin
-    cp 24-bit-color.sh {{target}}/.local/bin/24-bit-color.sh
-
-    cp dotfiles/aerospace/aerospace.toml {{target}}/.aerospace.toml
-
-    cp dotfiles/bin/dev {{target}}/.local/bin/dev
-
-    mkdir -p {{target}}/.config/zellij/layouts
-    cp dotfiles/zellij/config.kdl {{target}}/.config/zellij/config.kdl
-    cp dotfiles/zellij/layouts/minimal.kdl {{target}}/.config/zellij/layouts/minimal.kdl
-
-    mkdir -p {{target}}/.doom.d
-    rsync -a dotfiles/doomemacs/ ~/.doom.d
+    rsync -a dotfiles/atuin/ {{target}}/.config/atuin
+    cp dotfiles/git/gitconfig {{target}}/.gitconfig
+    rsync -a dotfiles/fish/ {{target}}/.config/fish
+    rsync -a dotfiles/direnv/ {{target}}/.config/direnv
+    rsync -a dotfiles/zellij/ {{target}}/.config/zellij
+    rsync -a dotfiles/doomemacs/ {{target}}/.doom.d
