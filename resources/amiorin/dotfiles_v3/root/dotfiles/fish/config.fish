@@ -41,8 +41,8 @@ if status is-interactive
     end
 
     # ansible
-    register-cmd ansible
-    register-cmd ansible-playbook
+    # register-cmd ansible
+    # register-cmd ansible-playbook
 
     if test -n "$GITHUB_TOKEN"
         git config --global url."https://$GITHUB_TOKEN:x-oauth-basic@github.com/".insteadOf "https://github.com/"
@@ -60,7 +60,6 @@ if status is-interactive
         git config --global url."https://$FACUNDO_TOKEN_GAMMA:x-oauth-basic@github.com/".insteadOf "https://gamma@github.com/"
     end
 
-    micromamba shell hook --shell fish | source
     starship init fish | source
     zoxide init fish | source
     direnv hook fish | source
