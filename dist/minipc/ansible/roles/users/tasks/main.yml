@@ -74,25 +74,21 @@
     && mkdir -p ~/.config/fish/completions
     && asdf completion fish > ~/.config/fish/completions/asdf.fish
 
-- name: Synchronization of src on the control machine to dest on the remote hosts
-  ansible.posix.synchronize:
-    src: dotfiles/
-    dest: dotfiles/
-    delete: true
-    recursive: true
-  changed_when: false
+- name: Clone the dotfiles
+  ansible.builtin.git:
+    repo: git@github.com:amiorin/dotfiles-v3.git
+    dest: code/personal/dotfiles-v3/main
+    single_branch: true
+    version: main
+    accept_newhostkey: true
 
-- name: "Create symbolic links with stow"
+- name: Install dotfiles
   ansible.builtin.shell: >-
     . /etc/profile.d/nix.sh
     && . /etc/profile.d/Z50-devbox.sh
-    && stow -v -d ~/dotfiles -t ~ {{ item }}
-  loop:
-    - atuin
-    - direnv
-    - doomemacs
-    - fish
-    - git
-    - starship
-    - zellij
-  changed_when: false
+    && export PATH=~/.asdf/shims:$PATH
+    && bb build exec -- silicon macos just install
+    && touch .done
+  args:
+    chdir: code/personal/dotfiles-v3/main
+    creates: .done
