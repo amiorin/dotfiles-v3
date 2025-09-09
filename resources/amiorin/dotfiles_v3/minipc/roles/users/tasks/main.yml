@@ -91,3 +91,25 @@
   args:
     chdir: code/personal/dotfiles-v3/minipc
     creates: ~/.config/fish/config.fish
+
+- name: Install doomemacs
+  ansible.builtin.shell: >-
+    . /etc/profile.d/nix.sh
+    && . /etc/profile.d/Z50-devbox.sh
+    && export PATH=~/.asdf/shims:$PATH
+    && git clone --depth 1 https://github.com/doomemacs/doomemacs ~/.emacs.d \
+    && cd ~/.emacs.d \
+    && git fetch origin 68010af0906171e3c989fc19bcb3ba81f7305022:refs/remotes/origin/pin-last-working-commit \
+    && git checkout 68010af0906171e3c989fc19bcb3ba81f7305022
+    && ~/.emacs.d/bin/doom sync
+    && emacs --fg-daemon --eval '(setq vterm-always-compile-module t)' --eval '(vterm-module-compile)' --eval '(kill-emacs)'
+    && npm -g --prefix ~/.emacs.d/.local/etc/lsp/npm/dockerfile-language-server-nodejs install dockerfile-language-server-nodejs
+    && npm -g --prefix ~/.emacs.d/.local/etc/lsp/npm/basedpyright install basedpyright
+    && npm -g --prefix ~/.emacs.d/.local/etc/lsp/npm/typescript install typescript
+    && npm -g --prefix ~/.emacs.d/.local/etc/lsp/npm/typescript-language-server install typescript-language-server
+    && npm -g --prefix ~/.emacs.d/.local/etc/lsp/npm/yaml-language-server install yaml-language-server
+    && npm -g --prefix ~/.emacs.d/.local/etc/lsp/npm/@astrojs/language-server install @astrojs/language-server
+    && npm -g --prefix ~/.emacs.d/.local/etc/lsp/npm/@mdx-js/language-server install @mdx-js/language-server
+  args:
+    creates: ~/.emacs.d
+  tags: focus
