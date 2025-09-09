@@ -1,7 +1,8 @@
 ---
 users:
-{% for i in users %}  - name: {{ i.name }}
-    uid: {{ i.uid }}
-{% endfor %}
+<% for i in users %>  - name: <{ i.name }>
+    uid: <{ i.uid }>
+<% endfor %>
 
 ssh_key: ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIHDKdUkY+SfRm6ttOz2EEZ2+i/zm+o1mpMOdMeGUr0t4 32617+amiorin@users.noreply.github.com
+atuin_login: "{{ lookup('ansible.builtin.env', 'ATUIN_LOGIN') }}"

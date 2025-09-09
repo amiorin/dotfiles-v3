@@ -13,7 +13,9 @@
 (defn render
   [s users]
   (p/render (slurp (io/resource s))
-            {:users users}))
+            {:users users}
+            {:tag-open \<
+             :tag-close \>}))
 
 (comment
   (render "amiorin/dotfiles_v3/selmer/default.config.yml" default-users)

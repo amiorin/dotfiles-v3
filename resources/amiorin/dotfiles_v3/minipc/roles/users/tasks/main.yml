@@ -112,4 +112,14 @@
     && npm -g --prefix ~/.emacs.d/.local/etc/lsp/npm/@mdx-js/language-server install @mdx-js/language-server
   args:
     creates: ~/.emacs.d
-  tags: focus
+
+- name: Install atuin
+  ansible.builtin.shell: >-
+    . /etc/profile.d/nix.sh
+    && . /etc/profile.d/Z50-devbox.sh
+    && export PATH=~/.asdf/shims:$PATH
+    && {{ atuin_login }}
+    && atuin sync
+  args:
+    creates: ~/.local/share/atuin/key
+  when: atuin_login
