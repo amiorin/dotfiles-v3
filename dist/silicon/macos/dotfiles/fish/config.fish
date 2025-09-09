@@ -75,10 +75,10 @@ if status is-interactive
     set fish_cursor_external line
     set fish_cursor_visual block
 
-    if test "$INSIDE_EMACS" = "vterm"
-        set -gx EDITOR "emacsclient -s $ZELLIJ_SESSION_NAME"
+    if test "$INSIDE_EMACS" = vterm
+        set -gx EDITOR emacsclient
     else
-        set -gx EDITOR happy-emacs
+        set -gx EDITOR "emacsclient -a '' -t"
     end
     alias emacs=$EDITOR
     alias e=$EDITOR
