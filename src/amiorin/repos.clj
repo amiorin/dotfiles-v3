@@ -9,6 +9,27 @@
                      :branch "main"
                      :worktrees ["minipc"
                                  "ansible"]}
+                    {:user "vscode"
+                     :org "amiorin"
+                     :repo "albertomiorin.com"
+                     :branch "main"
+                     :worktrees ["albertomiorin"
+                                 "big-config"]}
+                    {:user "vscode"
+                     :org "amiorin"
+                     :repo "big-config"
+                     :branch "main"
+                     :worktrees ["deps-new"]}
+                    {:user "vscode"
+                     :org "amiorin"
+                     :repo "big-container"
+                     :branch "main"
+                     :worktrees []}
+                    {:user "vscode"
+                     :org "amiorin"
+                     :repo "rama-jdbc"
+                     :branch "main"
+                     :worktrees []}
                     {:user "alberto"
                      :org "amiorin"
                      :repo "dotfiles-v3"

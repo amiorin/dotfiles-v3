@@ -26,6 +26,69 @@
   tags: focus
   when: inventory_hostname == "vscode"
 
+- name: Clone repo amiorin/albertomiorin.com
+  ansible.builtin.shell: >-
+    git clone git@github.com:amiorin/albertomiorin.com albertomiorin.com/main
+  args:
+    chdir: code/personal
+    creates: albertomiorin.com/main
+  tags: focus
+  when: inventory_hostname == "vscode"
+
+- name: Create worktree albertomiorin for amiorin/albertomiorin.com
+  ansible.builtin.shell: >-
+    git worktree add ../albertomiorin albertomiorin
+  args:
+    chdir: code/personal/albertomiorin.com/main
+    creates: ../albertomiorin
+  tags: focus
+  when: inventory_hostname == "vscode"
+
+- name: Create worktree big-config for amiorin/albertomiorin.com
+  ansible.builtin.shell: >-
+    git worktree add ../big-config big-config
+  args:
+    chdir: code/personal/albertomiorin.com/main
+    creates: ../big-config
+  tags: focus
+  when: inventory_hostname == "vscode"
+
+- name: Clone repo amiorin/big-config
+  ansible.builtin.shell: >-
+    git clone git@github.com:amiorin/big-config big-config/main
+  args:
+    chdir: code/personal
+    creates: big-config/main
+  tags: focus
+  when: inventory_hostname == "vscode"
+
+- name: Create worktree deps-new for amiorin/big-config
+  ansible.builtin.shell: >-
+    git worktree add ../deps-new deps-new
+  args:
+    chdir: code/personal/big-config/main
+    creates: ../deps-new
+  tags: focus
+  when: inventory_hostname == "vscode"
+
+- name: Clone repo amiorin/big-container
+  ansible.builtin.shell: >-
+    git clone git@github.com:amiorin/big-container big-container/main
+  args:
+    chdir: code/personal
+    creates: big-container/main
+  tags: focus
+  when: inventory_hostname == "vscode"
+
+- name: Clone repo amiorin/rama-jdbc
+  ansible.builtin.shell: >-
+    git clone git@github.com:amiorin/rama-jdbc rama-jdbc/main
+  args:
+    chdir: code/personal
+    creates: rama-jdbc/main
+  tags: focus
+  when: inventory_hostname == "vscode"
+
 - name: Clone repo amiorin/dotfiles-v3
   ansible.builtin.shell: >-
     git clone git@github.com:amiorin/dotfiles-v3 dotfiles-v3/main
