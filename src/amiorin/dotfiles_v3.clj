@@ -11,7 +11,6 @@
    [big-config.step :as step]
    [big-config.step-fns :as step-fns]
    [clojure.java.io :as io]
-   [clojure.string :as str]
    [org.corfield.new :as new]))
 
 (defn data-fn
@@ -28,9 +27,7 @@
   [_edn {:keys [target-dir]}]
   (let [tpl-name "repos.yml"
         tpl-resource (format "amiorin/dotfiles_v3/selmer/%s" tpl-name)
-        role (as-> (str/split tpl-name #"\.") $
-               (clojure.string/join "." (butlast $)))
-        dest (format "%s/roles/%s/tasks/main.yml" target-dir role)]
+        dest (format "%s/roles/users/tasks/%s" target-dir tpl-name)]
     (fs/create-dirs (fs/parent dest))
     (-> (repos/render tpl-resource repos/default-repos)
         (->> (spit dest))))

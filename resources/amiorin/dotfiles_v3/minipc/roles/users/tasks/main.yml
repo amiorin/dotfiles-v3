@@ -75,12 +75,7 @@
     && asdf completion fish > ~/.config/fish/completions/asdf.fish
 
 - name: Clone the dotfiles
-  ansible.builtin.git:
-    repo: git@github.com:amiorin/dotfiles-v3.git
-    dest: code/personal/dotfiles-v3/minipc
-    single_branch: true
-    version: minipc
-    accept_newhostkey: true
+  import_tasks: repos.yml
 
 - name: Install dotfiles
   ansible.builtin.shell: >-
