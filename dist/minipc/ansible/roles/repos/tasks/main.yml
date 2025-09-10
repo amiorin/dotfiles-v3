@@ -5,7 +5,6 @@
   args:
     chdir: code/personal
     creates: dotfiles-v3/main
-  tags: focus
   when: inventory_hostname == "vscode"
 
 - name: Create worktree minipc for amiorin/dotfiles-v3
@@ -14,7 +13,6 @@
   args:
     chdir: code/personal/dotfiles-v3/main
     creates: ../minipc
-  tags: focus
   when: inventory_hostname == "vscode"
 
 - name: Create worktree ansible for amiorin/dotfiles-v3
@@ -23,7 +21,6 @@
   args:
     chdir: code/personal/dotfiles-v3/main
     creates: ../ansible
-  tags: focus
   when: inventory_hostname == "vscode"
 
 - name: Clone repo amiorin/albertomiorin.com
@@ -32,7 +29,6 @@
   args:
     chdir: code/personal
     creates: albertomiorin.com/main
-  tags: focus
   when: inventory_hostname == "vscode"
 
 - name: Create worktree albertomiorin for amiorin/albertomiorin.com
@@ -41,7 +37,6 @@
   args:
     chdir: code/personal/albertomiorin.com/main
     creates: ../albertomiorin
-  tags: focus
   when: inventory_hostname == "vscode"
 
 - name: Create worktree big-config for amiorin/albertomiorin.com
@@ -50,7 +45,6 @@
   args:
     chdir: code/personal/albertomiorin.com/main
     creates: ../big-config
-  tags: focus
   when: inventory_hostname == "vscode"
 
 - name: Clone repo amiorin/big-config
@@ -59,7 +53,6 @@
   args:
     chdir: code/personal
     creates: big-config/main
-  tags: focus
   when: inventory_hostname == "vscode"
 
 - name: Create worktree deps-new for amiorin/big-config
@@ -68,7 +61,6 @@
   args:
     chdir: code/personal/big-config/main
     creates: ../deps-new
-  tags: focus
   when: inventory_hostname == "vscode"
 
 - name: Clone repo amiorin/big-container
@@ -77,7 +69,6 @@
   args:
     chdir: code/personal
     creates: big-container/main
-  tags: focus
   when: inventory_hostname == "vscode"
 
 - name: Clone repo amiorin/rama-jdbc
@@ -86,7 +77,6 @@
   args:
     chdir: code/personal
     creates: rama-jdbc/main
-  tags: focus
   when: inventory_hostname == "vscode"
 
 - name: Clone repo amiorin/dotfiles-v3
@@ -95,7 +85,6 @@
   args:
     chdir: code/personal
     creates: dotfiles-v3/main
-  tags: focus
   when: inventory_hostname == "alberto"
 
 - name: Create worktree minipc for amiorin/dotfiles-v3
@@ -104,7 +93,6 @@
   args:
     chdir: code/personal/dotfiles-v3/main
     creates: ../minipc
-  tags: focus
   when: inventory_hostname == "alberto"
 
 - name: Create worktree ansible for amiorin/dotfiles-v3
@@ -113,6 +101,5 @@
   args:
     chdir: code/personal/dotfiles-v3/main
     creates: ../ansible
-  tags: focus
   when: inventory_hostname == "alberto"
 

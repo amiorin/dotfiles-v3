@@ -5,7 +5,6 @@
   args:
     chdir: code/personal
     creates: <{ x.repo }>/<{ x.branch }>
-  tags: focus
   when: inventory_hostname == "<{ x.user }>"
 <% for y in x.worktrees %>
 - name: Create worktree <{ y }> for <{ x.org }>/<{ x.repo }>
@@ -14,6 +13,5 @@
   args:
     chdir: code/personal/<{ x.repo }>/<{ x.branch }>
     creates: ../<{ y }>
-  tags: focus
   when: inventory_hostname == "<{ x.user }>"
 <% endfor %><% endfor %><% endif %>

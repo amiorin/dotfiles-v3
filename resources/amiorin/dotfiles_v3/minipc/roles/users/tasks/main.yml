@@ -87,7 +87,7 @@
     . /etc/profile.d/nix.sh
     && . /etc/profile.d/Z50-devbox.sh
     && export PATH=~/.asdf/shims:$PATH
-    && bb build exec -- silicon macos just install
+    && bb build exec -- dotfiles ubuntu just install
   args:
     chdir: code/personal/dotfiles-v3/minipc
     creates: ~/.config/fish/config.fish
@@ -122,4 +122,4 @@
     && atuin sync
   args:
     creates: ~/.local/share/atuin/key
-  when: atuin_login
+  when: atuin_login | length > 0
