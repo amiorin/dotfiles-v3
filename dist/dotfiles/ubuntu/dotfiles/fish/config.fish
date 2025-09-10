@@ -75,6 +75,7 @@ if status is-interactive
     set fish_cursor_external line
     set fish_cursor_visual block
 
+
     if test "$INSIDE_EMACS" = vterm
         set -gx EDITOR emacsclient
     else

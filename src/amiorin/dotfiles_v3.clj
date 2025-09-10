@@ -34,7 +34,7 @@
 
 (defn opts->dir
   [{:keys [::module ::profile ::bc/target-dir]}]
-  (or target-dir (format "dist/%s/%s" profile module)))
+  (or target-dir (format "dist/%s/%s" module profile)))
 
 (defn build-fn [{:keys [::module ::profile ::bc/env] :as opts}]
   (binding [*out* (java.io.StringWriter.)]
@@ -75,5 +75,5 @@
      (run-steps step-fns opts))))
 
 (comment
-  (run-steps "build -- macos silicon"
+  (run-steps "build exec -- dotfiles ubuntu just install"
              {::bc/env :repl}))

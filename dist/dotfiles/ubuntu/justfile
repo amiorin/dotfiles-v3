@@ -17,6 +17,7 @@ backup:
 
 # install dotfiles
 install:
+    mkdir -p /home/vscode/.doom.d/snippets
     rsync -a dotfiles/bin/ /home/vscode/.local/bin
     cp dotfiles/starship/starship.toml /home/vscode/.config/starship.toml
     rsync -a dotfiles/atuin/ /home/vscode/.config/atuin

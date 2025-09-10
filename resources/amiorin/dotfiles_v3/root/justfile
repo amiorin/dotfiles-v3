@@ -17,6 +17,7 @@ backup:
 
 # install dotfiles
 install:
+    mkdir -p {{target}}/.doom.d/snippets
     rsync -a dotfiles/bin/ {{target}}/.local/bin
     cp dotfiles/starship/starship.toml {{target}}/.config/starship.toml
     rsync -a dotfiles/atuin/ {{target}}/.config/atuin
