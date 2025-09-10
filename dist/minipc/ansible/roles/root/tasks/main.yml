@@ -36,6 +36,14 @@
       - docker
   loop: "{{ users }}"
 
+- name: Force removal of users and their home directory
+  ansible.builtin.user:
+    name: '{{ item.name }}'
+    state: absent
+    force: yes
+    remove: yes
+  loop: "{{ remove_users }}"
+
 - name: Create .ssh directory
   ansible.builtin.file:
     path: /home/{{ item.name }}/.ssh

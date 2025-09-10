@@ -1,8 +1,8 @@
 (ns amiorin.dotfiles-v3
   (:require
    [aero.core :as aero]
-   [amiorin.ansible :as ansible]
    [amiorin.repos :as repos]
+   [amiorin.users :as users]
    [babashka.fs :as fs]
    [big-config :as bc]
    [big-config.core :as core]
@@ -35,7 +35,7 @@
     (let [tpl-file (format "amiorin/dotfiles_v3/selmer/%s" tpl-name)
           dest (format "%s/%s" target-dir tpl-name)]
       (fs/create-dirs (fs/parent dest))
-      (-> (ansible/render tpl-file ansible/default-users)
+      (-> (users/render tpl-file users/default-users)
           (->> (spit dest))))))
 
 (defn opts->dir
