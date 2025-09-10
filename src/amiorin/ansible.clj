@@ -4,11 +4,11 @@
    [selmer.parser :as p]))
 
 (def default-users [{:name "vscode"
-             :uid "1000"}
-            {:name "alberto"
-             :uid "1002"}
-            {:name "amiorin"
-             :uid "1003"}])
+                     :uid "1001"}
+                    {:name "alberto"
+                     :uid "1002"}
+                    {:name "amiorin"
+                     :uid "1003"}])
 
 (defn render
   [s users]

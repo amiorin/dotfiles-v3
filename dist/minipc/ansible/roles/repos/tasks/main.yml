@@ -1,0 +1,55 @@
+---
+- name: Clone repo amiorin/dotfiles-v3
+  ansible.builtin.shell: >-
+    git clone git@github.com:amiorin/dotfiles-v3 dotfiles-v3/main
+  args:
+    chdir: code/personal
+    creates: dotfiles-v3/main
+  tags: focus
+  when: inventory_hostname == "vscode"
+
+- name: Create worktree minipc for amiorin/dotfiles-v3
+  ansible.builtin.shell: >-
+    git worktree add ../minipc minipc
+  args:
+    chdir: code/personal/dotfiles-v3/main
+    creates: ../minipc
+  tags: focus
+  when: inventory_hostname == "vscode"
+
+- name: Create worktree ansible for amiorin/dotfiles-v3
+  ansible.builtin.shell: >-
+    git worktree add ../ansible ansible
+  args:
+    chdir: code/personal/dotfiles-v3/main
+    creates: ../ansible
+  tags: focus
+  when: inventory_hostname == "vscode"
+
+- name: Clone repo amiorin/dotfiles-v3
+  ansible.builtin.shell: >-
+    git clone git@github.com:amiorin/dotfiles-v3 dotfiles-v3/main
+  args:
+    chdir: code/personal
+    creates: dotfiles-v3/main
+  tags: focus
+  when: inventory_hostname == "alberto"
+
+- name: Create worktree minipc for amiorin/dotfiles-v3
+  ansible.builtin.shell: >-
+    git worktree add ../minipc minipc
+  args:
+    chdir: code/personal/dotfiles-v3/main
+    creates: ../minipc
+  tags: focus
+  when: inventory_hostname == "alberto"
+
+- name: Create worktree ansible for amiorin/dotfiles-v3
+  ansible.builtin.shell: >-
+    git worktree add ../ansible ansible
+  args:
+    chdir: code/personal/dotfiles-v3/main
+    creates: ../ansible
+  tags: focus
+  when: inventory_hostname == "alberto"
+

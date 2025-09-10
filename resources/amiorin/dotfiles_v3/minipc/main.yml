@@ -11,6 +11,7 @@
     - default.config.yml
   roles:
     - role: users
+    - role: repos
 
 - hosts: admin
   vars_files:

@@ -2,6 +2,7 @@
   (:require
    [aero.core :as aero]
    [amiorin.ansible :as ansible]
+   [amiorin.repos :as repos]
    [babashka.fs :as fs]
    [big-config :as bc]
    [big-config.core :as core]
@@ -10,6 +11,7 @@
    [big-config.step :as step]
    [big-config.step-fns :as step-fns]
    [clojure.java.io :as io]
+   [clojure.string :as str]
    [org.corfield.new :as new]))
 
 (defn data-fn
@@ -24,6 +26,14 @@
 
 (defn post-process-fn
   [_edn {:keys [target-dir]}]
+  (let [tpl-name "repos.yml"
+        tpl-resource (format "amiorin/dotfiles_v3/selmer/%s" tpl-name)
+        role (as-> (str/split tpl-name #"\.") $
+               (clojure.string/join "." (butlast $)))
+        dest (format "%s/roles/%s/tasks/main.yml" target-dir role)]
+    (fs/create-dirs (fs/parent dest))
+    (-> (repos/render tpl-resource repos/default-repos)
+        (->> (spit dest))))
   (doseq [tpl-name ["default.config.yml" "inventory.ini"]]
     (let [tpl-file (format "amiorin/dotfiles_v3/selmer/%s" tpl-name)
           dest (format "%s/%s" target-dir tpl-name)]
