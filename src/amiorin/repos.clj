@@ -19,6 +19,12 @@
               :repo "dotfiles-v3"
               :branch "main"
               :worktrees ["minipc"
+                          "ansible"]}
+             {:user "amiorin"
+              :org "amiorin"
+              :repo "dotfiles-v3"
+              :branch "main"
+              :worktrees ["minipc"
                           "ansible"]}])))
 
 (defn render

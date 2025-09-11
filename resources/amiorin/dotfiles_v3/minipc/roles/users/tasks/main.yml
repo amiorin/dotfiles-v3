@@ -74,7 +74,13 @@
     && mkdir -p ~/.config/fish/completions
     && asdf completion fish > ~/.config/fish/completions/asdf.fish
 
-- name: Clone the dotfiles
+- name: Create repo directory
+  ansible.builtin.file:
+    path: code/personal
+    state: directory
+    mode: "0755"
+
+- name: Clone the repos
   import_tasks: repos.yml
 
 - name: Install dotfiles
