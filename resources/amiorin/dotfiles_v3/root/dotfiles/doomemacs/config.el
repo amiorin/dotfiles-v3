@@ -265,6 +265,7 @@
 (defvar my-update-tabname-timer (current-time))
 (defun my-do-update-tabname ()
   (let* ((zellij (getenv "ZELLIJ_SESSION_NAME"))
+         (home (getenv "HOME"))
          (user (when zellij
                  (downcase (car (split-string zellij "@")))))
          (root (or (projectile-project-root)
@@ -272,16 +273,16 @@
          (root (if (string= root "/")
                    "root"
                  root))
-         (root (if (string= root "/Users/amiorin/code/of/")
+         (root (if (string= root (format "%s/code/of/" home))
                    "of"
                  root))
-         (root (if (string= root "/Users/amiorin/code/personal/")
+         (root (if (string= root (format "%s/code/personal/" home))
                    "personal"
                  root))
-         (root (if (string= root "/Users/amiorin/")
+         (root (if (string= root (format "%s/" home))
                    "~"
                  root))
-         (root (replace-regexp-in-string "/Users/amiorin/" "" root))
+         (root (replace-regexp-in-string (format "%s/" home) "" root))
          (root (replace-regexp-in-string "code/of/" "" root))
          (root (replace-regexp-in-string "code/personal/" "" root))
          (xs (split-string root "/"))
