@@ -496,5 +496,12 @@
 ;; Don't prompt when closing a frame
 (global-set-key [remap delete-frame] nil)
 
-;; Esc act as quit
-(define-key key-translation-map (kbd "ESC") (kbd "C-g"))
+;; Esc act as quit, but it breaks M-(;)
+;; (define-key key-translation-map (kbd "ESC") (kbd "C-g"))
+
+(map! :map 'override "s-[" #'previous-buffer)
+(map! :map 'override "s-]" #'next-buffer)
+
+;; Clojure
+(add-hook 'clojure-mode-hook #'+format-with-lsp-mode)
+;; Esc act as quit, but it breaks M-
