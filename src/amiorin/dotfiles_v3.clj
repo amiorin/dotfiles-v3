@@ -25,18 +25,18 @@
 
 (defn post-process-fn
   [_edn {:keys [target-dir]}]
-  (let [tpl-name "repos.yml"
-        tpl-resource (format "amiorin/dotfiles_v3/selmer/%s" tpl-name)
-        dest (format "%s/roles/users/tasks/%s" target-dir tpl-name)]
+  (let [dest (format "%s/roles/users/tasks/repos.yml" target-dir)]
     (fs/create-dirs (fs/parent dest))
-    (-> (repos/render tpl-resource repos/default-repos)
+    (-> (repos/render repos/default-repos)
         (->> (spit dest))))
-  (doseq [tpl-name ["default.config.yml" "inventory.ini"]]
-    (let [tpl-file (format "amiorin/dotfiles_v3/selmer/%s" tpl-name)
-          dest (format "%s/%s" target-dir tpl-name)]
-      (fs/create-dirs (fs/parent dest))
-      (-> (users/render tpl-file users/default-users)
-          (->> (spit dest))))))
+  (let [dest (format "%s/inventory.json" target-dir)]
+    (fs/create-dirs (fs/parent dest))
+    (-> (users/render-inventory users/default-users)
+        (->> (spit dest))))
+  (let [dest (format "%s/default.config.yml" target-dir)]
+    (fs/create-dirs (fs/parent dest))
+    (-> (users/render-config users/default-users)
+        (->> (spit dest)))))
 
 (defn opts->dir
   [{:keys [::module ::profile ::bc/target-dir]}]

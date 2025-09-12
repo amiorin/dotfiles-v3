@@ -1,7 +1,6 @@
 (ns amiorin.repos
   (:require
-   [clojure.java.io :as io]
-   [selmer.parser :as p]))
+   [cheshire.core :refer [generate-string]]))
 
 (def default-repos
   (-> (into [] (for [[repo worktrees] [["dotfiles-v3" ["minipc" "ansible"]]
@@ -28,11 +27,22 @@
                           "ansible"]}])))
 
 (defn render
-  [s repos]
-  (p/render (slurp (io/resource s))
-            {:repos repos}
-            {:tag-open \<
-             :tag-close \>}))
+  [repos]
+  (-> (for [{:keys [user org repo branch worktrees]} repos]
+        [{:name (format "Clone repo %s/%s" org repo)
+          "ansible.builtin.shell" (format "ssh -o StrictHostKeyChecking=accept-new  git@github.com || true
+&& git clone git@github.com:%s/%s %s/%s" org repo repo branch)
+          :args {:chdir (format "code/personal")
+                 :creates (format "%s/%s" repo branch)}
+          :when (format "inventory_hostname == \"%s\"" user)}
+         (for [worktree worktrees]
+           {:name (format "Create the worktree %s for repo %s/%s" worktree org repo)
+            "ansible.builtin.shell" (format "git worktree add ../%s %s" worktree worktree)
+            :args {:chdir (format "code/personal/%s/%s" repo branch)
+                   :creates (format "../%s" worktree)}
+            :when (format "inventory_hostname == \"%s\"" user)})])
+      flatten
+      (generate-string {:pretty true})))
 
 (comment
-  (render "amiorin/dotfiles_v3/selmer/repos.yml" default-repos))
+  (render default-repos))

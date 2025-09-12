@@ -1,136 +1,129 @@
----
-- name: Clone repo amiorin/dotfiles-v3
-  ansible.builtin.shell: >-
-    ssh -o StrictHostKeyChecking=accept-new  git@github.com || true
-    && git clone git@github.com:amiorin/dotfiles-v3 dotfiles-v3/main
-  args:
-    chdir: code/personal
-    creates: dotfiles-v3/main
-  when: inventory_hostname == "vscode"
-
-- name: Create worktree minipc for amiorin/dotfiles-v3
-  ansible.builtin.shell: >-
-    git worktree add ../minipc minipc
-  args:
-    chdir: code/personal/dotfiles-v3/main
-    creates: ../minipc
-  when: inventory_hostname == "vscode"
-
-- name: Create worktree ansible for amiorin/dotfiles-v3
-  ansible.builtin.shell: >-
-    git worktree add ../ansible ansible
-  args:
-    chdir: code/personal/dotfiles-v3/main
-    creates: ../ansible
-  when: inventory_hostname == "vscode"
-
-- name: Clone repo amiorin/albertomiorin.com
-  ansible.builtin.shell: >-
-    ssh -o StrictHostKeyChecking=accept-new  git@github.com || true
-    && git clone git@github.com:amiorin/albertomiorin.com albertomiorin.com/main
-  args:
-    chdir: code/personal
-    creates: albertomiorin.com/main
-  when: inventory_hostname == "vscode"
-
-- name: Create worktree albertomiorin for amiorin/albertomiorin.com
-  ansible.builtin.shell: >-
-    git worktree add ../albertomiorin albertomiorin
-  args:
-    chdir: code/personal/albertomiorin.com/main
-    creates: ../albertomiorin
-  when: inventory_hostname == "vscode"
-
-- name: Create worktree big-config for amiorin/albertomiorin.com
-  ansible.builtin.shell: >-
-    git worktree add ../big-config big-config
-  args:
-    chdir: code/personal/albertomiorin.com/main
-    creates: ../big-config
-  when: inventory_hostname == "vscode"
-
-- name: Clone repo amiorin/big-config
-  ansible.builtin.shell: >-
-    ssh -o StrictHostKeyChecking=accept-new  git@github.com || true
-    && git clone git@github.com:amiorin/big-config big-config/main
-  args:
-    chdir: code/personal
-    creates: big-config/main
-  when: inventory_hostname == "vscode"
-
-- name: Create worktree deps-new for amiorin/big-config
-  ansible.builtin.shell: >-
-    git worktree add ../deps-new deps-new
-  args:
-    chdir: code/personal/big-config/main
-    creates: ../deps-new
-  when: inventory_hostname == "vscode"
-
-- name: Clone repo amiorin/big-container
-  ansible.builtin.shell: >-
-    ssh -o StrictHostKeyChecking=accept-new  git@github.com || true
-    && git clone git@github.com:amiorin/big-container big-container/main
-  args:
-    chdir: code/personal
-    creates: big-container/main
-  when: inventory_hostname == "vscode"
-
-- name: Clone repo amiorin/rama-jdbc
-  ansible.builtin.shell: >-
-    ssh -o StrictHostKeyChecking=accept-new  git@github.com || true
-    && git clone git@github.com:amiorin/rama-jdbc rama-jdbc/main
-  args:
-    chdir: code/personal
-    creates: rama-jdbc/main
-  when: inventory_hostname == "vscode"
-
-- name: Clone repo amiorin/dotfiles-v3
-  ansible.builtin.shell: >-
-    ssh -o StrictHostKeyChecking=accept-new  git@github.com || true
-    && git clone git@github.com:amiorin/dotfiles-v3 dotfiles-v3/main
-  args:
-    chdir: code/personal
-    creates: dotfiles-v3/main
-  when: inventory_hostname == "alberto"
-
-- name: Create worktree minipc for amiorin/dotfiles-v3
-  ansible.builtin.shell: >-
-    git worktree add ../minipc minipc
-  args:
-    chdir: code/personal/dotfiles-v3/main
-    creates: ../minipc
-  when: inventory_hostname == "alberto"
-
-- name: Create worktree ansible for amiorin/dotfiles-v3
-  ansible.builtin.shell: >-
-    git worktree add ../ansible ansible
-  args:
-    chdir: code/personal/dotfiles-v3/main
-    creates: ../ansible
-  when: inventory_hostname == "alberto"
-
-- name: Clone repo amiorin/dotfiles-v3
-  ansible.builtin.shell: >-
-    ssh -o StrictHostKeyChecking=accept-new  git@github.com || true
-    && git clone git@github.com:amiorin/dotfiles-v3 dotfiles-v3/main
-  args:
-    chdir: code/personal
-    creates: dotfiles-v3/main
-  when: inventory_hostname == "amiorin"
-
-- name: Create worktree minipc for amiorin/dotfiles-v3
-  ansible.builtin.shell: >-
-    git worktree add ../minipc minipc
-  args:
-    chdir: code/personal/dotfiles-v3/main
-    creates: ../minipc
-  when: inventory_hostname == "amiorin"
-
-- name: Create worktree ansible for amiorin/dotfiles-v3
-  ansible.builtin.shell: >-
-    git worktree add ../ansible ansible
-  args:
-    chdir: code/personal/dotfiles-v3/main
-    creates: ../ansible
-  when: inventory_hostname == "amiorin"
-
+[ {
+  "name" : "Clone repo amiorin/dotfiles-v3",
+  "ansible.builtin.shell" : "ssh -o StrictHostKeyChecking=accept-new  git@github.com || true\n&& git clone git@github.com:amiorin/dotfiles-v3 dotfiles-v3/main",
+  "args" : {
+    "chdir" : "code/personal",
+    "creates" : "dotfiles-v3/main"
+  },
+  "when" : "inventory_hostname == \"vscode\""
+}, {
+  "name" : "Create the worktree minipc for repo amiorin/dotfiles-v3",
+  "ansible.builtin.shell" : "git worktree add ../minipc minipc",
+  "args" : {
+    "chdir" : "code/personal/dotfiles-v3/main",
+    "creates" : "../minipc"
+  },
+  "when" : "inventory_hostname == \"vscode\""
+}, {
+  "name" : "Create the worktree ansible for repo amiorin/dotfiles-v3",
+  "ansible.builtin.shell" : "git worktree add ../ansible ansible",
+  "args" : {
+    "chdir" : "code/personal/dotfiles-v3/main",
+    "creates" : "../ansible"
+  },
+  "when" : "inventory_hostname == \"vscode\""
+}, {
+  "name" : "Clone repo amiorin/albertomiorin.com",
+  "ansible.builtin.shell" : "ssh -o StrictHostKeyChecking=accept-new  git@github.com || true\n&& git clone git@github.com:amiorin/albertomiorin.com albertomiorin.com/main",
+  "args" : {
+    "chdir" : "code/personal",
+    "creates" : "albertomiorin.com/main"
+  },
+  "when" : "inventory_hostname == \"vscode\""
+}, {
+  "name" : "Create the worktree albertomiorin for repo amiorin/albertomiorin.com",
+  "ansible.builtin.shell" : "git worktree add ../albertomiorin albertomiorin",
+  "args" : {
+    "chdir" : "code/personal/albertomiorin.com/main",
+    "creates" : "../albertomiorin"
+  },
+  "when" : "inventory_hostname == \"vscode\""
+}, {
+  "name" : "Create the worktree big-config for repo amiorin/albertomiorin.com",
+  "ansible.builtin.shell" : "git worktree add ../big-config big-config",
+  "args" : {
+    "chdir" : "code/personal/albertomiorin.com/main",
+    "creates" : "../big-config"
+  },
+  "when" : "inventory_hostname == \"vscode\""
+}, {
+  "name" : "Clone repo amiorin/big-config",
+  "ansible.builtin.shell" : "ssh -o StrictHostKeyChecking=accept-new  git@github.com || true\n&& git clone git@github.com:amiorin/big-config big-config/main",
+  "args" : {
+    "chdir" : "code/personal",
+    "creates" : "big-config/main"
+  },
+  "when" : "inventory_hostname == \"vscode\""
+}, {
+  "name" : "Create the worktree deps-new for repo amiorin/big-config",
+  "ansible.builtin.shell" : "git worktree add ../deps-new deps-new",
+  "args" : {
+    "chdir" : "code/personal/big-config/main",
+    "creates" : "../deps-new"
+  },
+  "when" : "inventory_hostname == \"vscode\""
+}, {
+  "name" : "Clone repo amiorin/big-container",
+  "ansible.builtin.shell" : "ssh -o StrictHostKeyChecking=accept-new  git@github.com || true\n&& git clone git@github.com:amiorin/big-container big-container/main",
+  "args" : {
+    "chdir" : "code/personal",
+    "creates" : "big-container/main"
+  },
+  "when" : "inventory_hostname == \"vscode\""
+}, {
+  "name" : "Clone repo amiorin/rama-jdbc",
+  "ansible.builtin.shell" : "ssh -o StrictHostKeyChecking=accept-new  git@github.com || true\n&& git clone git@github.com:amiorin/rama-jdbc rama-jdbc/main",
+  "args" : {
+    "chdir" : "code/personal",
+    "creates" : "rama-jdbc/main"
+  },
+  "when" : "inventory_hostname == \"vscode\""
+}, {
+  "name" : "Clone repo amiorin/dotfiles-v3",
+  "ansible.builtin.shell" : "ssh -o StrictHostKeyChecking=accept-new  git@github.com || true\n&& git clone git@github.com:amiorin/dotfiles-v3 dotfiles-v3/main",
+  "args" : {
+    "chdir" : "code/personal",
+    "creates" : "dotfiles-v3/main"
+  },
+  "when" : "inventory_hostname == \"alberto\""
+}, {
+  "name" : "Create the worktree minipc for repo amiorin/dotfiles-v3",
+  "ansible.builtin.shell" : "git worktree add ../minipc minipc",
+  "args" : {
+    "chdir" : "code/personal/dotfiles-v3/main",
+    "creates" : "../minipc"
+  },
+  "when" : "inventory_hostname == \"alberto\""
+}, {
+  "name" : "Create the worktree ansible for repo amiorin/dotfiles-v3",
+  "ansible.builtin.shell" : "git worktree add ../ansible ansible",
+  "args" : {
+    "chdir" : "code/personal/dotfiles-v3/main",
+    "creates" : "../ansible"
+  },
+  "when" : "inventory_hostname == \"alberto\""
+}, {
+  "name" : "Clone repo amiorin/dotfiles-v3",
+  "ansible.builtin.shell" : "ssh -o StrictHostKeyChecking=accept-new  git@github.com || true\n&& git clone git@github.com:amiorin/dotfiles-v3 dotfiles-v3/main",
+  "args" : {
+    "chdir" : "code/personal",
+    "creates" : "dotfiles-v3/main"
+  },
+  "when" : "inventory_hostname == \"amiorin\""
+}, {
+  "name" : "Create the worktree minipc for repo amiorin/dotfiles-v3",
+  "ansible.builtin.shell" : "git worktree add ../minipc minipc",
+  "args" : {
+    "chdir" : "code/personal/dotfiles-v3/main",
+    "creates" : "../minipc"
+  },
+  "when" : "inventory_hostname == \"amiorin\""
+}, {
+  "name" : "Create the worktree ansible for repo amiorin/dotfiles-v3",
+  "ansible.builtin.shell" : "git worktree add ../ansible ansible",
+  "args" : {
+    "chdir" : "code/personal/dotfiles-v3/main",
+    "creates" : "../ansible"
+  },
+  "when" : "inventory_hostname == \"amiorin\""
+} ]

@@ -1,19 +1,18 @@
----
-
-users:
-  - name: vscode
-    uid: 1001
-  - name: alberto
-    uid: 1002
-  - name: amiorin
-    uid: 1003
-
-
-
-
-remove_users: []
-
-
-
-ssh_key: ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIHDKdUkY+SfRm6ttOz2EEZ2+i/zm+o1mpMOdMeGUr0t4 32617+amiorin@users.noreply.github.com
-atuin_login: "{{ lookup('ansible.builtin.env', 'ATUIN_LOGIN') }}"
+{
+  "users" : [ {
+    "name" : "vscode",
+    "uid" : "1001",
+    "remove" : false
+  }, {
+    "name" : "alberto",
+    "uid" : "1002",
+    "remove" : false
+  }, {
+    "name" : "amiorin",
+    "uid" : "1003",
+    "remove" : false
+  } ],
+  "remove_users" : [ ],
+  "ssh_key" : "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIHDKdUkY+SfRm6ttOz2EEZ2+i/zm+o1mpMOdMeGUr0t4 32617+amiorin@users.noreply.github.com",
+  "atuin_login" : "\"{{ lookup('ansible.builtin.env', 'ATUIN_LOGIN') }}\""
+}

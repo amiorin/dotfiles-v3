@@ -1,0 +1,33 @@
+{
+  "all" : {
+    "children" : {
+      "admin" : {
+        "hosts" : {
+          "root" : {
+            "ansible_host" : "minipc.afrino-bushi.ts.net",
+            "ansible_user" : "vscode"
+          }
+        }
+      },
+      "users" : {
+        "hosts" : {
+          "vscode" : {
+            "ansible_host" : "minipc.afrino-bushi.ts.net",
+            "ansible_user" : "vscode",
+            "uid" : "1001"
+          },
+          "alberto" : {
+            "ansible_host" : "minipc.afrino-bushi.ts.net",
+            "ansible_user" : "alberto",
+            "uid" : "1002"
+          },
+          "amiorin" : {
+            "ansible_host" : "minipc.afrino-bushi.ts.net",
+            "ansible_user" : "amiorin",
+            "uid" : "1003"
+          }
+        }
+      }
+    }
+  }
+}
