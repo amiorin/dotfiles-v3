@@ -1,8 +1,9 @@
 (ns amiorin.dotfiles-v3
   (:require
    [aero.core :as aero]
+   [amiorin.config :as config]
+   [amiorin.inventory :as inventory]
    [amiorin.repos :as repos]
-   [amiorin.users :as users]
    [babashka.fs :as fs]
    [big-config :as bc]
    [big-config.core :as core]
@@ -31,11 +32,11 @@
         (->> (spit dest))))
   (let [dest (format "%s/inventory.json" target-dir)]
     (fs/create-dirs (fs/parent dest))
-    (-> (users/render-inventory users/default-users)
+    (-> (inventory/render inventory/default-users)
         (->> (spit dest))))
   (let [dest (format "%s/default.config.yml" target-dir)]
     (fs/create-dirs (fs/parent dest))
-    (-> (users/render-config users/default-users)
+    (-> (config/render (config/default-config inventory/default-users))
         (->> (spit dest)))))
 
 (defn opts->dir
