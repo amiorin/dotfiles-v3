@@ -1,10 +1,6 @@
 (ns amiorin.dotfiles-v3
   (:require
    [aero.core :as aero]
-   [amiorin.config :as config]
-   [amiorin.inventory :as inventory]
-   [amiorin.repos :as repos]
-   [babashka.fs :as fs]
    [big-config :as bc]
    [big-config.core :as core]
    [big-config.lock :as lock]
@@ -26,18 +22,20 @@
 
 (defn post-process-fn
   [_edn {:keys [target-dir]}]
-  (let [dest (format "%s/roles/users/tasks/repos.yml" target-dir)]
-    (fs/create-dirs (fs/parent dest))
-    (-> (repos/render repos/default-repos)
-        (->> (spit dest))))
-  (let [dest (format "%s/inventory.json" target-dir)]
-    (fs/create-dirs (fs/parent dest))
-    (-> (inventory/render inventory/default-users)
-        (->> (spit dest))))
-  (let [dest (format "%s/default.config.yml" target-dir)]
-    (fs/create-dirs (fs/parent dest))
-    (-> (config/render (config/default-config inventory/default-users))
-        (->> (spit dest)))))
+  (doseq [[module dest-file] [["repos" "/roles/users/tasks/repos.yml"]
+                              ["inventory" "/inventory.json"]
+                              ["config" "/default.config.yml"]]]
+    (let [opts (-> module
+                   (->> (format "amiorin.%s/default-opts"))
+                   symbol
+                   requiring-resolve
+                   (apply []))]
+      (-> module
+          (->> (format "amiorin.%s/render"))
+          symbol
+          requiring-resolve
+          (apply [opts])
+          (->> (spit (str target-dir dest-file)))))))
 
 (defn opts->dir
   [{:keys [::module ::profile ::bc/target-dir]}]

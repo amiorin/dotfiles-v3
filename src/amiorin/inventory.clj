@@ -2,15 +2,17 @@
   (:require
    [cheshire.core :refer [generate-string]]))
 
-(def default-users [{:name "vscode"
-                     :uid "1001"
-                     :remove false}
-                    {:name "alberto"
-                     :uid "1002"
-                     :remove false}
-                    {:name "amiorin"
-                     :uid "1003"
-                     :remove false}])
+(defn default-opts
+  []
+  [{:name "vscode"
+    :uid "1001"
+    :remove false}
+   {:name "alberto"
+    :uid "1002"
+    :remove false}
+   {:name "amiorin"
+    :uid "1003"
+    :remove false}])
 
 (defn render
   [users]
@@ -27,4 +29,4 @@
     (generate-string res {:pretty true})))
 
 (comment
-  (render default-users))
+  (render (default-opts)))

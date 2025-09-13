@@ -2,7 +2,8 @@
   (:require
    [cheshire.core :refer [generate-string]]))
 
-(def default-repos
+(defn default-opts
+  []
   (-> (into [] (for [[repo worktrees] [["dotfiles-v3" ["minipc" "ansible"]]
                                        ["albertomiorin.com" ["albertomiorin" "big-config"]]
                                        ["big-config" ["deps-new"]]
@@ -44,4 +45,4 @@
       (generate-string {:pretty true})))
 
 (comment
-  (render default-repos))
+  (render (default-opts)))

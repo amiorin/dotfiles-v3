@@ -1,13 +1,15 @@
 (ns amiorin.config
   (:require
-   [amiorin.inventory :refer [default-users]]
+   [amiorin.inventory :as inventory]
    [cheshire.core :refer [generate-string]]))
 
-(defn default-config
-  [users]
-  {:users (filter (complement :remove) users)
-   :remove_users (filter :remove users)
-   :ssh_key "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIHDKdUkY+SfRm6ttOz2EEZ2+i/zm+o1mpMOdMeGUr0t4 32617+amiorin@users.noreply.github.com"})
+(defn default-opts
+  ([]
+   (default-opts (inventory/default-opts)))
+  ([users]
+   {:users (filter (complement :remove) users)
+    :remove_users (filter :remove users)
+    :ssh_key "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIHDKdUkY+SfRm6ttOz2EEZ2+i/zm+o1mpMOdMeGUr0t4 32617+amiorin@users.noreply.github.com"}))
 
 (defn render
   [config]
@@ -17,4 +19,4 @@
       true (generate-string {:pretty true}))))
 
 (comment
-  (render (default-config default-users)))
+  (render (default-opts)))
