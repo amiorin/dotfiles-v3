@@ -62,7 +62,7 @@ jobs:
 
       - name: Run tests
         run: |
-          just test
+          bb test
 
   tag:
     needs:
