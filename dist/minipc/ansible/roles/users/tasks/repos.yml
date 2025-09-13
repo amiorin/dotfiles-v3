@@ -1,6 +1,6 @@
 [ {
   "name" : "Clone repo amiorin/dotfiles-v3",
-  "ansible.builtin.shell" : "ssh -o StrictHostKeyChecking=accept-new  git@github.com || true\n&& git clone git@github.com:amiorin/dotfiles-v3 dotfiles-v3/main",
+  "ansible.builtin.shell" : "ssh -o StrictHostKeyChecking=accept-new  git@github.com || true && git clone git@github.com:amiorin/dotfiles-v3 dotfiles-v3/main",
   "args" : {
     "chdir" : "code/personal",
     "creates" : "dotfiles-v3/main"
@@ -24,7 +24,7 @@
   "when" : "inventory_hostname == \"vscode\""
 }, {
   "name" : "Clone repo amiorin/albertomiorin.com",
-  "ansible.builtin.shell" : "ssh -o StrictHostKeyChecking=accept-new  git@github.com || true\n&& git clone git@github.com:amiorin/albertomiorin.com albertomiorin.com/main",
+  "ansible.builtin.shell" : "ssh -o StrictHostKeyChecking=accept-new  git@github.com || true && git clone git@github.com:amiorin/albertomiorin.com albertomiorin.com/main",
   "args" : {
     "chdir" : "code/personal",
     "creates" : "albertomiorin.com/main"
@@ -48,7 +48,7 @@
   "when" : "inventory_hostname == \"vscode\""
 }, {
   "name" : "Clone repo amiorin/big-config",
-  "ansible.builtin.shell" : "ssh -o StrictHostKeyChecking=accept-new  git@github.com || true\n&& git clone git@github.com:amiorin/big-config big-config/main",
+  "ansible.builtin.shell" : "ssh -o StrictHostKeyChecking=accept-new  git@github.com || true && git clone git@github.com:amiorin/big-config big-config/main",
   "args" : {
     "chdir" : "code/personal",
     "creates" : "big-config/main"
@@ -64,7 +64,7 @@
   "when" : "inventory_hostname == \"vscode\""
 }, {
   "name" : "Clone repo amiorin/big-container",
-  "ansible.builtin.shell" : "ssh -o StrictHostKeyChecking=accept-new  git@github.com || true\n&& git clone git@github.com:amiorin/big-container big-container/main",
+  "ansible.builtin.shell" : "ssh -o StrictHostKeyChecking=accept-new  git@github.com || true && git clone git@github.com:amiorin/big-container big-container/main",
   "args" : {
     "chdir" : "code/personal",
     "creates" : "big-container/main"
@@ -72,7 +72,7 @@
   "when" : "inventory_hostname == \"vscode\""
 }, {
   "name" : "Clone repo amiorin/rama-jdbc",
-  "ansible.builtin.shell" : "ssh -o StrictHostKeyChecking=accept-new  git@github.com || true\n&& git clone git@github.com:amiorin/rama-jdbc rama-jdbc/main",
+  "ansible.builtin.shell" : "ssh -o StrictHostKeyChecking=accept-new  git@github.com || true && git clone git@github.com:amiorin/rama-jdbc rama-jdbc/main",
   "args" : {
     "chdir" : "code/personal",
     "creates" : "rama-jdbc/main"
@@ -80,7 +80,7 @@
   "when" : "inventory_hostname == \"vscode\""
 }, {
   "name" : "Clone repo amiorin/dotfiles-v3",
-  "ansible.builtin.shell" : "ssh -o StrictHostKeyChecking=accept-new  git@github.com || true\n&& git clone git@github.com:amiorin/dotfiles-v3 dotfiles-v3/main",
+  "ansible.builtin.shell" : "ssh -o StrictHostKeyChecking=accept-new  git@github.com || true && git clone git@github.com:amiorin/dotfiles-v3 dotfiles-v3/main",
   "args" : {
     "chdir" : "code/personal",
     "creates" : "dotfiles-v3/main"
@@ -104,7 +104,7 @@
   "when" : "inventory_hostname == \"alberto\""
 }, {
   "name" : "Clone repo amiorin/dotfiles-v3",
-  "ansible.builtin.shell" : "ssh -o StrictHostKeyChecking=accept-new  git@github.com || true\n&& git clone git@github.com:amiorin/dotfiles-v3 dotfiles-v3/main",
+  "ansible.builtin.shell" : "ssh -o StrictHostKeyChecking=accept-new  git@github.com || true && git clone git@github.com:amiorin/dotfiles-v3 dotfiles-v3/main",
   "args" : {
     "chdir" : "code/personal",
     "creates" : "dotfiles-v3/main"

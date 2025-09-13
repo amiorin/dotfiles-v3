@@ -30,8 +30,7 @@
   [repos]
   (-> (for [{:keys [user org repo branch worktrees]} repos]
         [{:name (format "Clone repo %s/%s" org repo)
-          "ansible.builtin.shell" (format "ssh -o StrictHostKeyChecking=accept-new  git@github.com || true
-&& git clone git@github.com:%s/%s %s/%s" org repo repo branch)
+          "ansible.builtin.shell" (format "ssh -o StrictHostKeyChecking=accept-new  git@github.com || true && git clone git@github.com:%s/%s %s/%s" org repo repo branch)
           :args {:chdir (format "code/personal")
                  :creates (format "%s/%s" repo branch)}
           :when (format "inventory_hostname == \"%s\"" user)}
