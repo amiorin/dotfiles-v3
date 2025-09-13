@@ -31,4 +31,5 @@
       (run-steps (format "build -- %s %s" module profile) [] {::bc/env :repl}))
     (as-> (shell {:continue true} "git diff --quiet") $
       (:exit $)
-      (is (= $ 0) "The working directory is not clean"))))
+      (is (= $ 0) (:out (shell {:continue true
+                                :out :string} "git status"))))))
