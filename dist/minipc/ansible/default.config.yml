@@ -1,5 +1,15 @@
 {
   "users" : [ {
+    "name" : "ubuntu",
+    "uid" : "1000",
+    "doomemacs" : "68010af0906171e3c989fc19bcb3ba81f7305022",
+    "remove" : false
+  }, {
+    "name" : "vscode",
+    "uid" : "1001",
+    "doomemacs" : "68010af0906171e3c989fc19bcb3ba81f7305022",
+    "remove" : false
+  }, {
     "name" : "alberto",
     "uid" : "1002",
     "doomemacs" : "68010af0906171e3c989fc19bcb3ba81f7305022",
@@ -10,17 +20,7 @@
     "doomemacs" : "d6cdbb4d22a2db68e3d74b7f5abf5b1fd14f4de0",
     "remove" : false
   } ],
-  "remove_users" : [ {
-    "name" : "ubuntu",
-    "uid" : "1000",
-    "doomemacs" : "68010af0906171e3c989fc19bcb3ba81f7305022",
-    "remove" : true
-  }, {
-    "name" : "vscode",
-    "uid" : "1001",
-    "doomemacs" : "68010af0906171e3c989fc19bcb3ba81f7305022",
-    "remove" : true
-  } ],
+  "remove_users" : [ ],
   "atuin_login" : "{{ lookup('ansible.builtin.env', 'ATUIN_LOGIN') }}",
   "ssh_key" : "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIHDKdUkY+SfRm6ttOz2EEZ2+i/zm+o1mpMOdMeGUr0t4 32617+amiorin@users.noreply.github.com"
 }

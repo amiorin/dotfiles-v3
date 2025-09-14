@@ -11,6 +11,16 @@
       },
       "users" : {
         "hosts" : {
+          "ubuntu" : {
+            "ansible_host" : "minipc",
+            "ansible_user" : "ubuntu",
+            "uid" : "1000"
+          },
+          "vscode" : {
+            "ansible_host" : "minipc",
+            "ansible_user" : "vscode",
+            "uid" : "1001"
+          },
           "alberto" : {
             "ansible_host" : "minipc",
             "ansible_user" : "alberto",
