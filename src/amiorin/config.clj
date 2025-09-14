@@ -5,7 +5,7 @@
 
 (defn default-opts
   ([]
-   (default-opts (inventory/default-opts)))
+   (default-opts (:users (inventory/default-opts))))
   ([users]
    {:users (filter (complement :remove) users)
     :remove_users (filter :remove users)
@@ -17,4 +17,4 @@
   (generate-string config {:pretty true}))
 
 (comment
-  (render (default-opts)))
+  (render (:users (default-opts))))
