@@ -14,7 +14,13 @@
                   :repo repo
                   :branch "main"
                   :worktrees worktrees}))
-      (into [{:user "alberto"
+      (into [{:user "ubuntu"
+              :org "amiorin"
+              :repo "dotfiles-v3"
+              :branch "main"
+              :worktrees ["minipc"
+                          "ansible"]}
+             {:user "alberto"
               :org "amiorin"
               :repo "dotfiles-v3"
               :branch "main"

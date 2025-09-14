@@ -4,7 +4,11 @@
 
 (defn default-opts
   []
-  [{:name "vscode"
+  [{:name "ubuntu"
+    :uid "1000"
+    :doomemacs "68010af0906171e3c989fc19bcb3ba81f7305022"
+    :remove false}
+   {:name "vscode"
     :uid "1001"
     :doomemacs "68010af0906171e3c989fc19bcb3ba81f7305022"
     :remove false}
@@ -20,8 +24,8 @@
 (defn render
   [users]
   (let [users (filter (complement :remove) users)
-        host "minipc.afrino-bushi.ts.net"
-        admin "vscode"
+        host "soyo"
+        admin "ubuntu"
         hosts (reduce #(let [{:keys [name uid]} %2]
                          (assoc %1 name {:ansible_host host
                                          :ansible_user name

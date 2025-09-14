@@ -38,7 +38,7 @@
 
 - name: Force removal of users and their home directory
   ansible.builtin.user:
-    name: '{{ item.name }}'
+    name: "{{ item.name }}"
     state: absent
     force: yes
     remove: yes
@@ -60,7 +60,7 @@
       # SSH key for automation access
       {{ ssh_key }}
     create: true
-    mode: '0600'
+    mode: "0600"
     owner: "{{ item.name }}"
     group: "{{ item.name }}"
     marker: "# {mark} ANSIBLE MANAGED BLOCK FOR AUTOMATION KEY"
@@ -76,3 +76,21 @@
     && tar zxvf asdf.tar.gz \
     && mv asdf /usr/local/bin \
     && rm asdf.tar.gz
+
+- name: Tailscale
+  block:
+    - name: Add gpg key
+      ansible.builtin.get_url:
+        url: https://pkgs.tailscale.com/stable/ubuntu/noble.noarmor.gpg
+        dest: /usr/share/keyrings/tailscale-archive-keyring.gpg
+
+    - name: Add deb source
+      ansible.builtin.apt_repository:
+        repo: "deb [signed-by=/usr/share/keyrings/tailscale-archive-keyring.gpg] https://pkgs.tailscale.com/stable/ubuntu noble main"
+        state: present
+        update_cache: true
+
+    - name: Install tailscale package
+      ansible.builtin.apt:
+        name: tailscale
+        state: present
