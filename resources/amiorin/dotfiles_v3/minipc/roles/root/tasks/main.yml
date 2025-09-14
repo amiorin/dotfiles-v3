@@ -44,6 +44,18 @@
     remove: yes
   loop: "{{ remove_users }}"
 
+- name: Add sudoers
+  ansible.builtin.blockinfile:
+    path: "/etc/sudoers.d/{{ item.name }}"
+    block: |
+      {{ item.name }} ALL=(ALL) NOPASSWD:ALL
+    create: true
+    mode: "0440"
+    owner: root
+    group: root
+    marker: "# {mark} ANSIBLE MANAGED BLOCK FOR SUDOERS"
+  loop: "{{ users }}"
+
 - name: Create .ssh directory
   ansible.builtin.file:
     path: /home/{{ item.name }}/.ssh
