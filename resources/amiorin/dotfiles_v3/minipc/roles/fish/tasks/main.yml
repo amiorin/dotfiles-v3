@@ -1,6 +1,7 @@
 ---
 - name: Link vscode fish to /usr/bin/fish
   ansible.builtin.file:
-    src: /home/vscode/.local/share/devbox/global/default/.devbox/nix/profile/default/bin/fish
+    src: /home/{{ ansible_user }}/.local/share/devbox/global/default/.devbox/nix/profile/default/bin/fish
     dest: /usr/bin/fish
     state: link
+  tags: focus

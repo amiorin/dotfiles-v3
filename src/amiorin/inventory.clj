@@ -7,11 +7,11 @@
   [{:name "ubuntu"
     :uid "1000"
     :doomemacs "68010af0906171e3c989fc19bcb3ba81f7305022"
-    :remove false}
+    :remove true}
    {:name "vscode"
     :uid "1001"
     :doomemacs "68010af0906171e3c989fc19bcb3ba81f7305022"
-    :remove false}
+    :remove true}
    {:name "alberto"
     :uid "1002"
     :doomemacs "68010af0906171e3c989fc19bcb3ba81f7305022"
@@ -24,8 +24,8 @@
 (defn render
   [users]
   (let [users (filter (complement :remove) users)
-        host "soyo"
-        admin "ubuntu"
+        host "minipc"
+        admin "alberto"
         hosts (reduce #(let [{:keys [name uid]} %2]
                          (assoc %1 name {:ansible_host host
                                          :ansible_user name

@@ -4,30 +4,20 @@
       "admin" : {
         "hosts" : {
           "root" : {
-            "ansible_host" : "soyo",
-            "ansible_user" : "ubuntu"
+            "ansible_host" : "minipc",
+            "ansible_user" : "alberto"
           }
         }
       },
       "users" : {
         "hosts" : {
-          "ubuntu" : {
-            "ansible_host" : "soyo",
-            "ansible_user" : "ubuntu",
-            "uid" : "1000"
-          },
-          "vscode" : {
-            "ansible_host" : "soyo",
-            "ansible_user" : "vscode",
-            "uid" : "1001"
-          },
           "alberto" : {
-            "ansible_host" : "soyo",
+            "ansible_host" : "minipc",
             "ansible_user" : "alberto",
             "uid" : "1002"
           },
           "amiorin" : {
-            "ansible_host" : "soyo",
+            "ansible_host" : "minipc",
             "ansible_user" : "amiorin",
             "uid" : "1003"
           }
