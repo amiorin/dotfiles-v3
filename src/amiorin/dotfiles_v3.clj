@@ -21,17 +21,17 @@
     edn))
 
 (defn post-process-fn
-  [_edn {:keys [target-dir]}]
+  [_edn {:keys [target-dir opts-fn]}]
   (doseq [[module dest-file] [["repos" "/roles/users/tasks/repos.yml"]
                               ["inventory" "/inventory.json"]
                               ["config" "/default.config.yml"]]]
-    (let [opts (-> module
-                   (->> (format "amiorin.%s/default-opts"))
-                   symbol
-                   requiring-resolve
-                   (apply []))]
+    (let [opts (-> (cond
+                     (fn? opts-fn) opts-fn
+                     (string? opts-fn) (-> opts-fn symbol requiring-resolve)
+                     :else (throw (ex-info "opts-fn is neither a string nor a fn" {:opts-fn opts-fn})))
+                   (apply  []))]
       (-> module
-          (->> (format "amiorin.%s/render"))
+          (->> (format "amiorin.render/%s"))
           symbol
           requiring-resolve
           (apply [opts])
@@ -41,11 +41,12 @@
   [{:keys [::module ::profile ::bc/target-dir]}]
   (or target-dir (format "dist/%s/%s" module profile)))
 
-(defn build-fn [{:keys [::module ::profile] :as opts}]
+(defn build-fn [{:keys [::module ::profile ::opt-fn] :as opts}]
   (binding [*out* (java.io.StringWriter.)]
     (new/create {:template "amiorin/dotfiles-v3"
                  :name "amiorin/dotfiles-v3"
                  :target-dir (opts->dir opts)
+                 :opts-fn opt-fn
                  :module module
                  :profile profile
                  :overwrite :delete}))
@@ -80,3 +81,5 @@
 (comment
   (run-steps "build -- minipc ansible"
              {::bc/env :repl}))
+
+(-> ::opt-fn)
