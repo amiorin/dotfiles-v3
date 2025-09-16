@@ -1,8 +1,7 @@
 ---
 - name: Install nix
   ansible.builtin.shell: >-
-    curl --proto '=https' --tlsv1.2 -sSf -L https://install.determinate.systems/nix |
-    sh -s -- install --no-confirm
+    curl --proto '=https' --tlsv1.2 -sSf -L https://install.determinate.systems/nix | sh -s -- install --determinate --no-confirm
   args:
     creates: /nix/var/nix/profiles/default/bin/nix
 

@@ -11,7 +11,14 @@
 
 - name: Provision devbox
   args:
-    creates: .local/share/devbox/global/default/.devbox/nix/profile/default/bin/emacs
+    creates: .nix-profile/bin/devenv
+  ansible.builtin.shell: >-
+    . /etc/profile.d/nix.sh
+    && nix profile add nixpkgs#devenv
+
+- name: Provision devbox
+  args:
+    creates: .nix-profile/bin/devbox
   ansible.builtin.shell: >-
     . /etc/profile.d/nix.sh
     && nix profile add github:jetify-com/devbox/latest
