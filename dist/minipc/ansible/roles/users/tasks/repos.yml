@@ -5,7 +5,7 @@
     "chdir" : "code/personal",
     "creates" : "dotfiles-v3/main"
   },
-  "when" : "inventory_hostname == \"vscode\""
+  "when" : "inventory_hostname.startswith(\"vscode\")"
 }, {
   "name" : "Create the worktree minipc for repo amiorin/dotfiles-v3",
   "ansible.builtin.shell" : "git worktree add ../minipc minipc",
@@ -13,7 +13,7 @@
     "chdir" : "code/personal/dotfiles-v3/main",
     "creates" : "../minipc"
   },
-  "when" : "inventory_hostname == \"vscode\""
+  "when" : "inventory_hostname.startswith(\"vscode\")"
 }, {
   "name" : "Create the worktree ansible for repo amiorin/dotfiles-v3",
   "ansible.builtin.shell" : "git worktree add ../ansible ansible",
@@ -21,7 +21,7 @@
     "chdir" : "code/personal/dotfiles-v3/main",
     "creates" : "../ansible"
   },
-  "when" : "inventory_hostname == \"vscode\""
+  "when" : "inventory_hostname.startswith(\"vscode\")"
 }, {
   "name" : "Clone repo amiorin/albertomiorin.com",
   "ansible.builtin.shell" : "ssh -o StrictHostKeyChecking=accept-new  git@github.com || true && git clone git@github.com:amiorin/albertomiorin.com albertomiorin.com/main",
@@ -29,7 +29,7 @@
     "chdir" : "code/personal",
     "creates" : "albertomiorin.com/main"
   },
-  "when" : "inventory_hostname == \"vscode\""
+  "when" : "inventory_hostname.startswith(\"vscode\")"
 }, {
   "name" : "Create the worktree albertomiorin for repo amiorin/albertomiorin.com",
   "ansible.builtin.shell" : "git worktree add ../albertomiorin albertomiorin",
@@ -37,7 +37,7 @@
     "chdir" : "code/personal/albertomiorin.com/main",
     "creates" : "../albertomiorin"
   },
-  "when" : "inventory_hostname == \"vscode\""
+  "when" : "inventory_hostname.startswith(\"vscode\")"
 }, {
   "name" : "Create the worktree big-config for repo amiorin/albertomiorin.com",
   "ansible.builtin.shell" : "git worktree add ../big-config big-config",
@@ -45,7 +45,7 @@
     "chdir" : "code/personal/albertomiorin.com/main",
     "creates" : "../big-config"
   },
-  "when" : "inventory_hostname == \"vscode\""
+  "when" : "inventory_hostname.startswith(\"vscode\")"
 }, {
   "name" : "Clone repo amiorin/big-config",
   "ansible.builtin.shell" : "ssh -o StrictHostKeyChecking=accept-new  git@github.com || true && git clone git@github.com:amiorin/big-config big-config/main",
@@ -53,7 +53,7 @@
     "chdir" : "code/personal",
     "creates" : "big-config/main"
   },
-  "when" : "inventory_hostname == \"vscode\""
+  "when" : "inventory_hostname.startswith(\"vscode\")"
 }, {
   "name" : "Create the worktree deps-new for repo amiorin/big-config",
   "ansible.builtin.shell" : "git worktree add ../deps-new deps-new",
@@ -61,7 +61,7 @@
     "chdir" : "code/personal/big-config/main",
     "creates" : "../deps-new"
   },
-  "when" : "inventory_hostname == \"vscode\""
+  "when" : "inventory_hostname.startswith(\"vscode\")"
 }, {
   "name" : "Clone repo amiorin/big-container",
   "ansible.builtin.shell" : "ssh -o StrictHostKeyChecking=accept-new  git@github.com || true && git clone git@github.com:amiorin/big-container big-container/main",
@@ -69,7 +69,7 @@
     "chdir" : "code/personal",
     "creates" : "big-container/main"
   },
-  "when" : "inventory_hostname == \"vscode\""
+  "when" : "inventory_hostname.startswith(\"vscode\")"
 }, {
   "name" : "Clone repo amiorin/rama-jdbc",
   "ansible.builtin.shell" : "ssh -o StrictHostKeyChecking=accept-new  git@github.com || true && git clone git@github.com:amiorin/rama-jdbc rama-jdbc/main",
@@ -77,7 +77,7 @@
     "chdir" : "code/personal",
     "creates" : "rama-jdbc/main"
   },
-  "when" : "inventory_hostname == \"vscode\""
+  "when" : "inventory_hostname.startswith(\"vscode\")"
 }, {
   "name" : "Clone repo amiorin/dotfiles-v3",
   "ansible.builtin.shell" : "ssh -o StrictHostKeyChecking=accept-new  git@github.com || true && git clone git@github.com:amiorin/dotfiles-v3 dotfiles-v3/main",
@@ -85,7 +85,7 @@
     "chdir" : "code/personal",
     "creates" : "dotfiles-v3/main"
   },
-  "when" : "inventory_hostname == \"ubuntu\""
+  "when" : "inventory_hostname.startswith(\"ubuntu\")"
 }, {
   "name" : "Create the worktree minipc for repo amiorin/dotfiles-v3",
   "ansible.builtin.shell" : "git worktree add ../minipc minipc",
@@ -93,7 +93,7 @@
     "chdir" : "code/personal/dotfiles-v3/main",
     "creates" : "../minipc"
   },
-  "when" : "inventory_hostname == \"ubuntu\""
+  "when" : "inventory_hostname.startswith(\"ubuntu\")"
 }, {
   "name" : "Create the worktree ansible for repo amiorin/dotfiles-v3",
   "ansible.builtin.shell" : "git worktree add ../ansible ansible",
@@ -101,7 +101,7 @@
     "chdir" : "code/personal/dotfiles-v3/main",
     "creates" : "../ansible"
   },
-  "when" : "inventory_hostname == \"ubuntu\""
+  "when" : "inventory_hostname.startswith(\"ubuntu\")"
 }, {
   "name" : "Clone repo amiorin/dotfiles-v3",
   "ansible.builtin.shell" : "ssh -o StrictHostKeyChecking=accept-new  git@github.com || true && git clone git@github.com:amiorin/dotfiles-v3 dotfiles-v3/main",
@@ -109,7 +109,7 @@
     "chdir" : "code/personal",
     "creates" : "dotfiles-v3/main"
   },
-  "when" : "inventory_hostname == \"alberto\""
+  "when" : "inventory_hostname.startswith(\"alberto\")"
 }, {
   "name" : "Create the worktree minipc for repo amiorin/dotfiles-v3",
   "ansible.builtin.shell" : "git worktree add ../minipc minipc",
@@ -117,7 +117,7 @@
     "chdir" : "code/personal/dotfiles-v3/main",
     "creates" : "../minipc"
   },
-  "when" : "inventory_hostname == \"alberto\""
+  "when" : "inventory_hostname.startswith(\"alberto\")"
 }, {
   "name" : "Create the worktree ansible for repo amiorin/dotfiles-v3",
   "ansible.builtin.shell" : "git worktree add ../ansible ansible",
@@ -125,7 +125,7 @@
     "chdir" : "code/personal/dotfiles-v3/main",
     "creates" : "../ansible"
   },
-  "when" : "inventory_hostname == \"alberto\""
+  "when" : "inventory_hostname.startswith(\"alberto\")"
 }, {
   "name" : "Clone repo amiorin/dotfiles-v3",
   "ansible.builtin.shell" : "ssh -o StrictHostKeyChecking=accept-new  git@github.com || true && git clone git@github.com:amiorin/dotfiles-v3 dotfiles-v3/main",
@@ -133,7 +133,7 @@
     "chdir" : "code/personal",
     "creates" : "dotfiles-v3/main"
   },
-  "when" : "inventory_hostname == \"amiorin\""
+  "when" : "inventory_hostname.startswith(\"amiorin\")"
 }, {
   "name" : "Create the worktree minipc for repo amiorin/dotfiles-v3",
   "ansible.builtin.shell" : "git worktree add ../minipc minipc",
@@ -141,7 +141,7 @@
     "chdir" : "code/personal/dotfiles-v3/main",
     "creates" : "../minipc"
   },
-  "when" : "inventory_hostname == \"amiorin\""
+  "when" : "inventory_hostname.startswith(\"amiorin\")"
 }, {
   "name" : "Create the worktree ansible for repo amiorin/dotfiles-v3",
   "ansible.builtin.shell" : "git worktree add ../ansible ansible",
@@ -149,5 +149,5 @@
     "chdir" : "code/personal/dotfiles-v3/main",
     "creates" : "../ansible"
   },
-  "when" : "inventory_hostname == \"amiorin\""
+  "when" : "inventory_hostname.startswith(\"amiorin\")"
 } ]

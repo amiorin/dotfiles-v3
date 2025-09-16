@@ -88,7 +88,7 @@
     && mv asdf /usr/local/bin \
     && rm asdf.tar.gz
 
-- name: Tailscale
+- name: Tailscale and fish
   block:
     - name: Add gpg key
       ansible.builtin.get_url:
@@ -101,7 +101,9 @@
         state: present
         update_cache: true
 
-    - name: Install tailscale package
+    - name: Install tailscale and fish package
       ansible.builtin.apt:
-        name: tailscale
+        name:
+          - tailscale
+          - fish
         state: present
