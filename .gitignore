@@ -4,3 +4,13 @@
 /.nrepl-port
 /dist/*/*/.terraform
 /.envrc.private
+
+# Devenv
+.devenv*
+devenv.local.nix
+
+# direnv
+.direnv
+
+# pre-commit
+.pre-commit-config.yaml
