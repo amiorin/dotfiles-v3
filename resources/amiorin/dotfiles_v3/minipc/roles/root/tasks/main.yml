@@ -5,6 +5,15 @@
   args:
     creates: /nix/var/nix/profiles/default/bin/nix
 
+- name: Trust nix users
+  tags: focus
+  ansible.builtin.blockinfile:
+    path: "/etc/nix/nix.custom.conf"
+    block: |
+      trusted-users = root {% for u in users %}{{ u.name }} {% endfor %}
+    marker: "# {mark} ANSIBLE MANAGED BLOCK FOR DEVENV"
+  notify: Restart nix
+
 - name: Copy profile.d files
   ansible.builtin.copy:
     src: files/{{ item }}
