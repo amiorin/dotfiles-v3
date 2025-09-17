@@ -22,7 +22,8 @@
 
 (defn post-process-fn
   [_edn {:keys [target-dir opts-fn]}]
-  (doseq [[module dest-file] [["repos" "/roles/users/tasks/repos.yml"]
+  (doseq [[module dest-file] [["packages" "/roles/users/tasks/packages.yml"]
+                              ["repos" "/roles/users/tasks/repos.yml"]
                               ["ssh-config" "/roles/users/tasks/ssh-config.yml"]
                               ["inventory" "/inventory.json"]
                               ["config" "/default.config.yml"]]]

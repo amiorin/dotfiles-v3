@@ -2,6 +2,15 @@
   (:require
    [cheshire.core :refer [generate-string]]))
 
+(defn packages
+  [{:keys [packages]}]
+  (-> (for [[package cli] packages]
+        [{:name (format "Add devbox package %s" package)
+          :args {:creates (format ".local/share/devbox/global/default/.devbox/nix/profile/default/bin/%s" cli)}
+          "ansible.builtin.shell" (format ". /etc/profile.d/nix.sh && devbox global add --disable-plugin %s" package)}])
+      flatten
+      (generate-string {:pretty true})))
+
 (defn config
   [{:keys [config]}]
   (generate-string config {:pretty true}))
@@ -112,14 +121,39 @@
                           :repo "dotfiles-v3"
                           :branch "main"
                           :worktrees ["minipc"
-                                      "ansible"]}]))]
+                                      "ansible"]}]))
+        packages (->> ["fish"
+                       "emacs"
+                       "zellij"
+                       "starship"
+                       "direnv"
+                       "gh"
+                       "fd"
+                       "fzf"
+                       "atuin"
+                       "just"
+                       "git"
+                       "cmake"
+                       "libtool"
+                       "socat"
+                       "zoxide"
+                       "pixi"
+                       "eza"
+                       "zip"
+                       "unzip"
+                       "d2"
+                       "clojure-lsp"]
+                      (mapv (fn [x] [x x]))
+                      (into [["ripgrep" "rg"]]))]
     {:repos repos
      :sudoer sudoer
      :hosts hosts
      :users users
-     :config config}))
+     :config config
+     :packages packages}))
 
 (comment
+  (packages (->opts))
   (repos (->opts))
   (inventory (->opts))
   (config (->opts))

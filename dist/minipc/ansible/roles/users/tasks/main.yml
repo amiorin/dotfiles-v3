@@ -22,30 +22,15 @@
   ansible.builtin.shell: >-
     . /etc/profile.d/nix.sh
     && nix profile add github:jetify-com/devbox/latest
-    && devbox global add --disable-plugin
-    fish
-    emacs
-    zellij
-    ripgrep
-    starship
-    direnv
-    gh
-    fd
-    fzf
-    atuin
-    just
-    git
-    cmake
-    libtool
-    socat
-    zoxide
-    pixi
-    eza
-    zip
-    unzip
-    d2
-    clojure-lsp
-    stow
+
+- name: Provision devbox packages
+  import_tasks: packages.yml
+
+- name: Refresh devbox environment
+  args:
+    creates: .local/share/devbox/global/default/.devbox/nix/profile/default/bin/fish
+  ansible.builtin.shell: >-
+    . /etc/profile.d/nix.sh
     && devbox global run -- true
 
 - name: Provision asdf

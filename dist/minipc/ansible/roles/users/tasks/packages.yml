@@ -1,0 +1,133 @@
+[ {
+  "name" : "Add devbox package ripgrep",
+  "args" : {
+    "creates" : ".local/share/devbox/global/default/.devbox/nix/profile/default/bin/rg"
+  },
+  "ansible.builtin.shell" : ". /etc/profile.d/nix.sh && devbox global add --disable-plugin ripgrep"
+}, {
+  "name" : "Add devbox package fish",
+  "args" : {
+    "creates" : ".local/share/devbox/global/default/.devbox/nix/profile/default/bin/fish"
+  },
+  "ansible.builtin.shell" : ". /etc/profile.d/nix.sh && devbox global add --disable-plugin fish"
+}, {
+  "name" : "Add devbox package emacs",
+  "args" : {
+    "creates" : ".local/share/devbox/global/default/.devbox/nix/profile/default/bin/emacs"
+  },
+  "ansible.builtin.shell" : ". /etc/profile.d/nix.sh && devbox global add --disable-plugin emacs"
+}, {
+  "name" : "Add devbox package zellij",
+  "args" : {
+    "creates" : ".local/share/devbox/global/default/.devbox/nix/profile/default/bin/zellij"
+  },
+  "ansible.builtin.shell" : ". /etc/profile.d/nix.sh && devbox global add --disable-plugin zellij"
+}, {
+  "name" : "Add devbox package starship",
+  "args" : {
+    "creates" : ".local/share/devbox/global/default/.devbox/nix/profile/default/bin/starship"
+  },
+  "ansible.builtin.shell" : ". /etc/profile.d/nix.sh && devbox global add --disable-plugin starship"
+}, {
+  "name" : "Add devbox package direnv",
+  "args" : {
+    "creates" : ".local/share/devbox/global/default/.devbox/nix/profile/default/bin/direnv"
+  },
+  "ansible.builtin.shell" : ". /etc/profile.d/nix.sh && devbox global add --disable-plugin direnv"
+}, {
+  "name" : "Add devbox package gh",
+  "args" : {
+    "creates" : ".local/share/devbox/global/default/.devbox/nix/profile/default/bin/gh"
+  },
+  "ansible.builtin.shell" : ". /etc/profile.d/nix.sh && devbox global add --disable-plugin gh"
+}, {
+  "name" : "Add devbox package fd",
+  "args" : {
+    "creates" : ".local/share/devbox/global/default/.devbox/nix/profile/default/bin/fd"
+  },
+  "ansible.builtin.shell" : ". /etc/profile.d/nix.sh && devbox global add --disable-plugin fd"
+}, {
+  "name" : "Add devbox package fzf",
+  "args" : {
+    "creates" : ".local/share/devbox/global/default/.devbox/nix/profile/default/bin/fzf"
+  },
+  "ansible.builtin.shell" : ". /etc/profile.d/nix.sh && devbox global add --disable-plugin fzf"
+}, {
+  "name" : "Add devbox package atuin",
+  "args" : {
+    "creates" : ".local/share/devbox/global/default/.devbox/nix/profile/default/bin/atuin"
+  },
+  "ansible.builtin.shell" : ". /etc/profile.d/nix.sh && devbox global add --disable-plugin atuin"
+}, {
+  "name" : "Add devbox package just",
+  "args" : {
+    "creates" : ".local/share/devbox/global/default/.devbox/nix/profile/default/bin/just"
+  },
+  "ansible.builtin.shell" : ". /etc/profile.d/nix.sh && devbox global add --disable-plugin just"
+}, {
+  "name" : "Add devbox package git",
+  "args" : {
+    "creates" : ".local/share/devbox/global/default/.devbox/nix/profile/default/bin/git"
+  },
+  "ansible.builtin.shell" : ". /etc/profile.d/nix.sh && devbox global add --disable-plugin git"
+}, {
+  "name" : "Add devbox package cmake",
+  "args" : {
+    "creates" : ".local/share/devbox/global/default/.devbox/nix/profile/default/bin/cmake"
+  },
+  "ansible.builtin.shell" : ". /etc/profile.d/nix.sh && devbox global add --disable-plugin cmake"
+}, {
+  "name" : "Add devbox package libtool",
+  "args" : {
+    "creates" : ".local/share/devbox/global/default/.devbox/nix/profile/default/bin/libtool"
+  },
+  "ansible.builtin.shell" : ". /etc/profile.d/nix.sh && devbox global add --disable-plugin libtool"
+}, {
+  "name" : "Add devbox package socat",
+  "args" : {
+    "creates" : ".local/share/devbox/global/default/.devbox/nix/profile/default/bin/socat"
+  },
+  "ansible.builtin.shell" : ". /etc/profile.d/nix.sh && devbox global add --disable-plugin socat"
+}, {
+  "name" : "Add devbox package zoxide",
+  "args" : {
+    "creates" : ".local/share/devbox/global/default/.devbox/nix/profile/default/bin/zoxide"
+  },
+  "ansible.builtin.shell" : ". /etc/profile.d/nix.sh && devbox global add --disable-plugin zoxide"
+}, {
+  "name" : "Add devbox package pixi",
+  "args" : {
+    "creates" : ".local/share/devbox/global/default/.devbox/nix/profile/default/bin/pixi"
+  },
+  "ansible.builtin.shell" : ". /etc/profile.d/nix.sh && devbox global add --disable-plugin pixi"
+}, {
+  "name" : "Add devbox package eza",
+  "args" : {
+    "creates" : ".local/share/devbox/global/default/.devbox/nix/profile/default/bin/eza"
+  },
+  "ansible.builtin.shell" : ". /etc/profile.d/nix.sh && devbox global add --disable-plugin eza"
+}, {
+  "name" : "Add devbox package zip",
+  "args" : {
+    "creates" : ".local/share/devbox/global/default/.devbox/nix/profile/default/bin/zip"
+  },
+  "ansible.builtin.shell" : ". /etc/profile.d/nix.sh && devbox global add --disable-plugin zip"
+}, {
+  "name" : "Add devbox package unzip",
+  "args" : {
+    "creates" : ".local/share/devbox/global/default/.devbox/nix/profile/default/bin/unzip"
+  },
+  "ansible.builtin.shell" : ". /etc/profile.d/nix.sh && devbox global add --disable-plugin unzip"
+}, {
+  "name" : "Add devbox package d2",
+  "args" : {
+    "creates" : ".local/share/devbox/global/default/.devbox/nix/profile/default/bin/d2"
+  },
+  "ansible.builtin.shell" : ". /etc/profile.d/nix.sh && devbox global add --disable-plugin d2"
+}, {
+  "name" : "Add devbox package clojure-lsp",
+  "args" : {
+    "creates" : ".local/share/devbox/global/default/.devbox/nix/profile/default/bin/clojure-lsp"
+  },
+  "ansible.builtin.shell" : ". /etc/profile.d/nix.sh && devbox global add --disable-plugin clojure-lsp"
+} ]
