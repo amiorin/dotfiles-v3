@@ -88,7 +88,7 @@
     && mv asdf /usr/local/bin \
     && rm asdf.tar.gz
 
-- name: Tailscale, fish, and build-essential
+- name: Install debian packages
   block:
     - name: Add gpg key
       ansible.builtin.get_url:
@@ -101,7 +101,7 @@
         state: present
         update_cache: true
 
-    - name: Install tailscale and fish package
+    - name: Install debian packages
       ansible.builtin.apt:
         name:
           - tailscale
