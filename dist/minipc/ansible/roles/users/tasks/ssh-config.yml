@@ -1,0 +1,21 @@
+[ {
+  "name" : "Add a new host entry using blockinfile for minipc",
+  "tags" : "focus",
+  "ansible.builtin.blockinfile" : {
+    "path" : "~/.ssh/config",
+    "create" : true,
+    "block" : "Host minipc\n  Hostname minipc.afrino-bushi.ts.net\n  User ubuntu\n  ForwardAgent yes ",
+    "marker" : "# {mark} ANSIBLE MANAGED BLOCK FOR minipc",
+    "state" : "present"
+  }
+}, {
+  "name" : "Add a new host entry using blockinfile for soyo",
+  "tags" : "focus",
+  "ansible.builtin.blockinfile" : {
+    "path" : "~/.ssh/config",
+    "create" : true,
+    "block" : "Host soyo\n  Hostname soyo.afrino-bushi.ts.net\n  User ubuntu\n  ForwardAgent yes ",
+    "marker" : "# {mark} ANSIBLE MANAGED BLOCK FOR soyo",
+    "state" : "present"
+  }
+} ]

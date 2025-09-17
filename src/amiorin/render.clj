@@ -6,6 +6,22 @@
   [{:keys [config]}]
   (generate-string config {:pretty true}))
 
+(defn ssh-config
+  [{:keys [hosts]}]
+  (-> (for [host hosts]
+        [{:name (format "Add a new host entry using blockinfile for %s" host)
+          :tags "focus"
+          "ansible.builtin.blockinfile" {:path "~/.ssh/config"
+                                         :create true
+                                         :block (format "Host %s
+  Hostname %s.afrino-bushi.ts.net
+  User ubuntu
+  ForwardAgent yes " host host)
+                                         :marker (format "# {mark} ANSIBLE MANAGED BLOCK FOR %s" host)
+                                         :state "present"}}])
+      flatten
+      (generate-string {:pretty true})))
+
 (defn inventory
   [{:keys [sudoer hosts users]}]
   (let [users (-> (filter (complement :remove) users)
@@ -107,4 +123,5 @@
 (comment
   (repos (->opts))
   (inventory (->opts))
-  (config (->opts)))
+  (config (->opts))
+  (ssh-config (->opts)))

@@ -133,3 +133,6 @@
     creates: ~/.emacs.d
   vars:
     commit: '{{ (users | selectattr("name", "equalto", ansible_user) | first).doomemacs | default("68010af0906171e3c989fc19bcb3ba81f7305022") }}'
+
+- name: Provision the ssh-config
+  import_tasks: ssh-config.yml
