@@ -6,7 +6,6 @@
     creates: /nix/var/nix/profiles/default/bin/nix
 
 - name: Trust nix users
-  tags: focus
   ansible.builtin.blockinfile:
     path: "/etc/nix/nix.custom.conf"
     block: |

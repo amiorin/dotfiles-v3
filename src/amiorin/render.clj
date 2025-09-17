@@ -10,7 +10,6 @@
   [{:keys [hosts]}]
   (-> (for [host hosts]
         [{:name (format "Add a new host entry using blockinfile for %s" host)
-          :tags "focus"
           "ansible.builtin.blockinfile" {:path "~/.ssh/config"
                                          :create true
                                          :block (format "Host %s

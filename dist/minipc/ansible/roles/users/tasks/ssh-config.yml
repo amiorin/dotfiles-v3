@@ -1,6 +1,5 @@
 [ {
   "name" : "Add a new host entry using blockinfile for minipc",
-  "tags" : "focus",
   "ansible.builtin.blockinfile" : {
     "path" : "~/.ssh/config",
     "create" : true,
@@ -10,7 +9,6 @@
   }
 }, {
   "name" : "Add a new host entry using blockinfile for soyo",
-  "tags" : "focus",
   "ansible.builtin.blockinfile" : {
     "path" : "~/.ssh/config",
     "create" : true,
