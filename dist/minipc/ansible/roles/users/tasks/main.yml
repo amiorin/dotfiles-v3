@@ -31,7 +31,7 @@
     creates: .local/share/devbox/global/default/.devbox/nix/profile/default/bin/fish
   ansible.builtin.shell: >-
     . /etc/profile.d/nix.sh
-    && devbox global run -- true
+    && eval "$(devbox global shellenv --preserve-path-stack -r)" && hash -r
 
 - name: Provision asdf
   args:
