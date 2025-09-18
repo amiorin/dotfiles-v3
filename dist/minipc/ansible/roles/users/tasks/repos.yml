@@ -23,6 +23,14 @@
   },
   "when" : "inventory_hostname.startswith(\"vscode\")"
 }, {
+  "name" : "Create the worktree babashka for repo amiorin/dotfiles-v3",
+  "ansible.builtin.shell" : "git worktree add ../babashka babashka",
+  "args" : {
+    "chdir" : "code/personal/dotfiles-v3/main",
+    "creates" : "../babashka"
+  },
+  "when" : "inventory_hostname.startswith(\"vscode\")"
+}, {
   "name" : "Clone repo amiorin/albertomiorin.com",
   "ansible.builtin.shell" : "ssh -o StrictHostKeyChecking=accept-new  git@github.com || true && git clone git@github.com:amiorin/albertomiorin.com albertomiorin.com/main",
   "args" : {
