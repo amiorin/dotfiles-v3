@@ -3,8 +3,8 @@
     "children" : {
       "admin" : {
         "hosts" : {
-          "root@minipc" : {
-            "ansible_host" : "minipc",
+          "root@firebat" : {
+            "ansible_host" : "firebat",
             "ansible_user" : "ubuntu"
           },
           "root@soyo" : {
@@ -15,8 +15,8 @@
       },
       "users" : {
         "hosts" : {
-          "ubuntu@minipc" : {
-            "ansible_host" : "minipc",
+          "ubuntu@firebat" : {
+            "ansible_host" : "firebat",
             "ansible_user" : "ubuntu",
             "uid" : "1000"
           },
@@ -25,8 +25,8 @@
             "ansible_user" : "ubuntu",
             "uid" : "1000"
           },
-          "vscode@minipc" : {
-            "ansible_host" : "minipc",
+          "vscode@firebat" : {
+            "ansible_host" : "firebat",
             "ansible_user" : "vscode",
             "uid" : "1001"
           },
@@ -35,8 +35,8 @@
             "ansible_user" : "vscode",
             "uid" : "1001"
           },
-          "alberto@minipc" : {
-            "ansible_host" : "minipc",
+          "alberto@firebat" : {
+            "ansible_host" : "firebat",
             "ansible_user" : "alberto",
             "uid" : "1002"
           },
@@ -45,8 +45,8 @@
             "ansible_user" : "alberto",
             "uid" : "1002"
           },
-          "amiorin@minipc" : {
-            "ansible_host" : "minipc",
+          "amiorin@firebat" : {
+            "ansible_host" : "firebat",
             "ansible_user" : "amiorin",
             "uid" : "1003"
           },

@@ -73,7 +73,7 @@
 
 (defn ->opts []
   (let [sudoer "ubuntu"
-        hosts ["minipc" "soyo"]
+        hosts ["firebat" "soyo"]
         users [{:name "ubuntu"
                 :uid "1000"
                 :doomemacs "68010af0906171e3c989fc19bcb3ba81f7305022"
