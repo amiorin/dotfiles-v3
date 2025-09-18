@@ -1,2 +1,4 @@
 /.devenv.flake.nix
 /.devenv/
+/.clj-kondo/
+/.lsp/

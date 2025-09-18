@@ -1,0 +1,62 @@
+{
+  "all" : {
+    "children" : {
+      "admin" : {
+        "hosts" : {
+          "root@minipc" : {
+            "ansible_host" : "minipc",
+            "ansible_user" : "ubuntu"
+          },
+          "root@soyo" : {
+            "ansible_host" : "soyo",
+            "ansible_user" : "ubuntu"
+          }
+        }
+      },
+      "users" : {
+        "hosts" : {
+          "ubuntu@minipc" : {
+            "ansible_host" : "minipc",
+            "ansible_user" : "ubuntu",
+            "uid" : "1000"
+          },
+          "ubuntu@soyo" : {
+            "ansible_host" : "soyo",
+            "ansible_user" : "ubuntu",
+            "uid" : "1000"
+          },
+          "vscode@minipc" : {
+            "ansible_host" : "minipc",
+            "ansible_user" : "vscode",
+            "uid" : "1001"
+          },
+          "vscode@soyo" : {
+            "ansible_host" : "soyo",
+            "ansible_user" : "vscode",
+            "uid" : "1001"
+          },
+          "alberto@minipc" : {
+            "ansible_host" : "minipc",
+            "ansible_user" : "alberto",
+            "uid" : "1002"
+          },
+          "alberto@soyo" : {
+            "ansible_host" : "soyo",
+            "ansible_user" : "alberto",
+            "uid" : "1002"
+          },
+          "amiorin@minipc" : {
+            "ansible_host" : "minipc",
+            "ansible_user" : "amiorin",
+            "uid" : "1003"
+          },
+          "amiorin@soyo" : {
+            "ansible_host" : "soyo",
+            "ansible_user" : "amiorin",
+            "uid" : "1003"
+          }
+        }
+      }
+    }
+  }
+}
