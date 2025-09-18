@@ -47,6 +47,8 @@ Example of cmds:
         :task (run-steps "lock")}
   unlock-any {:doc "release the lock (any owner)"
               :task (run-steps "unlock-any")}
+  exec {:doc "exec in the target directory"
+        :task (run-steps "exec")}
   tidy {:doc "tidy clojure files"
         :task (do (shell "clojure-lsp clean-ns")
                   (shell "clojure-lsp format"))}

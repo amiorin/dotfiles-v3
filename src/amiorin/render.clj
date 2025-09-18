@@ -58,13 +58,13 @@
   (-> (for [{:keys [user org repo branch worktrees]} repos]
         (let [when-p (format "inventory_hostname.startswith(\"%s\")" user)]
           [{:name (format "Clone repo %s/%s" org repo)
-            "ansible.builtin.shell" (format "ssh -o StrictHostKeyChecking=accept-new  git@github.com || true && git clone git@github.com:%s/%s %s/%s" org repo repo branch)
+            "ansible.builtin.shell" (format "ssh -o StrictHostKeyChecking=accept-new git@github.com || true && git clone git@github.com:%s/%s %s/%s" org repo repo branch)
             :args {:chdir (format "code/personal")
                    :creates (format "%s/%s" repo branch)}
             :when when-p}
            (for [worktree worktrees]
              {:name (format "Create the worktree %s for repo %s/%s" worktree org repo)
-              "ansible.builtin.shell" (format "git worktree add ../%s %s" worktree worktree)
+              "ansible.builtin.shell" (format "git fetch --all --tags && git worktree add ../%s %s" worktree worktree)
               :args {:chdir (format "code/personal/%s/%s" repo branch)
                      :creates (format "../%s" worktree)}
               :when when-p})]))
