@@ -1,6 +1,6 @@
 {:paths ["bb"]
- :deps {io.github.amiorin/dotfiles-v3 {:git/sha "787c156e6bc33c5a123ff0039ef2d5a172b65f92"
-                                       :git/tag "0.2.50"}}
+ :deps {io.github.amiorin/dotfiles-v3 {:git/sha "77ecb577f7df4c3269c39ea660ff53436cc97f01"
+                                       :git/tag "0.2.52"}}
  :tasks
  {:requires ([amiorin.dotfiles-v3 :as dotfiles-v3]
              [clojure.string :as str])

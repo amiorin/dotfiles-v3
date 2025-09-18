@@ -1,10 +1,10 @@
 [ {
-  "name" : "Add a new host entry using blockinfile for minipc",
+  "name" : "Add a new host entry using blockinfile for firebat",
   "ansible.builtin.blockinfile" : {
     "path" : "~/.ssh/config",
     "create" : true,
-    "block" : "Host minipc\n  Hostname minipc.afrino-bushi.ts.net\n  User ubuntu\n  ForwardAgent yes ",
-    "marker" : "# {mark} ANSIBLE MANAGED BLOCK FOR minipc",
+    "block" : "Host firebat\n  Hostname firebat.afrino-bushi.ts.net\n  User ubuntu\n  ForwardAgent yes ",
+    "marker" : "# {mark} ANSIBLE MANAGED BLOCK FOR firebat",
     "state" : "present"
   }
 }, {
