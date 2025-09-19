@@ -7,3 +7,5 @@
 /dist/*/*/.lsp/
 /resources/amiorin/dotfiles_v3/root/.clj-kondo/
 /resources/amiorin/dotfiles_v3/root/.lsp/
+/.devenv.flake.nix
+/.devenv/
