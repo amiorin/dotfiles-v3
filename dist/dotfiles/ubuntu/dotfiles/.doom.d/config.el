@@ -98,12 +98,6 @@
 ;; create test files if needed
 (setq projectile-create-missing-test-files t)
 
-;; loead direnv mode at startup
-(use-package! direnv
-  :hook (doom-first-file . direnv-mode)
-  :config
-  (add-to-list 'warning-suppress-types '(direnv)))
-
 ;; dired
 (map! :map dired-mode-map
       :n "h" #'dired-up-directory

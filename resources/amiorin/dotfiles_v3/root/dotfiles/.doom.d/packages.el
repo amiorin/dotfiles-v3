@@ -12,7 +12,6 @@
 (package! evil-cleverparens)
 (package! expand-region)
 (package! git-link)
-(package! direnv)
 (package! lsp-pyright :pin "dd54b3ae7c22d34faaced7b1a89739063c552b1f")
 (package! just-mode :recipe (:host github :repo "leon-barrett/just-mode.el"))
 (package! zoxide :recipe (:host github :repo "Vonfry/zoxide.el"))
