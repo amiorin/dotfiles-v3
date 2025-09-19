@@ -91,18 +91,21 @@
 
 ;; no prompt for lsp
 (setq lsp-auto-guess-root t)
+;; lsp ignore
+(after! lsp-mode
+  (add-to-list 'lsp-file-watch-ignored-directories "[/\\\\]\\.big_config\\'")
+  (add-to-list 'lsp-file-watch-ignored-directories "[/\\\\]\\.clj-kondo\\'")
+  (add-to-list 'lsp-file-watch-ignored-directories "[/\\\\]\\.cpcache\\'")
+  (add-to-list 'lsp-file-watch-ignored-directories "[/\\\\]\\.devenv\\'")
+  (add-to-list 'lsp-file-watch-ignored-directories "[/\\\\]\\.direnv\\'")
+  (add-to-list 'lsp-file-watch-ignored-directories "[/\\\\]\\.lsp\\'")
+  (add-to-list 'lsp-file-watch-ignored-directories "[/\\\\]\\dist\\'"))
 
 ;; discover projects
 (setq projectile-project-search-path '(("~/code/of" . 2) ("~/code/personal" . 2)))
 (setq projectile-auto-discover t)
 ;; create test files if needed
 (setq projectile-create-missing-test-files t)
-
-;; loead direnv mode at startup
-(use-package! direnv
-  :hook (doom-first-file . direnv-mode)
-  :config
-  (add-to-list 'warning-suppress-types '(direnv)))
 
 ;; dired
 (map! :map dired-mode-map
