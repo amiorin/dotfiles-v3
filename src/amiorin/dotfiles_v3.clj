@@ -4,7 +4,7 @@
    [big-config :as bc]
    [big-config.core :as core]
    [big-config.lock :as lock]
-   [big-config.run :as run :refer [run-cmds]]
+   [big-config.run :as run]
    [big-config.step :as step]
    [big-config.step-fns :as step-fns]
    [clojure.java.io :as io]
@@ -15,36 +15,28 @@
   (assoc data :target (System/getProperty "user.home")))
 
 (defn template-fn
-  [edn _data]
-  edn)
+  [edn {:keys [root]}]
+  (cond-> edn
+    root
+    (merge {:root root})))
 
 (defn post-process-fn
-  [_edn {:keys [env]}]
-  (let [git-cmds [["user.name" "Alberto Miorin"]
-                  ["user.email" "32617+amiorin@users.noreply.github.com"]
-                  ["pull.ff" "only"]
-                  ["pull.rebase" "true"]
-                  ["init.defaultBranch" "main"]]
-        cmds (for [[k v] git-cmds]
-               (format "git config --global %s %s" k v))]
-
-    (run-cmds
-     {:big-config/env env
-      :big-config.run/cmds cmds})))
+  [_edn _opts])
 
 (defn opts->dir
   [{:keys [::module ::profile ::bc/target-dir]}]
   (or target-dir (format "dist/%s/%s" module profile)))
 
-(defn build-fn [{:keys [::module ::profile ::bc/env] :as opts}]
+(defn build-fn [{:keys [::module ::profile] :as opts}]
   (binding [*out* (java.io.StringWriter.)]
-    (new/create {:template "amiorin/dotfiles-v3"
-                 :name "amiorin/dotfiles-v3"
-                 :target-dir (opts->dir opts)
-                 :module module
-                 :profile profile
-                 :env env
-                 :overwrite true}))
+    (let [default-opts {:template "amiorin/dotfiles-v3"
+                        :name "amiorin/dotfiles-v3"
+                        :target-dir (opts->dir opts)
+                        :module module
+                        :profile profile}]
+      (new/create (merge default-opts {:overwrite :delete}))
+      (new/create (merge default-opts {:overwrite :true
+                                       :root profile}))))
   (core/ok opts))
 
 (defn opts-fn [opts]
@@ -75,5 +67,7 @@
      (run-steps step-fns opts))))
 
 (comment
-  (run-steps "build exec -- dotfiles ubuntu just install"
+  (run-steps "build exec -- dotfiles macos bb tasks"
+             {::bc/env :repl})
+  (run-steps "build exec -- dotfiles ubuntu bb tasks"
              {::bc/env :repl}))

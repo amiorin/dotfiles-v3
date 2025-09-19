@@ -4,9 +4,7 @@ Use big-config to manage your dotfiles
 ``` shell
 bb tasks
 
-bb build exec -- dotfiles ubuntu just backup
-
-bb build exec -- dotfiles ubuntu just install
+bb build exec -- dotfiles [ubuntu|macos] bb [tasks|install|backup]
 ```
 
 ## License
