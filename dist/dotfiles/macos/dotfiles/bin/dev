@@ -1,0 +1,45 @@
+#!/usr/bin/env bash
+
+GITHUB_USER=amiorin
+GITHUB_USER_ALPHA=alberto-of
+
+gh auth token -u $GITHUB_USER > /dev/null 2>&1 || (echo Already inside "dev" && exit 1)
+[ $? -eq 0 ] || exit 0
+
+ZELLIJ_SESSION_NAME=${GITHUB_USER^^}_MACOS
+GITHUB_TOKEN=`gh auth token -u $GITHUB_USER`
+GITHUB_TOKEN_ALPHA=`gh auth token -u $GITHUB_USER_ALPHA`
+
+mkdir -p ~/.emacs.d/.local/cache
+touch ~/.emacs.d/.local/cache/recentf
+mkdir -p ~/.m2
+mkdir -p ~/.aws
+mkdir -p ~/.ssh
+chmod 0700 ~/.ssh
+mkdir -p ~/.local/share/atuin
+mkdir -p ~/.local/share/zoxide
+mkdir -p ~/.ansible
+mkdir -p ~/.local/bin
+mkdir -p ~/code/personal
+mkdir -p ~/code/of
+
+docker run --rm -it \
+           -e GITHUB_TOKEN=$GITHUB_TOKEN \
+           -e GITHUB_TOKEN_ALPHA=$GITHUB_TOKEN_ALPHA \
+           -e GH_TOKEN=$GITHUB_TOKEN \
+           --net=host \
+           -v /var/run/docker.sock:/var/run/docker.sock \
+           -v ~/.emacs.d/.local/cache/recentf:/home/vscode/.emacs.d/.local/cache/recentf \
+           -v ~/.m2:/home/vscode/.m2 \
+           -v ~/.aws:/home/vscode/.aws \
+           -v ~/.ssh:/home/vscode/.ssh \
+           -v ~/.local/share/atuin:/home/vscode/.local/share/atuin \
+           -v ~/.local/share/zoxide:/home/vscode/.local/share/zoxide \
+           -v ~/.ansible:/home/vscode/.ansible \
+           -v ~/.local/bin/dev:/home/vscode/.local/bin/dev \
+           -v ~/code/personal:/home/vscode/code/personal \
+           -v ~/code/of:/home/vscode/workspaces \
+           -v ~:/home/vscode/$USER \
+           ghcr.io/amiorin/big-container:latest \
+           fish -c "zellij attach --create $ZELLIJ_SESSION_NAME && begin pkill emacs || true; end" \
+&& kill `ps -o ppid= -p $$`

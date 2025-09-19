@@ -1,0 +1,61 @@
+# list of all recipes
+help:
+    @just -f {{ justfile() }} --list --unsorted
+
+# backup dotfiles
+backup:
+    cp /Users/amiorin/.config/fish/config.fish config.fish
+    cp /Users/amiorin/.config/skhd/skhdrc skhdrc
+    cp /Users/amiorin/.local/bin/24-bit-color.sh 24-bit-color.sh
+    cp /Users/amiorin/.config/wezterm/wezterm.lua wezterm.lua
+    cp /Users/amiorin/.config/ghostty/config dotfiles/ghostty/config
+    cp /Users/amiorin/.config/kitty/kitty.conf dotfiles/kitty/kitty.conf
+    cp /Users/amiorin/.config/kitty/current-theme.conf dotfiles/kitty/current-theme.conf
+    cp /Users/amiorin/.config/direnv/direnv.toml direnv.toml
+    cp /Users/amiorin/.config/atuin/config.toml dotfiles/atuin/config.toml
+    cp /Users/amiorin/.config/starship.toml dotfiles/starship/starship.toml
+    cp /Users/amiorin/.aerospace.toml dotfiles/aerospace/aerospace.toml
+    cp /Users/amiorin/.local/bin/dev dotfiles/bin/dev
+    cp /Users/amiorin/.config/zellij/config.kdl dotfiles/zellij/config.kdl
+    cp /Users/amiorin/.config/zellij/layouts/minimal.kdl dotfiles/zellij/layouts/minimal.kdl
+    rsync -a --delete /Users/amiorin/.doom.d/ dotfiles/doomemacs/
+
+# install dotfiles
+install:
+    mkdir -p /Users/amiorin/.config/fish
+    cp config.fish /Users/amiorin/.config/fish/config.fish
+
+    mkdir -p /Users/amiorin/.config/skhd
+    cp skhdrc /Users/amiorin/.config/skhd/skhdrc
+
+    mkdir -p /Users/amiorin/.config/wezterm
+    cp wezterm.lua /Users/amiorin/.config/wezterm/wezterm.lua
+
+    mkdir -p /Users/amiorin/.config/ghostty
+    cp dotfiles/ghostty/config /Users/amiorin/.config/ghostty/config
+
+    mkdir -p /Users/amiorin/.config/kitty
+    cp dotfiles/kitty/kitty.conf /Users/amiorin/.config/kitty/kitty.conf
+    cp dotfiles/kitty/current-theme.conf /Users/amiorin/.config/kitty/current-theme.conf
+
+    mkdir -p /Users/amiorin/.config/direnv
+    cp direnv.toml /Users/amiorin/.config/direnv/direnv.toml
+
+    mkdir -p /Users/amiorin/.config/atuin
+    cp dotfiles/atuin/config.toml /Users/amiorin/.config/atuin/config.toml
+
+    cp dotfiles/starship/starship.toml /Users/amiorin/.config/starship.toml
+
+    mkdir -p /Users/amiorin/.local/bin
+    cp 24-bit-color.sh /Users/amiorin/.local/bin/24-bit-color.sh
+
+    cp dotfiles/aerospace/aerospace.toml /Users/amiorin/.aerospace.toml
+
+    cp dotfiles/bin/dev /Users/amiorin/.local/bin/dev
+
+    mkdir -p /Users/amiorin/.config/zellij/layouts
+    cp dotfiles/zellij/config.kdl /Users/amiorin/.config/zellij/config.kdl
+    cp dotfiles/zellij/layouts/minimal.kdl /Users/amiorin/.config/zellij/layouts/minimal.kdl
+
+    mkdir -p /Users/amiorin/.doom.d
+    rsync -a dotfiles/doomemacs/ ~/.doom.d
