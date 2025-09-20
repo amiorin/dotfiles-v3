@@ -1,6 +1,5 @@
-{:paths ["bb"]
- :deps  {io.github.amiorin/big-config {:git/tag "0.2.202" :git/sha "7a78e6f"}}
- :tasks {:requires ([core :as core])
+{:deps {amiorin/dotfiles-v3 {:local/root "../../.."}}
+ :tasks {:requires ([amiorin.core :as core])
          install {:doc "install the dotfiles"
                   :task (do (core/install :dir "dotfiles")
                             (core/git-config :shell))}

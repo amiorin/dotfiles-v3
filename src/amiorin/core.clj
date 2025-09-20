@@ -1,4 +1,4 @@
-(ns core
+(ns amiorin.core
   (:require
    [babashka.fs :as fs]
    [big-config.run :as run]
