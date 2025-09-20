@@ -7,14 +7,6 @@
   },
   "when" : "inventory_hostname.startswith(\"vscode\")"
 }, {
-  "name" : "Create the worktree minipc for repo amiorin/dotfiles-v3",
-  "ansible.builtin.shell" : "git fetch --all --tags && git worktree add ../minipc minipc",
-  "args" : {
-    "chdir" : "code/personal/dotfiles-v3/main",
-    "creates" : "../minipc"
-  },
-  "when" : "inventory_hostname.startswith(\"vscode\")"
-}, {
   "name" : "Create the worktree ansible for repo amiorin/dotfiles-v3",
   "ansible.builtin.shell" : "git fetch --all --tags && git worktree add ../ansible ansible",
   "args" : {
@@ -95,19 +87,19 @@
   },
   "when" : "inventory_hostname.startswith(\"ubuntu\")"
 }, {
-  "name" : "Create the worktree minipc for repo amiorin/dotfiles-v3",
-  "ansible.builtin.shell" : "git fetch --all --tags && git worktree add ../minipc minipc",
-  "args" : {
-    "chdir" : "code/personal/dotfiles-v3/main",
-    "creates" : "../minipc"
-  },
-  "when" : "inventory_hostname.startswith(\"ubuntu\")"
-}, {
   "name" : "Create the worktree ansible for repo amiorin/dotfiles-v3",
   "ansible.builtin.shell" : "git fetch --all --tags && git worktree add ../ansible ansible",
   "args" : {
     "chdir" : "code/personal/dotfiles-v3/main",
     "creates" : "../ansible"
+  },
+  "when" : "inventory_hostname.startswith(\"ubuntu\")"
+}, {
+  "name" : "Create the worktree babashka for repo amiorin/dotfiles-v3",
+  "ansible.builtin.shell" : "git fetch --all --tags && git worktree add ../babashka babashka",
+  "args" : {
+    "chdir" : "code/personal/dotfiles-v3/main",
+    "creates" : "../babashka"
   },
   "when" : "inventory_hostname.startswith(\"ubuntu\")"
 }, {
@@ -119,19 +111,19 @@
   },
   "when" : "inventory_hostname.startswith(\"alberto\")"
 }, {
-  "name" : "Create the worktree minipc for repo amiorin/dotfiles-v3",
-  "ansible.builtin.shell" : "git fetch --all --tags && git worktree add ../minipc minipc",
-  "args" : {
-    "chdir" : "code/personal/dotfiles-v3/main",
-    "creates" : "../minipc"
-  },
-  "when" : "inventory_hostname.startswith(\"alberto\")"
-}, {
   "name" : "Create the worktree ansible for repo amiorin/dotfiles-v3",
   "ansible.builtin.shell" : "git fetch --all --tags && git worktree add ../ansible ansible",
   "args" : {
     "chdir" : "code/personal/dotfiles-v3/main",
     "creates" : "../ansible"
+  },
+  "when" : "inventory_hostname.startswith(\"alberto\")"
+}, {
+  "name" : "Create the worktree babashka for repo amiorin/dotfiles-v3",
+  "ansible.builtin.shell" : "git fetch --all --tags && git worktree add ../babashka babashka",
+  "args" : {
+    "chdir" : "code/personal/dotfiles-v3/main",
+    "creates" : "../babashka"
   },
   "when" : "inventory_hostname.startswith(\"alberto\")"
 }, {
@@ -143,19 +135,19 @@
   },
   "when" : "inventory_hostname.startswith(\"amiorin\")"
 }, {
-  "name" : "Create the worktree minipc for repo amiorin/dotfiles-v3",
-  "ansible.builtin.shell" : "git fetch --all --tags && git worktree add ../minipc minipc",
-  "args" : {
-    "chdir" : "code/personal/dotfiles-v3/main",
-    "creates" : "../minipc"
-  },
-  "when" : "inventory_hostname.startswith(\"amiorin\")"
-}, {
   "name" : "Create the worktree ansible for repo amiorin/dotfiles-v3",
   "ansible.builtin.shell" : "git fetch --all --tags && git worktree add ../ansible ansible",
   "args" : {
     "chdir" : "code/personal/dotfiles-v3/main",
     "creates" : "../ansible"
+  },
+  "when" : "inventory_hostname.startswith(\"amiorin\")"
+}, {
+  "name" : "Create the worktree babashka for repo amiorin/dotfiles-v3",
+  "ansible.builtin.shell" : "git fetch --all --tags && git worktree add ../babashka babashka",
+  "args" : {
+    "chdir" : "code/personal/dotfiles-v3/main",
+    "creates" : "../babashka"
   },
   "when" : "inventory_hostname.startswith(\"amiorin\")"
 } ]

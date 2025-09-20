@@ -80,9 +80,11 @@
     . /etc/profile.d/nix.sh
     && . /etc/profile.d/Z50-devbox.sh
     && export PATH=~/.asdf/shims:$PATH
-    && bb build exec -- dotfiles ubuntu just install
+    && git fetch origin
+    && git reset --hard origin/main
+    && bb build exec -- dotfiles ubuntu bb install
   args:
-    chdir: code/personal/dotfiles-v3/minipc
+    chdir: code/personal/dotfiles-v3/main
     creates: ~/.config/fish/config.fish
 
 - name: Install atuin

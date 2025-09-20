@@ -94,7 +94,7 @@
                 :remove_users (filter :remove users)
                 :atuin_login "{{ lookup('ansible.builtin.env', 'ATUIN_LOGIN') }}"
                 :ssh_key "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIHDKdUkY+SfRm6ttOz2EEZ2+i/zm+o1mpMOdMeGUr0t4 32617+amiorin@users.noreply.github.com"}
-        repos (-> (into [] (for [[repo worktrees] [["dotfiles-v3" ["minipc" "ansible" "babashka"]]
+        repos (-> (into [] (for [[repo worktrees] [["dotfiles-v3" ["ansible" "babashka"]]
                                                    ["albertomiorin.com" ["albertomiorin" "big-config"]]
                                                    ["big-config" ["deps-new"]]
                                                    ["big-container" []]
@@ -108,20 +108,20 @@
                           :org "amiorin"
                           :repo "dotfiles-v3"
                           :branch "main"
-                          :worktrees ["minipc"
-                                      "ansible"]}
+                          :worktrees ["ansible"
+                                      "babashka"]}
                          {:user "alberto"
                           :org "amiorin"
                           :repo "dotfiles-v3"
                           :branch "main"
-                          :worktrees ["minipc"
-                                      "ansible"]}
+                          :worktrees ["ansible"
+                                      "babashka"]}
                          {:user "amiorin"
                           :org "amiorin"
                           :repo "dotfiles-v3"
                           :branch "main"
-                          :worktrees ["minipc"
-                                      "ansible"]}]))
+                          :worktrees ["ansible"
+                                      "babashka"]}]))
         packages (->> ["fish"
                        "emacs"
                        "zellij"
