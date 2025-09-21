@@ -1,6 +1,6 @@
 {:paths ["bb"]
- :deps {io.github.amiorin/dotfiles-v3 {:git/sha "77ecb577f7df4c3269c39ea660ff53436cc97f01"
-                                       :git/tag "0.2.52"}}
+ :deps {io.github.amiorin/dotfiles-v3 {:git/sha "ea355e7a776892e423231f780ddeb2e718fa413e"
+                                       :git/tag "0.2.57"}}
  :tasks
  {:requires ([amiorin.dotfiles-v3 :as dotfiles-v3]
              [clojure.string :as str])
@@ -9,7 +9,7 @@
               (into *command-line-args*)
               (->> (str/join " "))
               (dotfiles-v3/run-steps {:big-config/env :shell
-                                      :amiorin.dotfiles-v3 "config/->opts"})))
+                                      :amiorin.dotfiles-v3/opts-fn "config/->opts"})))
   show-help {:doc "the workflow help"
              :task (println "Usage: bb <step|cmd>+ -- <module> <profile> [global-args]
 
