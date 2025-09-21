@@ -43,12 +43,12 @@
   [{:keys [::module ::profile ::bc/target-dir]}]
   (or target-dir (format "dist/%s/%s" module profile)))
 
-(defn build-fn [{:keys [::module ::profile ::opt-fn] :as opts}]
+(defn build-fn [{:keys [::module ::profile ::opts-fn] :as opts}]
   (binding [*out* (java.io.StringWriter.)]
     (new/create {:template "amiorin/dotfiles-v3"
                  :name "amiorin/dotfiles-v3"
                  :target-dir (opts->dir opts)
-                 :opts-fn opt-fn
+                 :opts-fn opts-fn
                  :module module
                  :profile profile
                  :overwrite :delete}))
@@ -83,5 +83,3 @@
 (comment
   (run-steps "build -- minipc ansible"
              {::bc/env :repl}))
-
-(-> ::opt-fn)
