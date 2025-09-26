@@ -1,12 +1,12 @@
 {:deps {amiorin/dotfiles-v3 {:local/root "."}}
  :tasks
- {:requires ([amiorin.dotfiles-v3 :as dotfiles-v3]
+ {:requires ([dotfiles :as dotfiles]
              [clojure.string :as str])
   :init (defn run-steps [first-step]
           (-> [first-step]
               (into *command-line-args*)
               (->> (str/join " "))
-              (dotfiles-v3/run-steps {:big-config/env :shell})))
+              (dotfiles/run-steps {:big-config/env :shell})))
   show-help {:doc "the workflow help"
              :task (println "Usage: bb <step|cmd>+ -- <module> <profile> [global-args]
 
@@ -14,7 +14,8 @@ The available steps are listed below. Anything that is not a step is considered
 a cmd where `:` is replaced with ` `
 
 Steps
-  build           use `deps-new` to generate the configuration files
+  build           use `deps-new` or similar to generate the configuration files
+  create          use `big-config` to generate the configuration files
   git-check       check if the working directory is clean and if have pulled all
                   commits from origin
   git-push        push your changes
@@ -43,6 +44,8 @@ Example of cmds:
             :task (run-steps "git-push")}
   build {:doc "build the dist folder"
          :task (run-steps "build")}
+  create {:doc "create the dist folder"
+          :task (run-steps "create")}
   lock {:doc "acquire the lock"
         :task (run-steps "lock")}
   unlock-any {:doc "release the lock (any owner)"
@@ -50,13 +53,6 @@ Example of cmds:
   tidy {:doc "tidy clojure files"
         :task (do (shell "clojure-lsp clean-ns")
                   (shell "clojure-lsp format"))}
-  smoke-test {:doc "test to validate the template"
-              :task (doseq [cmd ["bb build exec -- alpha prod ls -l"
-                                 "bb build exec -- beta prod ls -l"
-                                 "bb build exec -- gamma prod ls -l"
-                                 "bb show-help"]]
-                      (println (str "> " cmd))
-                      (shell cmd))}
   test {:doc "run test with clojure"
         :task (apply clojure "-X:test" *command-line-args*)}
   test:bb {:doc "run test with babashka"
