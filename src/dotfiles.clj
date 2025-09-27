@@ -5,6 +5,8 @@
    [big-config.step :as step]
    [big-config.step-fns :as step-fns]))
 
+(alter-var-root #'build/*non-replaced-exts* (constantly #{"jpg" "jpeg" "png" "gif" "bmp" "bin"}))
+
 (defn run-steps [s opts]
   (let [opts (merge opts {::build/templates [{:template "stage-1"
                                               :data-fn (fn [{:keys [::step/profile]} _]
@@ -16,19 +18,11 @@
                                                            :raw]
                                                           ["{{ profile }}"
                                                            :raw]]}
-                                             {:template "stage-1"
-                                              :target-dir "resources/stage-2"
-                                              :overwrite true
-                                              :transform [["binary" "binary"
-                                                           :raw]]}
                                              {:template "stage-2"
                                               :data-fn (fn [{:keys [::step/profile]} _]
                                                          {:profile profile})
-                                              :template-fn (fn [{:keys [:profile]} {:keys [transform] :as edn}]
-                                                             (cond-> edn
-                                                               :always (assoc :target-dir (format "dist/%s" profile))
-                                                               (= profile "macos") (assoc :transform (into transform [["binary"
-                                                                                                                       :raw]]))))
+                                              :template-fn (fn [{:keys [:profile]} edn]
+                                                             (assoc edn :target-dir (format "dist/%s" profile)))
                                               :overwrite true
                                               :transform [["{{ profile }}"]]}]})
         step-fns [step/print-step-fn

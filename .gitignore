@@ -10,3 +10,4 @@
 /.devenv.flake.nix
 /.devenv/
 /dist/
+/.envrc.private
