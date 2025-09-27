@@ -15,7 +15,22 @@
                                               :transform [["build"
                                                            :raw]
                                                           ["{{ profile }}"
-                                                           :raw]]}]})
+                                                           :raw]]}
+                                             {:template "stage-1"
+                                              :target-dir "resources/stage-2"
+                                              :overwrite true
+                                              :transform [["binary" "binary"
+                                                           :raw]]}
+                                             {:template "stage-2"
+                                              :data-fn (fn [{:keys [::step/profile]} _]
+                                                         {:profile profile})
+                                              :template-fn (fn [{:keys [:profile]} {:keys [transform] :as edn}]
+                                                             (cond-> edn
+                                                               :always (assoc :target-dir (format "dist/%s" profile))
+                                                               (= profile "macos") (assoc :transform (into transform [["binary"
+                                                                                                                       :raw]]))))
+                                              :overwrite true
+                                              :transform [["{{ profile }}"]]}]})
         step-fns [step/print-step-fn
                   (step-fns/->exit-step-fn ::step/end)
                   (step-fns/->print-error-step-fn ::step/end)]]

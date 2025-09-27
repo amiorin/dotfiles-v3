@@ -9,3 +9,4 @@
 /resources/amiorin/dotfiles_v3/root/.lsp/
 /.devenv.flake.nix
 /.devenv/
+/dist/
