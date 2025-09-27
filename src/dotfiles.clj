@@ -1,17 +1,21 @@
 (ns dotfiles
   (:require
+   [big-config :as bc]
    [big-config.build :as build]
    [big-config.step :as step]
    [big-config.step-fns :as step-fns]))
 
 (defn run-steps [s opts]
-  (let [[_ _ module profile] (step/parse s)
-        opts (merge opts {::build/recipes [{:template "amiorin/dotfiles_v3"
-                                            :target-dir (format "dist/%s/%s" module profile)
+  (let [opts (merge opts {::build/recipes [{:template "amiorin/dotfiles_v3"
+                                            :data-fn (fn [{:keys [::step/module ::step/profile]} _]
+                                                       {:module module
+                                                        :profile profile})
+                                            :template-fn (fn [{:keys [::step/module ::step/profile]} edn]
+                                                           (assoc edn :target-dir (format "dist/%s/%s" module profile)))
                                             :overwrite :delete
                                             :transform [["build"
                                                          :raw]
-                                                        [profile
+                                                        ["{{ profile }}"
                                                          :raw]]}]})
         step-fns [step/print-step-fn
                   (step-fns/->exit-step-fn ::step/end)
@@ -25,4 +29,5 @@
                                    :transform [["build"
                                                 :raw]
                                                ["ubuntu"
-                                                :raw]]}]}))
+                                                :raw]]}]})
+  (run-steps "create -- dotfiles macos" {::bc/env :repl}))
