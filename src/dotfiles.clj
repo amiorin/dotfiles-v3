@@ -9,8 +9,6 @@
 
 (defn run-steps [s opts]
   (let [opts (merge opts {::build/templates [{:template "stage-1"
-                                              :data-fn (fn [{:keys [::step/profile]} _]
-                                                         {:profile profile})
                                               :template-fn (fn [{:keys [:profile]} edn]
                                                              (assoc edn :target-dir (format "resources/stage-2/%s" profile)))
                                               :overwrite :delete
@@ -19,8 +17,6 @@
                                                           ["{{ profile }}"
                                                            :raw]]}
                                              {:template "stage-2"
-                                              :data-fn (fn [{:keys [::step/profile]} _]
-                                                         {:profile profile})
                                               :template-fn (fn [{:keys [:profile]} edn]
                                                              (assoc edn :target-dir (format "dist/%s" profile)))
                                               :overwrite true
@@ -40,4 +36,4 @@
                                                   :raw]
                                                  ["ubuntu"
                                                   :raw]]}]})
-  (run-steps "create -- dotfiles macos" {::bc/env :repl}))
+  (run-steps "create -- dotfiles ubuntu" {::bc/env :repl}))
