@@ -15,7 +15,7 @@
 
 (alter-var-root #'render/*non-replaced-exts* (constantly #{"jpg" "jpeg" "png" "gif" "bmp" "bin"}))
 
-(defn run-steps [s opts]
+(defn run-steps [s opts & step-fns]
   (let [{:keys [profile]} (step/parse-module-and-profile s)
         dir (format "dist/%s" profile)
         opts (merge opts
@@ -31,7 +31,9 @@
                                           :target-dir dir
                                           :overwrite true
                                           :transform [["{{ profile }}"]]}]})]
-    (step/run-steps s opts)))
+    (if step-fns
+      (apply step/run-steps s opts step-fns)
+      (step/run-steps s opts))))
 
 (comment
   (run-steps "render -- dotfiles ubuntu" {::bc/env :repl}))
@@ -65,15 +67,20 @@
   (diff :dir "dist/dotfiles/macos/dotfiles")
   (install :dir "dist/dotfiles/macos/dotfiles"))
 
-(defn discover [prefix]
+(defn discover
+  "discover all dirs inside a parent dir and return them as list of strings"
+  [parent-dir]
   (let [profiles (atom [])]
-    (fs/walk-file-tree prefix {:max-depth 2
-                               :pre-visit-dir (fn [dir _]
-                                                (let [dir (str (fs/relativize prefix dir))]
-                                                  (when-not (str/blank? dir)
-                                                    (swap! profiles conj dir)))
-                                                :continue)})
+    (fs/walk-file-tree parent-dir {:max-depth 2
+                                   :pre-visit-dir (fn [dir _]
+                                                    (let [dir (str (fs/relativize parent-dir dir))]
+                                                      (when-not (str/blank? dir)
+                                                        (swap! profiles conj dir)))
+                                                    :continue)})
     @profiles))
+
+(comment
+  (discover "resources"))
 
 (defn core [& [cmd profile opts]]
   (let [profile (case cmd

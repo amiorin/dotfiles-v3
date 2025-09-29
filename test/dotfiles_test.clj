@@ -33,5 +33,5 @@
   (testing "working directory is clean after running all modules"
     (let [prefix "resources/stage-2"]
       (doseq [profile (discover prefix)]
-        (sut/run-steps (format "render -- dotfiles %s" profile) {::bc/env :repl}))
+        (sut/run-steps (format "render -- dotfiles %s" profile) {::bc/env :repl} []))
       (is (check-dir prefix) (git-output prefix)))))
