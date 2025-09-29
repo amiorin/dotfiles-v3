@@ -76,7 +76,10 @@
     @profiles))
 
 (defn core [& [cmd profile opts]]
-  (let [opts (or opts {::bc/env :shell})]
+  (let [profile (case cmd
+                  :render (or profile "all")
+                  (or profile (System/getenv "DOTFILES_PROFILE")))
+        opts (or opts {::bc/env :shell})]
     (case cmd
       :render (case profile
                 "all" (let [profiles (discover "resources/stage-2")]
