@@ -1,39 +1,31 @@
 (ns dotfiles
   (:require
    [big-config :as bc]
-   [big-config.build :as build]
+   [big-config.render :as render]
+   [big-config.lock :as lock]
+   [big-config.run :as run]
    [big-config.step :as step]
    [big-config.step-fns :as step-fns]))
 
-(alter-var-root #'build/*non-replaced-exts* (constantly #{"jpg" "jpeg" "png" "gif" "bmp" "bin"}))
+(alter-var-root #'render/*non-replaced-exts* (constantly #{"jpg" "jpeg" "png" "gif" "bmp" "bin"}))
 
 (defn run-steps [s opts]
-  (let [opts (merge opts {::build/templates [{:template "stage-1"
-                                              :template-fn (fn [{:keys [:profile]} edn]
-                                                             (assoc edn :target-dir (format "resources/stage-2/%s" profile)))
-                                              :overwrite :delete
-                                              :transform [["build"
-                                                           :raw]
-                                                          ["{{ profile }}"
-                                                           :raw]]}
-                                             {:template "stage-2"
-                                              :template-fn (fn [{:keys [:profile]} edn]
-                                                             (assoc edn :target-dir (format "dist/%s" profile)))
-                                              :overwrite true
-                                              :transform [["{{ profile }}"]]}]})
-        step-fns [step/print-step-fn
-                  (step-fns/->exit-step-fn ::step/end)
-                  (step-fns/->print-error-step-fn ::step/end)]]
-    (step/run-steps s step-fns opts)))
+  (let [{:keys [module profile]} (step/parse-module-and-profile s)
+        dir (format "dist/%s" profile)
+        opts (merge opts
+                    {::run/shell-opts {:dir dir}
+                     ::render/templates [{:template "stage-1"
+                                          :target-dir (format "resources/stage-2/%s" profile)
+                                          :overwrite :delete
+                                          :transform [["build"
+                                                       :raw]
+                                                      ["{{ profile }}"
+                                                       :raw]]}
+                                         {:template "stage-2"
+                                          :target-dir dir
+                                          :overwrite true
+                                          :transform [["{{ profile }}"]]}]})]
+    (step/run-steps s opts)))
 
 (comment
-  (build/create {::build/templates [{:template "stage-1"
-                                     :target-dir "resources/stage-2/ubuntu"
-                                     :post-process-fn (fn [edn data]
-                                                        (println "foo"))
-                                     :overwrite :delete
-                                     :transform [["build"
-                                                  :raw]
-                                                 ["ubuntu"
-                                                  :raw]]}]})
-  (run-steps "create -- dotfiles ubuntu" {::bc/env :repl}))
+  (run-steps "render -- dotfiles ubuntu" {::bc/env :repl}))
