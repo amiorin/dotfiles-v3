@@ -500,8 +500,8 @@
 ;; Esc act as quit, but it breaks M-(;)
 ;; (define-key key-translation-map (kbd "ESC") (kbd "C-g"))
 
-(map! :map 'override "s-[" #'previous-buffer)
-(map! :map 'override "s-]" #'next-buffer)
+(map! :map 'override "s-[" #'projectile-previous-project-buffer)
+(map! :map 'override "s-]" #'projectile-next-project-buffer)
 
 ;; Clojure
 (add-hook 'clojure-mode-hook #'+format-with-lsp-mode)
@@ -510,3 +510,9 @@
 (map! :leader
       :desc "Find files in a project"
       "SPC" #'consult-projectile)
+(setq consult-projectile-sources '(consult-projectile--source-projectile-buffer
+                                   consult-projectile--source-projectile-file
+                                   consult-projectile--source-projectile-project
+                                   consult-projectile--source-projectile-recentf
+                                   consult-projectile--source-projectile-dir
+                                   ))
