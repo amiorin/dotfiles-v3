@@ -2,15 +2,18 @@
   (:require
    [big-config :as bc]
    [big-config.render :as render]
-   [big-config.lock :as lock]
    [big-config.run :as run]
    [big-config.step :as step]
-   [big-config.step-fns :as step-fns]))
+   [selmer.filters :refer [add-filter!]]))
+
+(add-filter! :lookup-env
+             (fn [x]
+               (System/getenv x)))
 
 (alter-var-root #'render/*non-replaced-exts* (constantly #{"jpg" "jpeg" "png" "gif" "bmp" "bin"}))
 
 (defn run-steps [s opts]
-  (let [{:keys [module profile]} (step/parse-module-and-profile s)
+  (let [{:keys [profile]} (step/parse-module-and-profile s)
         dir (format "dist/%s" profile)
         opts (merge opts
                     {::run/shell-opts {:dir dir}
