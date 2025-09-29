@@ -3,17 +3,11 @@
    [babashka.fs :as fs]
    [babashka.process :as process]
    [big-config :as bc]
-   [big-config.render :as render]
+   [big-config.render :as render :refer [discover]]
    [big-config.run :as run]
+   [big-config.selmer-filters]
    [big-config.step :as step]
-   [clojure.string :as str]
-   [selmer.filters :refer [add-filter!]]))
-
-(add-filter! :lookup-env
-             (fn [x]
-               (System/getenv x)))
-
-(alter-var-root #'render/*non-replaced-exts* (constantly #{"jpg" "jpeg" "png" "gif" "bmp" "bin"}))
+   [clojure.string :as str]))
 
 (defn run-steps [s opts & step-fns]
   (let [{:keys [profile]} (step/parse-module-and-profile s)
@@ -66,21 +60,6 @@
 (comment
   (diff :dir "dist/dotfiles/macos/dotfiles")
   (install :dir "dist/dotfiles/macos/dotfiles"))
-
-(defn discover
-  "discover all dirs inside a parent dir and return them as list of strings"
-  [parent-dir]
-  (let [profiles (atom [])]
-    (fs/walk-file-tree parent-dir {:max-depth 2
-                                   :pre-visit-dir (fn [dir _]
-                                                    (let [dir (str (fs/relativize parent-dir dir))]
-                                                      (when-not (str/blank? dir)
-                                                        (swap! profiles conj dir)))
-                                                    :continue)})
-    @profiles))
-
-(comment
-  (discover "resources"))
 
 (defn core [& [cmd profile opts]]
   (let [profile (case cmd
