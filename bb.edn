@@ -7,49 +7,12 @@
               (into *command-line-args*)
               (->> (str/join " "))
               (dotfiles/run-steps {:big-config/env :shell})))
-  show-help {:doc "the workflow help"
-             :task (println "Usage: bb <step|cmd>+ -- <module> <profile> [global-args]
-
-The available steps are listed below. Anything that is not a step is considered
-a cmd where `:` is replaced with ` `
-
-Steps
-  build           use `deps-new` or similar to generate the configuration files
-  render          use `big-config` to generate the configuration files
-  git-check       check if the working directory is clean and if have pulled all
-                  commits from origin
-  git-push        push your changes
-  lock            acquire the lock
-  unlock-any      release the lock from any owner
-  exec            you can either multiple cmds or a single exec where the cmd
-                  will be provided in the global-args
-
-These two are equivalent
-  bb exec -- alpha prod ansible-playbook main.yml
-  bb ansible-playbook:main.yml -- alpha prod
-
-These two are also equivalent
-  bb tofu:apply tofu:destroy -- alpha prod -auto-approve
-  bb tofu:apply:-auto-approve tofu:destroy:-auto-approve -- alpha prod
-
-Example of cmds:
-  tofu:init                    tofu init
-  tofu:plan                    tofu plan
-  tofu:apply:-auto-approve     tofu apply -auto-approve
-  ansible-playbook:main.yml    ansible-playbook main.yml
-")}
-  git-check {:doc "the working dir is clean"
-             :task (run-steps "git-check")}
-  git-push {:doc "git push"
-            :task (run-steps "git-push")}
-  build {:doc "build the configuration files"
-         :task (run-steps "build")}
-  render {:doc "render the configuration files"
-          :task (run-steps "render")}
-  lock {:doc "acquire the lock"
-        :task (run-steps "lock")}
-  unlock-any {:doc "release the lock (any owner)"
-              :task (run-steps "unlock-any")}
+  render {:doc "render the dotfiles without installing them"
+          :task (apply dotfiles/core :render *command-line-args*)}
+  diff {:doc "render the dotfiles and diff them with the target"
+        :task (apply dotfiles/core :diff *command-line-args*)}
+  install {:doc "render the dotfiles and install them"
+           :task (apply dotfiles/core :install *command-line-args*)}
   tidy {:doc "tidy clojure files"
         :task (do (shell "clojure-lsp clean-ns")
                   (shell "clojure-lsp format"))}

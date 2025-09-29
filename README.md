@@ -4,7 +4,10 @@ Use big-config to manage your dotfiles
 ``` shell
 bb tasks
 
-bb render exec -- dotfiles [ubuntu|macos] bb [tasks|install|diff]
+bb install macos|ubuntu
+bb diff macos|ubuntu
+bb render macos|ubuntu
+bb render all
 ```
 
 ## License

@@ -1,11 +1,10 @@
 (ns dotfiles-test
   (:require
-   [babashka.fs :as fs]
    [babashka.process :refer [shell]]
    [big-config :as bc]
    [clojure.string :as str]
    [clojure.test :refer [deftest is testing]]
-   [dotfiles :as sut]))
+   [dotfiles :as sut :refer [discover]]))
 
 (defn check-dir
   [dir]
@@ -26,16 +25,6 @@
 %s
 > git new files
 %s" git-diff git-new-files)))
-
-(defn discover [prefix]
-  (let [profiles (atom [])]
-    (fs/walk-file-tree prefix {:max-depth 2
-                               :pre-visit-dir (fn [dir _]
-                                                (let [dir (str (fs/relativize prefix dir))]
-                                                  (when-not (str/blank? dir)
-                                                    (swap! profiles conj dir)))
-                                                :continue)})
-    @profiles))
 
 (comment
   (discover "resources/stage-2"))

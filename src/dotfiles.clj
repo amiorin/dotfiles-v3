@@ -65,3 +65,23 @@
   (diff :dir "dist/dotfiles/macos/dotfiles")
   (install :dir "dist/dotfiles/macos/dotfiles"))
 
+(defn discover [prefix]
+  (let [profiles (atom [])]
+    (fs/walk-file-tree prefix {:max-depth 2
+                               :pre-visit-dir (fn [dir _]
+                                                (let [dir (str (fs/relativize prefix dir))]
+                                                  (when-not (str/blank? dir)
+                                                    (swap! profiles conj dir)))
+                                                :continue)})
+    @profiles))
+
+(defn core [& [cmd profile opts]]
+  (let [opts (or opts {::bc/env :shell})]
+    (case cmd
+      :render (case profile
+                "all" (let [profiles (discover "resources/stage-2")]
+                        (doseq [profile profiles]
+                          (process/shell (format "bb render %s" profile))))
+                (run-steps (format "render -- dotiles %s" profile) opts))
+      :diff (run-steps (format "render exec -- dotfiles %s bb diff" profile) opts)
+      :install (run-steps (format "render exec -- dotfiles %s bb install" profile) opts))))
