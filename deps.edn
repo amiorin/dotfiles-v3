@@ -1,10 +1,10 @@
 {:paths   ["src" "resources"]
- :deps    {org.clojure/clojure             {:mvn/version "1.12.1"}
-           io.github.amiorin/big-config    {:git/sha "2a82ea3d06bc42faaa1543043cb707b65c96f51c"}
-           io.github.seancorfield/deps-new {:git/tag "v0.10.1" :git/sha "a90029c"}
-           selmer/selmer                   {:mvn/version "1.12.62"}
-           babashka/fs                     {:mvn/version "0.5.24"}}
- :aliases {:dev  {:extra-paths ["env/dev/clj" "test"]}
+ :deps    {org.clojure/clojure          {:mvn/version "1.12.1"}
+           io.github.amiorin/big-config {:git/sha "ccc43d67a619c27d8c05ae3014754da196d6838c"}
+           selmer/selmer                {:mvn/version "1.12.62"}
+           babashka/fs                  {:mvn/version "0.5.24"}
+           babashka/process {:mvn/version "0.6.23"}}
+ :aliases {:dev  {:extra-paths ["test"]}
            :test {:extra-paths ["test"]
                   :extra-deps {io.github.cognitect-labs/test-runner {:git/tag "v0.5.1" :git/sha "dfb30dd"}}
                   :main-opts ["-m" "cognitect.test-runner"]

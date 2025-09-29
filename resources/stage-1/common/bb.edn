@@ -1,7 +1,6 @@
-{:deps {amiorin/dotfiles-v3 {:local/root "../../.."}}
- :tasks {:requires ([amiorin.core :as core])
+{:deps {amiorin/dotfiles-v3 {:local/root "../.."}}
+ :tasks {:requires ([dotfiles :as dotfiles])
          install {:doc "install the dotfiles"
-                  :task (do (core/install :dir "dotfiles")
-                            (core/git-config :shell))}
-         backup {:doc "backup the dotfiles"
-                 :task (core/backup :dir "dotfiles")}}}
+                  :task (dotfiles/install :dir "dotfiles")}
+         diff {:doc "diff the dotfiles"
+               :task (dotfiles/diff :dir "dotfiles")}}}
