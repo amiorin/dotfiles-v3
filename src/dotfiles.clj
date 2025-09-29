@@ -17,7 +17,7 @@
                      ::render/templates [{:template "stage-1"
                                           :target-dir (format "resources/stage-2/%s" profile)
                                           :overwrite :delete
-                                          :transform [["build"
+                                          :transform [["common"
                                                        :raw]
                                                       ["{{ profile }}"
                                                        :raw]]}
