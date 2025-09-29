@@ -2,9 +2,10 @@
   (:require
    [babashka.process :refer [shell]]
    [big-config :as bc]
+   [big-config.render :refer [discover]]
    [clojure.string :as str]
    [clojure.test :refer [deftest is testing]]
-   [dotfiles :as sut :refer [discover]]))
+   [dotfiles :as sut]))
 
 (defn check-dir
   [dir]
@@ -25,9 +26,6 @@
 %s
 > git new files
 %s" git-diff git-new-files)))
-
-(comment
-  (discover "resources/stage-2"))
 
 (deftest stability
   (testing "working directory is clean after running all modules"

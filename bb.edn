@@ -1,12 +1,6 @@
 {:deps {amiorin/dotfiles-v3 {:local/root "."}}
  :tasks
- {:requires ([dotfiles :as dotfiles]
-             [clojure.string :as str])
-  :init (defn run-steps [first-step]
-          (-> [first-step]
-              (into *command-line-args*)
-              (->> (str/join " "))
-              (dotfiles/run-steps {:big-config/env :shell})))
+ {:requires ([dotfiles :as dotfiles])
   render {:doc "render the dotfiles without installing them"
           :task (apply dotfiles/core :render *command-line-args*)}
   diff {:doc "render the dotfiles and diff them with the target"
