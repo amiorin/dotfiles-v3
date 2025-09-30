@@ -39,9 +39,8 @@
         prefix (str dir "/")
         files (atom [])
         _ (fs/walk-file-tree dir {:visit-file (fn [path _attr]
-                                                (let [rel-path (str/replace path prefix "")]
-                                                  (swap! files conj (str path))
-                                                  :continue))})
+                                                (swap! files conj (str path))
+                                                 :continue)})
         copies (->> @files
                     (map (fn [x]
                            (let [src (str/replace x prefix "")]
