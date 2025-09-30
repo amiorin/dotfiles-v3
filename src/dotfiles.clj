@@ -23,7 +23,7 @@
                                                        :raw]]}
                                          {:template "stage-2"
                                           :target-dir dir
-                                          :overwrite true
+                                          :overwrite :delete
                                           :transform [["{{ profile }}"]]}]})]
     (if step-fns
       (apply step/run-steps s opts step-fns)
