@@ -63,7 +63,7 @@
 (defn core [& [cmd profile opts]]
   (let [profile (case cmd
                   :render (or profile "all")
-                  (or profile (System/getenv "DOTFILES_PROFILE")))
+                  (or profile (System/getenv "DOTFILES_PROFILE") "default"))
         opts (or opts {::bc/env :shell})]
     (case cmd
       :render (case profile
