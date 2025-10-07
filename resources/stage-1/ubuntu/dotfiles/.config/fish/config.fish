@@ -1,15 +1,6 @@
 if status is-interactive
-    set -gx SHELL /usr/bin/fish
-    devbox global shellenv --recompute | source
-
-    # workaround to direnv
-    test -e .envrc; and touch .envrc
-
-    # start lorri
-    if not socat -u OPEN:/dev/null UNIX-CONNECT:$HOME/.cache/lorri/daemon.socket > /dev/null 2>&1
-        nohup lorri daemon < /dev/null > /dev/null 2>&1 &
-        disown
-    end
+    set -gx DIRENV_LOG_FORMAT ""
+    SHELL=fish devbox global shellenv --recompute | source
 
     #asdf
     if test -z $ASDF_DATA_DIR
@@ -101,5 +92,4 @@ if status is-interactive
     set -gx POETRY_VIRTUALENVS_IN_PROJECT true
     set -gx TZ 'Europe/Berlin'
     set -gx LOCALE_ARCHIVE /usr/lib/locale/locale-archive
-    test -e /var/run/docker.sock; and sudo chmod 777 /var/run/docker.sock
 end
