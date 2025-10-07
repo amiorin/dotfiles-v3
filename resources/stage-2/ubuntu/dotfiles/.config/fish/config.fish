@@ -19,9 +19,7 @@ if status is-interactive
     set -gx HOMEBREW_NO_AUTO_UPDATE true
 
     # github credentials
-    if test -f (dirname (realpath (status --current-filename)))/config.private.fish
-       source (dirname (realpath (status --current-filename)))/config.private.fish
-    end
+    set -gx GITHUB_TOKEN {{ "GITHUB_TOKEN" | lookup-env }}
 {% endif %}
 
     #asdf
