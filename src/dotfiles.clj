@@ -9,22 +9,34 @@
    [big-config.step :as step]
    [clojure.string :as str]))
 
+(defn ->envrc-template []
+  (when-not (fs/exists? ".envrc.profile")
+    {:template "envrc"
+     :target-dir (str (fs/cwd))
+     :overwrite true
+     :transfrom [["root"
+                  {"envrc.profile" ".envrc.profile"}]]}))
+
 (defn run-steps [s opts & step-fns]
   (let [{:keys [profile]} (step/parse-module-and-profile s)
         dir (format "dist/%s" profile)
+        envrc-template (->envrc-template)
+        stage-1 {:template "stage-1"
+                 :target-dir (format "resources/stage-2/%s" profile)
+                 :overwrite :delete
+                 :transform [["common"
+                              :raw]
+                             ["{{ profile }}"
+                              :raw]]}
+        stage-2 {:template "stage-2"
+                 :target-dir dir
+                 :overwrite :delete
+                 :transform [["{{ profile }}"]]}
+        templates (cond-> [stage-1 stage-2]
+                    envrc-template (conj envrc-template))
         opts (merge opts
                     {::run/shell-opts {:dir dir}
-                     ::render/templates [{:template "stage-1"
-                                          :target-dir (format "resources/stage-2/%s" profile)
-                                          :overwrite :delete
-                                          :transform [["common"
-                                                       :raw]
-                                                      ["{{ profile }}"
-                                                       :raw]]}
-                                         {:template "stage-2"
-                                          :target-dir dir
-                                          :overwrite :delete
-                                          :transform [["{{ profile }}"]]}]})]
+                     ::render/templates templates})]
     (if step-fns
       (apply step/run-steps s opts step-fns)
       (step/run-steps s opts))))
@@ -40,7 +52,7 @@
         files (atom [])
         _ (fs/walk-file-tree dir {:visit-file (fn [path _attr]
                                                 (swap! files conj (str path))
-                                                 :continue)})
+                                                :continue)})
         copies (->> @files
                     (map (fn [x]
                            (let [src (str/replace x prefix "")]
