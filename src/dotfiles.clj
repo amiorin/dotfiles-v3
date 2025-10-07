@@ -14,7 +14,7 @@
     {:template "envrc"
      :target-dir (str (fs/cwd))
      :overwrite true
-     :transfrom [["root"
+     :transform [["root"
                   {"envrc.profile" ".envrc.profile"}]]}))
 
 (defn run-steps [s opts & step-fns]
@@ -82,6 +82,6 @@
                 "all" (let [profiles (discover "resources/stage-2")]
                         (doseq [profile profiles]
                           (process/shell (format "bb render %s" profile))))
-                (run-steps (format "render -- dotiles %s" profile) opts))
+                (run-steps (format "render -- dotfiles %s" profile) opts))
       :diff (run-steps (format "render exec -- dotfiles %s bb diff" profile) opts)
       :install (run-steps (format "render exec -- dotfiles %s bb install" profile) opts))))
