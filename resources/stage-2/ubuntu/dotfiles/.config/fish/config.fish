@@ -2,6 +2,23 @@ if status is-interactive
     set -gx DIRENV_LOG_FORMAT ""
     SHELL=fish devbox global shellenv --recompute | source
 
+
+    starship init fish | source
+    zoxide init fish | source
+    direnv hook fish | source
+    atuin init fish | source
+
+
+
+
+
+
+
+
+
+
+
+
     #asdf
     if test -z $ASDF_DATA_DIR
         set _asdf_shims "$HOME/.asdf/shims"
@@ -27,7 +44,7 @@ if status is-interactive
         set -l TARGET $TARGET_DIR/$CMD.fish
         mkdir -p $TARGET_DIR
         if not test -e $TARGET
-        register-python-argcomplete --shell fish $CMD > ~/.config/fish/completions/$CMD.fish
+            register-python-argcomplete --shell fish $CMD > ~/.config/fish/completions/$CMD.fish
         end
     end
 
@@ -35,6 +52,7 @@ if status is-interactive
     # register-cmd ansible
     # register-cmd ansible-playbook
 
+    # multi-account github
     if test -n "$GITHUB_TOKEN"
         git config --global url."https://$GITHUB_TOKEN:x-oauth-basic@github.com/".insteadOf "https://github.com/"
     end
@@ -51,11 +69,6 @@ if status is-interactive
         git config --global url."https://$FACUNDO_TOKEN_GAMMA:x-oauth-basic@github.com/".insteadOf "https://gamma@github.com/"
     end
 
-    starship init fish | source
-    zoxide init fish | source
-    direnv hook fish | source
-    atuin init fish | source
-
     fish_vi_key_bindings
     # cursor style like vim
     set fish_vi_force_cursor
@@ -66,7 +79,6 @@ if status is-interactive
     set fish_cursor_external line
     set fish_cursor_visual block
 
-
     if test "$INSIDE_EMACS" = vterm
         set -gx EDITOR emacsclient
     else
@@ -74,6 +86,7 @@ if status is-interactive
     end
     alias emacs=$EDITOR
     alias e=$EDITOR
+
 
     set -g fish_greeting
     set -gx COLORTERM truecolor

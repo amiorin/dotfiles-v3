@@ -1,7 +1,6 @@
 if status is-interactive
     set -gx DIRENV_LOG_FORMAT ""
-    set -gx SHELL /opt/homebrew/bin/fish
-    devbox global shellenv --recompute | source
+    SHELL=fish devbox global shellenv --recompute | source
 
     /opt/homebrew/bin/brew shellenv | source
     starship init fish | source
@@ -20,19 +19,6 @@ if status is-interactive
        source (dirname (realpath (status --current-filename)))/config.private.fish
     end
 
-    # pixi
-    fish_add_path $HOME/.pixi/bin
-
-    # npm
-    fish_add_path $HOME/.npm-global/bin
-
-    # gnu ls
-    set _gnubin "/opt/homebrew/opt/coreutils/libexec/gnubin"
-    if not contains $_gnubin $PATH
-        set -gx --prepend PATH $_gnubin
-    end
-    set --erase _gnubin
-
     #asdf
     if test -z $ASDF_DATA_DIR
         set _asdf_shims "$HOME/.asdf/shims"
@@ -48,7 +34,7 @@ if status is-interactive
     set --erase _asdf_shims
 
     # agent setup
-    if SSH_AUTH_SOCK=/tmp/$ZELLIJ_SESSION_NAME.agent ssh-add -l >/dev/null 2>&1
+    if SSH_AUTH_SOCK=/tmp/$ZELLIJ_SESSION_NAME.agent ssh-add -l > /dev/null 2>&1
         set -gx SSH_AUTH_SOCK /tmp/$ZELLIJ_SESSION_NAME.agent
     end
 
@@ -63,8 +49,8 @@ if status is-interactive
     end
 
     # ansible
-    register-cmd ansible
-    register-cmd ansible-playbook
+    # register-cmd ansible
+    # register-cmd ansible-playbook
 
     # multi-account github
     if test -n "$GITHUB_TOKEN"
@@ -116,5 +102,6 @@ if status is-interactive
 
     # misc
     set -gx POETRY_VIRTUALENVS_IN_PROJECT true
-    set -gx TZ Europe/Berlin
+    set -gx TZ 'Europe/Berlin'
+
 end
