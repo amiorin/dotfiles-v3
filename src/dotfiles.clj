@@ -10,12 +10,13 @@
    [clojure.string :as str]))
 
 (defn ->envrc-template []
-  (when-not (fs/exists? ".envrc.profile")
-    {:template "envrc"
-     :target-dir (str (fs/cwd))
-     :overwrite true
-     :transform [["root"
-                  {"envrc.profile" ".envrc.profile"}]]}))
+  (let [private ".envrc.private"]
+    (when-not (fs/exists? private)
+      {:template "envrc"
+       :target-dir (str (fs/cwd))
+       :overwrite true
+       :transform [["root"
+                    {(subs private 1) private}]]})))
 
 (defn run-steps [s opts & step-fns]
   (let [{:keys [profile]} (step/parse-module-and-profile s)
