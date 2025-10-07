@@ -2,22 +2,27 @@ if status is-interactive
     set -gx DIRENV_LOG_FORMAT ""
     SHELL=fish devbox global shellenv --recompute | source
 
+{% if profile = "macos" %}
+    /opt/homebrew/bin/brew shellenv | source
+{% endif %}
 
     starship init fish | source
     zoxide init fish | source
     direnv hook fish | source
     atuin init fish | source
 
+{% if profile = "macos" %}
+    # https://www.packetmischief.ca/2016/09/06/ssh-agent-on-os-x/
+    set -gx SSH_AUTH_SOCK (launchctl getenv SSH_AUTH_SOCK)
 
+    # brew
+    set -gx HOMEBREW_NO_AUTO_UPDATE true
 
-
-
-
-
-
-
-
-
+    # github credentials
+    if test -f (dirname (realpath (status --current-filename)))/config.private.fish
+       source (dirname (realpath (status --current-filename)))/config.private.fish
+    end
+{% endif %}
 
     #asdf
     if test -z $ASDF_DATA_DIR
@@ -87,6 +92,9 @@ if status is-interactive
     alias emacs=$EDITOR
     alias e=$EDITOR
 
+{% if profile = "macos" %}
+    alias ze="zellij attach --create AMIORIN@silicon"
+{% endif %}
 
     set -g fish_greeting
     set -gx COLORTERM truecolor
@@ -104,5 +112,9 @@ if status is-interactive
     # misc
     set -gx POETRY_VIRTUALENVS_IN_PROJECT true
     set -gx TZ 'Europe/Berlin'
+
+{% if profile = "ubuntu" %}
     set -gx LOCALE_ARCHIVE /usr/lib/locale/locale-archive
+{% endif %}
+
 end
