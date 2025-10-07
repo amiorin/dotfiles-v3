@@ -44,7 +44,7 @@ if status is-interactive
         set -l TARGET $TARGET_DIR/$CMD.fish
         mkdir -p $TARGET_DIR
         if not test -e $TARGET
-            register-python-argcomplete --shell fish $CMD >~/.config/fish/completions/$CMD.fish
+            register-python-argcomplete --shell fish $CMD > ~/.config/fish/completions/$CMD.fish
         end
     end
 
@@ -88,7 +88,6 @@ if status is-interactive
     alias e=$EDITOR
     alias ze="zellij attach --create AMIORIN@silicon"
 
-
     set -g fish_greeting
     set -gx COLORTERM truecolor
 
@@ -99,6 +98,8 @@ if status is-interactive
     alias rt="ls -l -r -a --smart-group --sort=time"
     alias u="cd .."
     alias k=kubectl
+    alias o=overmind
+    alias j=just
 
     # misc
     set -gx POETRY_VIRTUALENVS_IN_PROJECT true
