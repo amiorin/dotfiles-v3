@@ -26,6 +26,7 @@
                  :target-dir (format "resources/stage-2/%s" profile)
                  :overwrite :delete
                  :transform [["common"
+                              {"projectile" ".projectile"}
                               :raw]
                              ["{{ profile }}"
                               :raw]]}
