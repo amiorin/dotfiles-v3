@@ -87,3 +87,6 @@
                 (run-steps (format "render -- dotfiles %s" profile) opts))
       :diff (run-steps (format "render exec -- dotfiles %s bb diff" profile) opts)
       :install (run-steps (format "render exec -- dotfiles %s bb install" profile) opts))))
+
+(comment
+  (core :render "ubuntu" {::bc/env :repl}))
