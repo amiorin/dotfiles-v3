@@ -70,8 +70,8 @@
     (fs/copy-tree dir home {:replace-existing true})))
 
 (comment
-  (diff :dir "dist/dotfiles/macos/dotfiles")
-  (install :dir "dist/dotfiles/macos/dotfiles"))
+  (diff :dir "dist/macos/dotfiles")
+  (install :dir "dist/macos/dotfiles"))
 
 (defn core [& [cmd profile opts]]
   (let [profile (case cmd
