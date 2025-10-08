@@ -5,6 +5,8 @@
     ff = only
     rebase = true
 [init]
-    defaultBranch = main{% if profile = "macos" %}
+    defaultBranch = main
+{%- if profile = "macos" %}
 [url "https://{{ "GITHUB_TOKEN" | lookup-env }}:x-oauth-basic@github.com/"]
-    insteadOf = https://github.com/{% endif %}
+    insteadOf = https://github.com/
+{%- endif %}
