@@ -59,10 +59,10 @@
                     (map (fn [x]
                            (let [src (str/replace x prefix "")]
                              [(format "%s/%s" home src) (str x)]))))]
-    (println "$ cd" dist-path)
     (doseq [[src dst] copies]
-      (let [cmd (format "diff --color=always '%s' '%s'" src dst)]
-        (println "$" cmd)
+      (let [cmd (format "diff --color=always '%s' '%s'" src dst)
+            printed-cmd (format "diff '%s' '%s/%s'" src dist-path dst)]
+        (println printed-cmd)
         (process/shell {:continue true
                         :out *out*
                         :err *err*} cmd)))))
