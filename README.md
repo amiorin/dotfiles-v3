@@ -1,6 +1,8 @@
 # Intro
 Use big-config to manage your dotfiles.
 
+https://www.big-config.it/use-cases/dotfiles/
+
 ``` shell
 bb tasks
 # The following tasks are available:
