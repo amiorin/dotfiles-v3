@@ -1,4 +1,4 @@
-{:deps {amiorin/dotfiles-v3 {:local/root "."}}
+{:deps {amiorin/big-config {:local/root "."}}
  :tasks
  {help {:doc "show detailed help"
         :override-builtin true
