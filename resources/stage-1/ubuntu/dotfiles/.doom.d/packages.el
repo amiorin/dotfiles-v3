@@ -21,4 +21,4 @@
            :repo "https://codeberg.org/joostkremers/visual-fill-column.git"
            :files ("visual-fill-column.el")))
 (package! adoc-mode)
-(package! consult-projectile)
+(package! rainbow-delimiters)
