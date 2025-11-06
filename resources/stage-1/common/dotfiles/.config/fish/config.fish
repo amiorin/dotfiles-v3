@@ -8,7 +8,8 @@ if status is-interactive
     starship init fish | source
     zoxide init fish | source
     direnv hook fish | source
-    atuin init fish | source
+    # workaround https://github.com/atuinsh/atuin/issues/2940
+    atuin init fish | sed "s/-k up/up/g" | source
 
 {%- if profile = "macos" %}
     # https://www.packetmischief.ca/2016/09/06/ssh-agent-on-os-x/
