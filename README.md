@@ -9,12 +9,12 @@ sudo -s
 echo "ubuntu ALL=(ALL) NOPASSWD:ALL" | tee -a /etc/sudoers.d/ubuntu
 
 # or provide the password in the shell only for the first time
-bb build exec -- minipc ansible ansible-playbook -K
+bb render exec -- minipc ansible ansible-playbook -K
 ```
 
 ## shell alias
 ``` shell
-alias ansible-playbook="bb build exec -- minipc ansible ansible-playbook"
+alias ansible-playbook="bb render exec -- minipc ansible ansible-playbook"
 ansible-playbook main.yml
 ```
 

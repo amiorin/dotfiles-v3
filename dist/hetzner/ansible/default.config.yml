@@ -1,0 +1,11 @@
+{
+  "users" : [ {
+    "name" : "vscode",
+    "uid" : "1000",
+    "doomemacs" : "6ea4332b854d311d7ec8ae6384fae8d9871f5730",
+    "remove" : false
+  } ],
+  "remove_users" : [ ],
+  "atuin_login" : "{{ lookup('ansible.builtin.env', 'ATUIN_LOGIN') }}",
+  "ssh_key" : "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIHDKdUkY+SfRm6ttOz2EEZ2+i/zm+o1mpMOdMeGUr0t4 32617+amiorin@users.noreply.github.com"
+}

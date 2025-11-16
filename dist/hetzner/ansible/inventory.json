@@ -1,0 +1,23 @@
+{
+  "all" : {
+    "children" : {
+      "admin" : {
+        "hosts" : {
+          "root@hetzner" : {
+            "ansible_host" : "hetzner",
+            "ansible_user" : "vscode"
+          }
+        }
+      },
+      "users" : {
+        "hosts" : {
+          "vscode@hetzner" : {
+            "ansible_host" : "hetzner",
+            "ansible_user" : "vscode",
+            "uid" : "1000"
+          }
+        }
+      }
+    }
+  }
+}
