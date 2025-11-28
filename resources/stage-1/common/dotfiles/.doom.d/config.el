@@ -505,6 +505,9 @@
 
 ;; Clojure
 (add-hook 'clojure-mode-hook #'+format-with-lsp-mode)
+(add-hook 'clojure-ts-mode-hook #'+format-with-lsp-mode)
+(setq clojure-toplevel-inside-comment-form t)
+(setq clojure-ts-toplevel-inside-comment-form t)
 
 ;; rainbow-delimiters
 (add-hook 'prog-mode-hook #'rainbow-delimiters-mode)
