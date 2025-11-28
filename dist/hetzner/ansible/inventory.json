@@ -3,17 +3,17 @@
     "children" : {
       "admin" : {
         "hosts" : {
-          "root@hetzner" : {
-            "ansible_host" : "hetzner",
-            "ansible_user" : "vscode"
+          "root@hetzner-8gb" : {
+            "ansible_host" : "hetzner-8gb",
+            "ansible_user" : "ubuntu"
           }
         }
       },
       "users" : {
         "hosts" : {
-          "vscode@hetzner" : {
-            "ansible_host" : "hetzner",
-            "ansible_user" : "vscode",
+          "ubuntu@hetzner-8gb" : {
+            "ansible_host" : "hetzner-8gb",
+            "ansible_user" : "ubuntu",
             "uid" : "1000"
           }
         }

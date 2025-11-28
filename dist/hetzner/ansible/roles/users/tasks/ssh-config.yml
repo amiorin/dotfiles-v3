@@ -1,10 +1,10 @@
 [ {
-  "name" : "Add a new host entry using blockinfile for hetzner",
+  "name" : "Add a new host entry using blockinfile for hetzner-8gb",
   "ansible.builtin.blockinfile" : {
     "path" : "~/.ssh/config",
     "create" : true,
-    "block" : "Host hetzner\n  Hostname hetzner.afrino-bushi.ts.net\n  User ubuntu\n  ForwardAgent yes ",
-    "marker" : "# {mark} ANSIBLE MANAGED BLOCK FOR hetzner",
+    "block" : "Host hetzner-8gb\n  Hostname hetzner-8gb.afrino-bushi.ts.net\n  User ubuntu\n  ForwardAgent yes ",
+    "marker" : "# {mark} ANSIBLE MANAGED BLOCK FOR hetzner-8gb",
     "state" : "present"
   }
 } ]
