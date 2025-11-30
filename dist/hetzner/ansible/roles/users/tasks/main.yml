@@ -40,8 +40,8 @@
     . /etc/profile.d/nix.sh
     && . /etc/profile.d/Z50-devbox.sh
     && asdf plugin add java https://github.com/halcyon/asdf-java.git
-    && asdf install java latest:temurin-21
-    && asdf set --home java latest:temurin-21
+    && asdf install java latest:temurin-25
+    && asdf set --home java latest:temurin-25
     && asdf plugin add duckdb https://github.com/amiorin/asdf-duckdb.git
     && asdf install duckdb latest
     && asdf set --home duckdb latest
@@ -82,7 +82,7 @@
     && export PATH=~/.asdf/shims:$PATH
     && git fetch origin
     && git reset --hard origin/main
-    && bb build exec -- dotfiles ubuntu bb install
+    && bb install -p ubuntu
   args:
     chdir: code/personal/dotfiles-v3/main
     creates: ~/.config/fish/config.fish

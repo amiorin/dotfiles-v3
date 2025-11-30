@@ -3,7 +3,7 @@
 (defn data-fn [_ _]
   (let [sudoer "ubuntu"
         main-user "ubuntu"
-        hosts ["hetzner-8gb"]
+        hosts ["hetzner"]
         users [{:name main-user
                 :uid "1000"
                 :doomemacs "6ea4332b854d311d7ec8ae6384fae8d9871f5730"
@@ -48,7 +48,9 @@
                        "zip"
                        "unzip"
                        "d2"
-                       "clojure-lsp"]
+                       "clojure-lsp"
+                       "btop"
+                       "clj-kondo"]
                       (mapv (fn [x] [x x]))
                       (into [["ripgrep" "rg"]]))]
     {:repos repos

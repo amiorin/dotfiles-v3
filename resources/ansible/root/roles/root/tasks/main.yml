@@ -116,3 +116,9 @@
           - fish
           - build-essential
         state: present
+
+    - name: Install caddy package
+      import_tasks: caddy.yml
+
+    - name: Install redis package
+      import_tasks: redis.yml

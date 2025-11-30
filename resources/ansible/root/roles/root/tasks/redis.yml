@@ -1,0 +1,16 @@
+---
+- name: Create the Redis GPG key
+  shell: curl -fsSL https://packages.redis.io/gpg | sudo gpg --dearmor -o /usr/share/keyrings/redis-archive-keyring.gpg
+  args:
+    creates: /usr/share/keyrings/redis-archive-keyring.gpg
+
+- name: Add Redis repository
+  apt_repository:
+    repo: "deb [signed-by=/usr/share/keyrings/redis-archive-keyring.gpg] https://packages.redis.io/deb noble main"
+    state: present
+
+- name: Install Redis
+  apt:
+    name: redis
+    state: present
+    update_cache: yes

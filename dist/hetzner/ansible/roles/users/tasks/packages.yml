@@ -130,4 +130,16 @@
     "creates" : ".local/share/devbox/global/default/.devbox/nix/profile/default/bin/clojure-lsp"
   },
   "ansible.builtin.shell" : ". /etc/profile.d/nix.sh && devbox global add --disable-plugin clojure-lsp"
+}, {
+  "name" : "Add devbox package btop",
+  "args" : {
+    "creates" : ".local/share/devbox/global/default/.devbox/nix/profile/default/bin/btop"
+  },
+  "ansible.builtin.shell" : ". /etc/profile.d/nix.sh && devbox global add --disable-plugin btop"
+}, {
+  "name" : "Add devbox package clj-kondo",
+  "args" : {
+    "creates" : ".local/share/devbox/global/default/.devbox/nix/profile/default/bin/clj-kondo"
+  },
+  "ansible.builtin.shell" : ". /etc/profile.d/nix.sh && devbox global add --disable-plugin clj-kondo"
 } ]
