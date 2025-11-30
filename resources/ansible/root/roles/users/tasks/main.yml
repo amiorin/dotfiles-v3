@@ -82,7 +82,7 @@
     && export PATH=~/.asdf/shims:$PATH
     && git fetch origin
     && git reset --hard origin/main
-    && bb build exec -- dotfiles ubuntu bb install
+    && bb install -p ubuntu
   args:
     chdir: code/personal/dotfiles-v3/main
     creates: ~/.config/fish/config.fish
