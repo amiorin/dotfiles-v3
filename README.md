@@ -1,6 +1,9 @@
 # Intro
 Create a dev enviroment using nix and big-config.
 
+## hetzner
+It works out of the box. I use the CX33 Helsinki with Ubuntu 24.04, only IPv4 and ssh key. The rebuild feature is used to test the playbook from scratch.
+
 ## sudo
 Ubuntu requires a password to become root by default.
 
@@ -21,7 +24,18 @@ ansible-playbook main.yml
 ## ssh-config
 
 ```
-
+Host hetzner
+  HostName 95.217.164.175
+  User ubuntu
+  IdentityFile ~/.ssh/id_ed25519
+  IdentitiesOnly yes
+  ForwardAgent yes
+Host hetzner-dev
+  HostName 46.62.162.129
+  User ubuntu
+  IdentityFile ~/.ssh/id_ed25519
+  IdentitiesOnly yes
+  ForwardAgent yes
 ```
 
 ## vscode uid
