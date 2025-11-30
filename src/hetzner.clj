@@ -1,9 +1,9 @@
 (ns hetzner)
 
 (defn data-fn [_ _]
-  (let [sudoer "ubuntu"
+  (let [sudoer "root"
         main-user "ubuntu"
-        hosts ["hetzner"]
+        hosts ["hetzner" "hetzner-dev"]
         users [{:name main-user
                 :uid "1000"
                 :doomemacs "6ea4332b854d311d7ec8ae6384fae8d9871f5730"

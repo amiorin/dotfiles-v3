@@ -7,4 +7,13 @@
     "marker" : "# {mark} ANSIBLE MANAGED BLOCK FOR hetzner",
     "state" : "present"
   }
+}, {
+  "name" : "Add a new host entry using blockinfile for hetzner-dev",
+  "ansible.builtin.blockinfile" : {
+    "path" : "~/.ssh/config",
+    "create" : true,
+    "block" : "Host hetzner-dev\n  Hostname hetzner-dev.afrino-bushi.ts.net\n  User ubuntu\n  ForwardAgent yes ",
+    "marker" : "# {mark} ANSIBLE MANAGED BLOCK FOR hetzner-dev",
+    "state" : "present"
+  }
 } ]

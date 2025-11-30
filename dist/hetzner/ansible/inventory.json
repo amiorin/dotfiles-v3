@@ -5,7 +5,11 @@
         "hosts" : {
           "root@hetzner" : {
             "ansible_host" : "hetzner",
-            "ansible_user" : "ubuntu"
+            "ansible_user" : "root"
+          },
+          "root@hetzner-dev" : {
+            "ansible_host" : "hetzner-dev",
+            "ansible_user" : "root"
           }
         }
       },
@@ -13,6 +17,11 @@
         "hosts" : {
           "ubuntu@hetzner" : {
             "ansible_host" : "hetzner",
+            "ansible_user" : "ubuntu",
+            "uid" : "1000"
+          },
+          "ubuntu@hetzner-dev" : {
+            "ansible_host" : "hetzner-dev",
             "ansible_user" : "ubuntu",
             "uid" : "1000"
           }
