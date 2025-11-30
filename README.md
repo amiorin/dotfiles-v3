@@ -4,6 +4,13 @@ Create a dev enviroment using nix and big-config.
 ## hetzner
 It works out of the box. I use the CX33 Helsinki with Ubuntu 24.04, only IPv4 and ssh key. The rebuild feature is used to test the playbook from scratch.
 
+## Fix known_hosts
+Use this command to check if you can connect and forward the agent. Hetzner reuses the IP addresses when you rebuild the machine but the sshd pub key changes and ssh doesn't forward the agent if the fingerprint fails. git clone failes with ssh auth if the agent is not forwarded even if the repository is public.
+
+``` shell
+bb render exec -- hetzner ansible ansible all -m shell -a '"ssh-add -l"'
+```
+
 ## sudo
 Ubuntu requires a password to become root by default.
 
