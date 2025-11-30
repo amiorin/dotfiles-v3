@@ -3,7 +3,7 @@
 (defn data-fn [_ _]
   (let [sudoer "root"
         main-user "ubuntu"
-        hosts ["hetzner" "hetzner-dev"]
+        hosts ["95.217.164.175" "46.62.162.129"]
         users [{:name main-user
                 :uid "1000"
                 :doomemacs "6ea4332b854d311d7ec8ae6384fae8d9871f5730"

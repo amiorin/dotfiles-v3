@@ -3,25 +3,25 @@
     "children" : {
       "admin" : {
         "hosts" : {
-          "root@hetzner" : {
-            "ansible_host" : "hetzner",
+          "root@95.217.164.175" : {
+            "ansible_host" : "95.217.164.175",
             "ansible_user" : "root"
           },
-          "root@hetzner-dev" : {
-            "ansible_host" : "hetzner-dev",
+          "root@46.62.162.129" : {
+            "ansible_host" : "46.62.162.129",
             "ansible_user" : "root"
           }
         }
       },
       "users" : {
         "hosts" : {
-          "ubuntu@hetzner" : {
-            "ansible_host" : "hetzner",
+          "ubuntu@95.217.164.175" : {
+            "ansible_host" : "95.217.164.175",
             "ansible_user" : "ubuntu",
             "uid" : "1000"
           },
-          "ubuntu@hetzner-dev" : {
-            "ansible_host" : "hetzner-dev",
+          "ubuntu@46.62.162.129" : {
+            "ansible_host" : "46.62.162.129",
             "ansible_user" : "ubuntu",
             "uid" : "1000"
           }

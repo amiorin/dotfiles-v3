@@ -1,19 +1,19 @@
 [ {
-  "name" : "Add a new host entry using blockinfile for hetzner",
+  "name" : "Add a new host entry using blockinfile for 95.217.164.175",
   "ansible.builtin.blockinfile" : {
     "path" : "~/.ssh/config",
     "create" : true,
-    "block" : "Host hetzner\n  Hostname hetzner.afrino-bushi.ts.net\n  User ubuntu\n  ForwardAgent yes ",
-    "marker" : "# {mark} ANSIBLE MANAGED BLOCK FOR hetzner",
+    "block" : "Host 95.217.164.175\n  Hostname 95.217.164.175.afrino-bushi.ts.net\n  User ubuntu\n  ForwardAgent yes ",
+    "marker" : "# {mark} ANSIBLE MANAGED BLOCK FOR 95.217.164.175",
     "state" : "present"
   }
 }, {
-  "name" : "Add a new host entry using blockinfile for hetzner-dev",
+  "name" : "Add a new host entry using blockinfile for 46.62.162.129",
   "ansible.builtin.blockinfile" : {
     "path" : "~/.ssh/config",
     "create" : true,
-    "block" : "Host hetzner-dev\n  Hostname hetzner-dev.afrino-bushi.ts.net\n  User ubuntu\n  ForwardAgent yes ",
-    "marker" : "# {mark} ANSIBLE MANAGED BLOCK FOR hetzner-dev",
+    "block" : "Host 46.62.162.129\n  Hostname 46.62.162.129.afrino-bushi.ts.net\n  User ubuntu\n  ForwardAgent yes ",
+    "marker" : "# {mark} ANSIBLE MANAGED BLOCK FOR 46.62.162.129",
     "state" : "present"
   }
 } ]
