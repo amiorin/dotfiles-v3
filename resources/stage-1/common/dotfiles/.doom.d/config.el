@@ -358,6 +358,7 @@
 
 ;; magit diff 2 panes instead of 3
 (setq magit-ediff-dwim-show-on-hunks t)
+(setq magit-published-branches nil)
 
 ;; Hide unneeded UI elements (this can even be done in my/org-present-start!)
 (add-to-list 'default-frame-alist '(undecorated-round . t))

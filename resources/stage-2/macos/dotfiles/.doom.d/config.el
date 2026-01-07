@@ -358,6 +358,7 @@
 
 ;; magit diff 2 panes instead of 3
 (setq magit-ediff-dwim-show-on-hunks t)
+(setq magit-published-branches nil)
 
 ;; Hide unneeded UI elements (this can even be done in my/org-present-start!)
 (add-to-list 'default-frame-alist '(undecorated-round . t))
@@ -505,14 +506,9 @@
 
 ;; Clojure
 (add-hook 'clojure-mode-hook #'+format-with-lsp-mode)
+(add-hook 'clojure-ts-mode-hook #'+format-with-lsp-mode)
+(setq clojure-toplevel-inside-comment-form t)
+(setq clojure-ts-toplevel-inside-comment-form t)
 
-;; consult-projectile
-;; (map! :leader
-;;       :desc "Find files in a project"
-;;       "SPC" #'consult-projectile)
-;; (setq consult-projectile-sources '(consult-projectile--source-projectile-buffer
-;;                                    consult-projectile--source-projectile-file
-;;                                    consult-projectile--source-projectile-project
-;;                                    consult-projectile--source-projectile-recentf
-;;                                    consult-projectile--source-projectile-dir
-;;                                    ))
+;; rainbow-delimiters
+(add-hook 'prog-mode-hook #'rainbow-delimiters-mode)

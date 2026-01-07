@@ -45,7 +45,7 @@ cmd-ctrl-f9 = 'move-node-to-workspace 9'
 cmd-ctrl-f10 = 'move-node-to-workspace 10'
 
 cmd-f11 = 'mode move'
-cmd-f12 = 'mode focus'
+cmd-f12 = ['layout accordion tiles', 'mode main']
 cmd-f13 = 'focus left --boundaries-action wrap-around-the-workspace'
 cmd-f16 = 'focus right --boundaries-action wrap-around-the-workspace'
 cmd-ctrl-f13 = 'focus up --boundaries-action wrap-around-the-workspace'
