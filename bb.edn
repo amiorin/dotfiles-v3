@@ -1,0 +1,15 @@
+{:deps {amiorin/clare-walter {:local/root "."}}
+ :tasks
+ {:requires ([alpha :as alpha]
+             [clojure.string :as str])
+  :init (defn ops []
+          (-> (str/join " " *command-line-args*)
+              (alpha/ops {:big-config/env :shell})))
+  tidy {:doc "tidy clojure files"
+        :task (do (shell "clojure-lsp clean-ns")
+                  (shell "clojure-lsp format"))}
+  help {:doc "the workflow help"
+        :override-builtin true
+        :task (println "Help")}
+  ops {:doc "ops"
+       :task (ops)}}}
