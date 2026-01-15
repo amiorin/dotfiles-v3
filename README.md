@@ -11,7 +11,7 @@ bb ops init plan --node-name cesar-ford [tofu extra-args]
 ## ansible steps
 bb ops ansible --node-name cesar-ford ansible-playbook main.yml
 alias ansible-playbook="bb ops ansible --node-name cesar-ford ansible-playbook"
-bb ops configure --node-name cesar-ford [ansible extra-args]
+bb ops playbook --node-name cesar-ford [ansible extra-args]
 ## rendering step
 bb ops render --node-name cesar-ford
 

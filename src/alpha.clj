@@ -25,61 +25,66 @@
           (loop [xs dsl-or-opts
                  token nil
                  actions []
-                 node-name nil
+                 name nil
                  extra-args []]
             (cond
               (string? xs)
               (let [xs (-> (str/trim xs)
                            (str/split #"\s+"))]
-                (recur (rest xs) (first xs) actions node-name extra-args))
+                (recur (rest xs) (first xs) actions name extra-args))
 
               (all-actions token)
               (let [actions (into actions (case token
                                             "render" [:render-tofu :render-ansible]
                                             "create" [:create-tofu :create-ansible]
                                             [(keyword token)]))]
-                (recur (rest xs) (first xs) actions node-name extra-args))
+                (recur (rest xs) (first xs) actions name extra-args))
 
               (nil? (seq actions))
               (throw (ex-info (format "`%s` is not an action (%s)" token (str/join "|" all-actions)) {:opts opts}))
 
-              (#{"--node-name"} token)
-              {::node-name (first xs)
+              (#{"--name"} token)
+              {::name (first xs)
                ::actions actions
                ::extra-args (rest xs)}
 
               :else
-              (throw (ex-info "--node-name is missing" {:opts opts}))))))
+              (throw (ex-info "--name is missing" {:opts opts}))))))
       (merge opts {::bc/exit 0
                    ::bc/err nil})))
 
 (comment
-  (parse-ops {::dsl-or-opts "build destroy plan --node-name cesar-ford --tags focus"})
-  (parse-ops {::dsl-or-opts "--node-name cesar-ford"})
-  (parse-ops {::dsl-or-opts "playbook --node-name cesar-ford --tags focus"})
-  (parse-ops {::dsl-or-opts "delete render create --node-name cesar-ford"}))
+  (parse-ops {::dsl-or-opts "build destroy plan --name cesar-ford --tags focus"})
+  (parse-ops {::dsl-or-opts "--name cesar-ford"})
+  (parse-ops {::dsl-or-opts "playbook --name cesar-ford --tags focus"})
+  (parse-ops {::dsl-or-opts "delete render create --name cesar-ford"}))
 
 (defn tofu-init?
   [dir]
   (not (fs/exists? (fs/path dir ".terraform"))))
 
 (defn tofu
-  [step-fns {:keys [::node-name ::bc/env ::action ::extra-args] :as opts}]
+  [step-fns {:keys [::name ::bc/env ::action ::extra-args] :as opts}]
   (let [run-steps (step/->run-steps)
-        dir (format ".dist/%s/tofu" node-name)
+        dir (format ".dist/%s/tofu" name)
         action-opts (case action
                       :render-tofu {::step/steps ["render"]}
                       :create-tofu {::step/steps ["render" "exec"]
-                                    ::run/cmds (cond-> ["tofu apply"]
+                                    ::run/cmds (cond-> ["tofu apply -auto-approve"]
                                                  (tofu-init? dir) (->> (into ["tofu init"])))}
-                      :init :plan :apply {::step/steps ["render" "exec"]
-                                          ::run/cmds [(format "tofu %s %s" (str action) (str/join " " extra-args))]}
+                      :delete {::step/steps ["render" "exec"]
+                               ::run/cmds ["tofu destroy -auto-approve"]}
+                      :init :plan :apply :destroy {::step/steps ["render" "exec"]
+                                                   ::run/cmds [(format "tofu %s %s"
+                                                                       (name action)
+                                                                       (str/join " " (cond-> extra-args
+                                                                                       (#{:apply :destroy} action (->> (into ["-auto-approve"]))))))]}
                       :tofu {::step/steps ["render" "exec"]
                              ::run/cmds [(str/join " " extra-args)]})
         tofu-opts (merge action-opts
                          {::bc/env env
                           ::step/module "tofu"
-                          ::step/profile node-name
+                          ::step/profile name
                           ::run/shell-opts {:dir dir
                                             :extra-env {"AWS_PROFILE" "default"}}
                           ::render/templates [{:template "alpha"
@@ -92,9 +97,9 @@
          (merge opts {::tofu-opts tofu-opts}))))
 
 (defn tofu-outputs
-  [{:keys [::node-name] :as opts}]
+  [{:keys [::name] :as opts}]
   (->> (try
-         (-> (p/shell {:dir (format ".dist/%s/tofu" node-name)
+         (-> (p/shell {:dir (format ".dist/%s/tofu" name)
                        :out :string} "tofu output --json")
              :out
              {::output (json/parse-string keyword)})
@@ -103,10 +108,10 @@
        (merge opts)))
 
 (defn ansible
-  [step-fns {:keys [::node-name ::bc/env ::action ::extra-args] :as opts}]
+  [step-fns {:keys [::name ::bc/env ::action ::extra-args] :as opts}]
   (let [opts (tofu-outputs opts)
         run-steps (step/->run-steps)
-        dir (format ".dist/%s/ansible" node-name)
+        dir (format ".dist/%s/ansible" name)
         action-opts (case action
                       :render-ansible {::step/steps ["render"]}
                       :create-ansible {::step/steps ["render" "exec"]
@@ -116,23 +121,34 @@
                       :ansible {::step/steps ["render" "exec"]
                                 ::run/cmds [(str/join " " extra-args)]})
         ansible-opts (merge action-opts
-                            {::bc/env env
+                            {::output (::output opts)
+                             ::bc/env env
                              ::step/module "ansible"
-                             ::step/profile node-name
+                             ::step/profile name
                              ::run/shell-opts {:dir dir
                                                :extra-env {"AWS_PROFILE" "default"}}
                              ::render/templates [{:template "alpha"
-                                                  :node-name node-name
+                                                  :name name
                                                   :target-dir dir
                                                   :overwrite true
+                                                  :data-fn 'ansible/data-fn
                                                   :transform [["ansible"
+                                                               :raw]
+                                                              ['ansible/render "roles/users/tasks"
+                                                               {:packages "packages.yml"
+                                                                :repos "repos.yml"
+                                                                :ssh-config "ssh-config.yml"}
+                                                               :raw]
+                                                              ['ansible/render
+                                                               {:inventory "inventory.json"
+                                                                :config "default.config.yml"}
                                                                :raw]]}]})
         ansible-opts (run-steps step-fns ansible-opts)]
     (->> (select-keys ansible-opts [::bc/exit ::bc/err])
          (merge opts {::ansible-opts ansible-opts}))))
 
 (comment
-  (ansible nil {::node-name "cesar-ford"
+  (ansible nil {::name "cesar-ford"
                 ::bc/env :repl}))
 
 (defn ops
@@ -161,7 +177,7 @@
                                                       (= step ::end)
                                                       [nil opts]
 
-                                                      (next-action :create-tofu :delete :tofu :init :plan :render-tofu)
+                                                      (next-action :create-tofu :delete :tofu :init :plan :destroy :render-tofu)
                                                       (next-step ::tofu)
 
                                                       (next-action :create-ansible :ansible :playbook :render-ansible)
@@ -172,4 +188,7 @@
     (rama-cluster step-fns opts)))
 
 (comment
-  (utils/sort-nested-map (ops "create --node-name cesar-ford pwd" {::bc/env :repl})))
+  (utils/sort-nested-map (ops "render --name cesar-ford" {::bc/env :repl})))
+
+(comment
+  (utils/sort-nested-map (ops "render --name cesar-ford" {::bc/env :repl})))

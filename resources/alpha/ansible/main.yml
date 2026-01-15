@@ -1,7 +1,13 @@
 ---
-- name: Hello World Playbook
-  hosts: localhost
-  tasks:
-    - name: Say Hello
-      ansible.builtin.debug:
-        msg: "Hello World from an Ansible Playbook!"
+- hosts: admin
+  vars_files:
+    - default.config.yml
+  roles:
+    - role: root
+      become: true
+
+- hosts: users
+  vars_files:
+    - default.config.yml
+  roles:
+    - role: users

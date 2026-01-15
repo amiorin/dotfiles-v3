@@ -30,6 +30,15 @@ resource "hcloud_server" "node1" {
     ipv4_enabled = true
     ipv6_enabled = false
   }
+  # Wait for ssh before starting Ansible
+  connection {
+    type        = "ssh"
+    user        = "root"
+    host        = self.ipv4_address
+  }
+  provisioner "remote-exec" {
+    inline = ["ls"]
+  }
 }
 
 output "ipv4_address" {
