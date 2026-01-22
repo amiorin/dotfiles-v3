@@ -1,6 +1,5 @@
 (ns ansible
   (:require
-   [babashka.fs :as fs]
    [babashka.process :as p]
    [cheshire.core :as json]
    [clj-yaml.core :as yaml]))
@@ -87,19 +86,20 @@
     :inventory (inventory data)
     :config (config data)))
 
-(defn data-fn [data {:keys [:alpha/target-prefix]}]
+(defn data-fn [data {:keys [:step-v2/working-dirs]}]
   (let [sudoer "root"
         main-user "ubuntu"
-        tofu-dir (str (fs/path target-prefix "tofu"))
-        hosts [(try
-                 (-> (p/shell {:dir tofu-dir
-                               :out :string} "tofu output --json")
-                     :out
-                     (json/parse-string keyword)
-                     :ipv4_address
-                     :value)
-                 (catch Throwable _
-                   "77.42.91.213"))]
+        hosts [(if working-dirs
+                 (try
+                   (-> (p/shell {:dir (working-dirs :tofu)
+                                 :out :string} "tofu output --json")
+                       :out
+                       (json/parse-string keyword)
+                       :ipv4_address
+                       :value)
+                   (catch Throwable _
+                     "77.42.91.213"))
+                 "77.42.91.213")]
         users [{:name main-user
                 :uid "1000"
                 :doomemacs "6ea4332b854d311d7ec8ae6384fae8d9871f5730"
@@ -149,8 +149,7 @@
                        "clj-kondo"]
                       (mapv (fn [x] [x x]))
                       (into [["ripgrep" "rg"]]))]
-    (merge data {:target-prefix target-prefix
-                 :repos repos
+    (merge data {:repos repos
                  :sudoer sudoer
                  :hosts hosts
                  :users users

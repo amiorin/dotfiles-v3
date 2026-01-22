@@ -1,5 +1,11 @@
 # Tell terraform to use the provider and select a version.
 terraform {
+  backend "s3" {
+    bucket = "tf-state-251213589273-eu-west-1"
+    key    = "alpha.tfstate"
+    region = "eu-west-1"
+  }
+
   required_providers {
     hcloud = {
       source  = "hetznercloud/hcloud"
@@ -7,7 +13,6 @@ terraform {
     }
   }
 }
-
 
 # Set the variable value in *.tfvars file
 # or using the -var="hcloud_token=..." CLI option
@@ -21,20 +26,20 @@ provider "hcloud" {
 }
 
 resource "hcloud_server" "node1" {
-  name  = "node1"
-  image = "ubuntu-24.04"
+  name        = "node1"
+  image       = "ubuntu-24.04"
   server_type = "cx23"
   location    = "hel1"
-  ssh_keys = ["32617+amiorin@users.noreply.github.com"]
+  ssh_keys    = ["32617+amiorin@users.noreply.github.com"]
   public_net {
     ipv4_enabled = true
     ipv6_enabled = false
   }
   # Wait for ssh before starting Ansible
   connection {
-    type        = "ssh"
-    user        = "root"
-    host        = self.ipv4_address
+    type = "ssh"
+    user = "root"
+    host = self.ipv4_address
   }
   provisioner "remote-exec" {
     inline = ["ls"]

@@ -1,15 +1,15 @@
 {:deps {amiorin/clare-walter {:local/root "."}}
  :tasks
- {:requires ([alpha :as alpha]
-             [clojure.string :as str])
-  :init (defn ops []
-          (-> (str/join " " *command-line-args*)
-              (alpha/ops {:big-config/env :shell})))
+ {:requires ([step-v2 :as step-v2])
   tidy {:doc "tidy clojure files"
         :task (do (shell "clojure-lsp clean-ns")
                   (shell "clojure-lsp format"))}
   help {:doc "the workflow help"
         :override-builtin true
         :task (println "Help")}
-  ops {:doc "ops"
-       :task (ops)}}}
+  tofu {:doc "bb tofu render tofu:init lock tofu:apply:-auto-approve -- big-iron cesar-ford"
+        :task (step-v2/tofu *command-line-args* {:big-config/env :shell} :default)}
+  ansible {:doc "bb ansible render ansible-playbook:main.yml unlock-any -- big-iron cesar-ford"
+           :task (step-v2/ansible *command-line-args* {:big-config/env :shell} :default)}
+  resource {:doc "bb resource create --resource-name cesar-ford"
+            :task (step-v2/resource *command-line-args* {:big-config/env :shell} :default)}}}

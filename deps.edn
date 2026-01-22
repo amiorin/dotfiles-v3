@@ -1,9 +1,11 @@
 {:paths   ["src" "resources"]
  :deps    {org.clojure/clojure          {:mvn/version "1.12.3"}
-           io.github.amiorin/big-config {:git/sha "6ab1f76fcb2ad0cade9fb82ba1e777bd38df77f2"}
+           io.github.amiorin/big-config {:git/sha "ef659df8dfc9bb52e721b88638cb587b43f15019"}
            cheshire/cheshire            {:mvn/version "6.1.0"}
-           clj-commons/clj-yaml         {:mvn/version "1.0.29"}}
- :aliases {:dev  {:extra-paths ["env/dev/clj" "test"]}
+           clj-commons/clj-yaml         {:mvn/version "1.0.29"}
+           com.rpl/specter              {:mvn/version "1.1.6"}}
+ :aliases {:dev  {:extra-paths ["env/dev/clj" "test"]
+                  :jvm-opts ["-Djdk.attach.allowAttachSelf=true"]}
            :test {:extra-paths ["test"]
                   :extra-deps {io.github.cognitect-labs/test-runner {:git/tag "v0.5.1" :git/sha "dfb30dd"}}
                   :main-opts ["-m" "cognitect.test-runner"]

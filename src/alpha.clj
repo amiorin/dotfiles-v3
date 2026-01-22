@@ -15,8 +15,11 @@
         dsl-or-opts
 
         :else
-        (let [all-actions #{"create" "delete" ; no extra-args
-                            "tofu" "ansible" "init" "plan" "apply" "playbook" "render" ; extra-args
+        (let [all-actions #{"create" "delete"               ; no extra-args
+                            "tofu" "ansible"                ; former exec
+                            "render"                        ; no exec
+                            "init" "plan" "apply" "destroy" ; tofu
+                            "playbook"                      ; ansible
                             }]
           (loop [xs dsl-or-opts
                  token nil
@@ -30,7 +33,11 @@
                 (recur (rest xs) (first xs) actions resource-name extra-args))
 
               (all-actions token)
-              (recur (rest xs) (first xs) (conj actions (keyword token)) resource-name extra-args)
+              (let [actions (into actions (case token
+                                            "render" [:render-tofu :render-ansible]
+                                            "create" [:create-tofu :create-ansible]
+                                            [(keyword token)]))]
+                (recur (rest xs) (first xs) actions name extra-args))
 
               (nil? (seq actions))
               (throw (ex-info (format "`%s` is not an action (%s)" token (str/join "|" all-actions)) {:opts opts}))
@@ -89,14 +96,6 @@
 (comment
   (into (sorted-map) (actions->opts (parse-ops {::dsl-or-opts "delete create apply --resource-name cesar-ford"
                                                 ::target-prefix ".dist"}))))
-
-(defn data-fn
-  [data {:keys [::target-prefix]}]
-  (assoc data :target-prefix target-prefix))
-
-(defn template-fn
-  [{:keys [target-prefix dir]} edn]
-  (assoc edn :target-dir (str (fs/path target-prefix dir))))
 
 (defn ops
   [dsl-or-opts & opts]

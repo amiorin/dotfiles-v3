@@ -7,5 +7,6 @@
   packages = [
     pkgs.jet
     pkgs.hcl2json
+    pkgs.awscli2
   ];
 }
