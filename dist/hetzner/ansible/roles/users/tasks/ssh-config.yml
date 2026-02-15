@@ -7,13 +7,4 @@
     "marker" : "# {mark} ANSIBLE MANAGED BLOCK FOR 95.217.164.175",
     "state" : "present"
   }
-}, {
-  "name" : "Add a new host entry using blockinfile for 46.62.162.129",
-  "ansible.builtin.blockinfile" : {
-    "path" : "~/.ssh/config",
-    "create" : true,
-    "block" : "Host 46.62.162.129\n  Hostname 46.62.162.129.afrino-bushi.ts.net\n  User ubuntu\n  ForwardAgent yes ",
-    "marker" : "# {mark} ANSIBLE MANAGED BLOCK FOR 46.62.162.129",
-    "state" : "present"
-  }
 } ]

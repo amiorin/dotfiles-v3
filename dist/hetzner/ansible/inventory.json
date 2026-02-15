@@ -6,10 +6,6 @@
           "root@95.217.164.175" : {
             "ansible_host" : "95.217.164.175",
             "ansible_user" : "root"
-          },
-          "root@46.62.162.129" : {
-            "ansible_host" : "46.62.162.129",
-            "ansible_user" : "root"
           }
         }
       },
@@ -20,10 +16,10 @@
             "ansible_user" : "ubuntu",
             "uid" : "1000"
           },
-          "ubuntu@46.62.162.129" : {
-            "ansible_host" : "46.62.162.129",
-            "ansible_user" : "ubuntu",
-            "uid" : "1000"
+          "vscode@95.217.164.175" : {
+            "ansible_host" : "95.217.164.175",
+            "ansible_user" : "vscode",
+            "uid" : "1001"
           }
         }
       }
