@@ -1,13 +1,15 @@
 (ns step-v2
   (:require
    [babashka.fs :as fs]
+   [babashka.process :as p]
    [big-config :as bc]
    [big-config.render :as render]
    [big-config.run :as run]
    [big-config.step :as step]
    [big-config.step-fns :as step-fns]
+   [cheshire.core :as json]
    [clojure.string :as str]
-   [com.rpl.specter :refer [ALL setval]]))
+   [com.rpl.specter :refer [ALL FIRST setval transform]]))
 
 (defn pstar-steps
   [any]
@@ -211,6 +213,48 @@
                                                  ::working-dir-prefix ".dist"
                                                  ::working-dir "ansible"})))
 
+(-> (p/shell {:dir ".dist/cesar-ford/tofu"
+              :out :string} "tofu output --json")
+    :out
+    (json/parse-string keyword)
+    :ipv4_address
+    :value)
+
+(defn ->copy-data-step-fn []
+  (let [data (atom {})]
+    (fn [f step {:keys [::working-dir ::working-dirs] :as opts}]
+      (when (nil? working-dir)
+        (throw (ex-info "working-dir must be defined" opts)))
+      (when (and (= step :big-config.step/end)
+                 (= working-dir "tofu"))
+        (let [tofu-dir (working-dirs :tofu)
+              ip (try
+                   (-> (p/shell {:dir (working-dirs :tofu)
+                                 :out :string} "tofu output --json")
+                       :out
+                       (json/parse-string keyword)
+                       :ipv4_address
+                       :value)
+                   (catch Throwable _
+                     "77.42.91.213"))]
+          (swap! data merge {:ipv4-address ip})))
+      (tap> @data)
+      (let [opts (if (and (= step :big-config.step/start)
+                          (= working-dir "ansible"))
+                   (transform [::render/templates FIRST] #(merge % @data) opts)
+                   opts)]
+        (f step opts)))))
+
+(comment
+  (->> (resource "create --resource-name cesar-ford" {::bc/env :repl} :default)
+       (map #(into (sorted-map) %))))
+
+(comment
+  (let [opts {::render/templates [{} {}]
+              ::working-dir-prefix ".dist"
+              ::working-dir "ansible"}]
+    (transform [::render/templates FIRST] #(merge % {:foo :bar}) opts)))
+
 (defn resource
   "bb resource create --resource-name cesar-ford"
   [any & [opts step-fns]]
@@ -219,11 +263,14 @@
                      ::working-dir-prefix (-> (fs/path  ".dist/" resource-name))}
                     opts)
         xs (mapcat #(case %
-                      :create [(tofu "render tofu:init tofu:apply:-auto-approve -- big-iron cesar-ford" opts)
-                               (ansible "render ansible-playbook:main.yml -- big-iron cesar-ford" opts)]
+                      #_#_:create [(tofu "render tofu:init tofu:apply:-auto-approve -- big-iron cesar-ford" opts)
+                                 (ansible "render ansible-playbook:main.yml -- big-iron cesar-ford" opts)]
+                      :create [(tofu "render -- big-iron cesar-ford" opts)
+                       (ansible "render -- big-iron cesar-ford" opts)]
                       :delete [(tofu "render tofu:destroy:-auto-approve -- big-iron cesar-ford" opts)]) cmds)
         step-fns (if (= step-fns :default)
                    [(->working-dir-step-fn)
+                    (->copy-data-step-fn)
                     step/print-step-fn
                     (step-fns/->exit-step-fn ::step/end xs)
                     (step-fns/->print-error-step-fn ::step/end)]

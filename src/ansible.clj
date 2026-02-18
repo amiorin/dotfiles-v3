@@ -86,20 +86,10 @@
     :inventory (inventory data)
     :config (config data)))
 
-(defn data-fn [data {:keys [:step-v2/working-dirs]}]
+(defn data-fn [{:keys [ipv4-address] :as data} _]
   (let [sudoer "root"
         main-user "ubuntu"
-        hosts [(if working-dirs
-                 (try
-                   (-> (p/shell {:dir (working-dirs :tofu)
-                                 :out :string} "tofu output --json")
-                       :out
-                       (json/parse-string keyword)
-                       :ipv4_address
-                       :value)
-                   (catch Throwable _
-                     "77.42.91.213"))
-                 "77.42.91.213")]
+        hosts [(or ipv4-address "77.42.91.213")]
         users [{:name main-user
                 :uid "1000"
                 :doomemacs "6ea4332b854d311d7ec8ae6384fae8d9871f5730"
