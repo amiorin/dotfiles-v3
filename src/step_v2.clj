@@ -1,4 +1,28 @@
 (ns step-v2
+  "How to compose two workflow using a new interface.
+  The workflow interface is
+  [any & [opts step-fns]]
+  If `step-fns` is vector or `:default` the workflow is executed.
+  If `step-fns` is `nil`, `any` is converted to `opts`, merged with the provided `opts` and return.
+  The new interface in Babashka is:
+  ```
+  bb workflow-a ...
+  bb workflow-b ...
+  bb workflow-c=a+b ...
+  ```
+  The step-fns uses `atoms` to transform and share options between workflows.
+
+  New options
+  * ::working-dir: it must be unique per workflow
+  * ::working-dir-prefix: a prefix
+  * ::working-dirs: a mapping between names and dirs, to be able to invoke `tofu output --json`
+
+  New options revised
+  * ::workflow-name: ::ansible
+  * ::workflow-path-fn: a function that returns the working directory of the workflow
+  * ::workflow-dirs: a mapping between the name and dirs, to be able to invoke
+  `tofu output --json` inside a step function.
+  "
   (:require
    [babashka.fs :as fs]
    [babashka.process :as p]
@@ -10,6 +34,17 @@
    [cheshire.core :as json]
    [clojure.string :as str]
    [com.rpl.specter :refer [ALL FIRST setval transform]]))
+
+(do
+  (defn keyword->source-path [kw]
+    (let [full-str (if-let [ns (namespace kw)]
+                     (str ns "/" (name kw))
+                     (name kw))]
+      (-> full-str
+          (str/replace "-" "_")
+          (str/replace "." "/"))))
+  (-> ::ansible
+      keyword->source-path))
 
 (defn pstar-steps
   [any]
@@ -264,9 +299,9 @@
                     opts)
         xs (mapcat #(case %
                       #_#_:create [(tofu "render tofu:init tofu:apply:-auto-approve -- big-iron cesar-ford" opts)
-                                 (ansible "render ansible-playbook:main.yml -- big-iron cesar-ford" opts)]
+                                   (ansible "render ansible-playbook:main.yml -- big-iron cesar-ford" opts)]
                       :create [(tofu "render -- big-iron cesar-ford" opts)
-                       (ansible "render -- big-iron cesar-ford" opts)]
+                               (ansible "render -- big-iron cesar-ford" opts)]
                       :delete [(tofu "render tofu:destroy:-auto-approve -- big-iron cesar-ford" opts)]) cmds)
         step-fns (if (= step-fns :default)
                    [(->working-dir-step-fn)
