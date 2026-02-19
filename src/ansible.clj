@@ -1,6 +1,5 @@
 (ns ansible
   (:require
-   [babashka.process :as p]
    [cheshire.core :as json]
    [clj-yaml.core :as yaml]))
 

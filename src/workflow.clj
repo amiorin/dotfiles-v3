@@ -1,6 +1,8 @@
 (ns workflow
   (:require
+   [big-config :as bc]
    [big-config.render :as render]
+   [big-config.run :as run]
    [big-config.step-fns :as step-fns]
    [big-config.workflow :as workflow]))
 
@@ -25,6 +27,11 @@
     (tofu* [workflow/print-step-fn
             (step-fns/->exit-step-fn ::workflow/end)
             (step-fns/->print-error-step-fn ::workflow/end)] opts)))
+
+(comment
+  (tofu "render tofu:plan" {::bc/env :repl
+                            ::run/shell-opts {:err *err*
+                                              :out *out*}}))
 
 ;; (defn resource
 ;;     [any & [opts step-fns]]
