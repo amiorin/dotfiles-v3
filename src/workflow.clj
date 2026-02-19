@@ -9,6 +9,10 @@
 (comment
   (into (sorted-map) (tofu* [] {::params {:parameter-a 1}})))
 
+(def step-fns [workflow/print-step-fn
+               (step-fns/->exit-step-fn ::workflow/end)
+               (step-fns/->print-error-step-fn ::workflow/end)])
+
 (defn tofu*
   [step-fns opts]
   (let [opts (workflow/prepare {::workflow/name ::tofu
@@ -24,14 +28,44 @@
   [args & [opts]]
   (let [opts (merge (workflow/parse-tool-args args)
                     opts)]
-    (tofu* [workflow/print-step-fn
-            (step-fns/->exit-step-fn ::workflow/end)
-            (step-fns/->print-error-step-fn ::workflow/end)] opts)))
+    (tofu* step-fns opts)))
 
 (comment
-  (tofu "render tofu:plan" {::bc/env :repl
-                            ::run/shell-opts {:err *err*
-                                              :out *out*}}))
+  (into (sorted-map) (tofu "render tofu:plan" {::bc/env :repl
+                                               ::run/shell-opts {:err *err*
+                                                                 :out *out*}})))
+
+(defn ansible*
+  [step-fns opts]
+  (let [opts (workflow/prepare {::workflow/name ::ansible
+                                ::render/templates [{:template "alpha"
+                                                     :overwrite true
+                                                     :data-fn 'ansible/data-fn
+                                                     :transform [["ansible"
+                                                                  :raw]
+                                                                 ['ansible/render "roles/users/tasks"
+                                                                  {:packages "packages.yml"
+                                                                   :repos "repos.yml"
+                                                                   :ssh-config "ssh-config.yml"}
+                                                                  :raw]
+                                                                 ['ansible/render
+                                                                  {:inventory "inventory.json"
+                                                                   :config "default.config.yml"}
+                                                                  :raw]]}]}
+                               opts)]
+
+    (workflow/run-steps step-fns opts)))
+
+(defn ansible
+  [args & [opts]]
+  (let [opts (merge (workflow/parse-tool-args args)
+                    opts)]
+    (ansible* step-fns opts)))
+
+(comment
+  (into (sorted-map) (ansible "render" {::bc/env :repl
+                                        ::run/shell-opts {:err *err*
+                                                          :out *out*}})))
 
 ;; (defn resource
 ;;     [any & [opts step-fns]]
