@@ -3,6 +3,7 @@
    [big-config :as bc]
    [big-config.render :as render]
    [big-config.run :as run]
+   [big-config.core :as core]
    [big-config.step-fns :as step-fns]
    [big-config.workflow :as workflow]))
 
@@ -10,7 +11,7 @@
   (into (sorted-map) (tofu* [] {::params {:parameter-a 1}})))
 
 (def step-fns [workflow/print-step-fn
-               (step-fns/->exit-step-fn ::workflow/end)
+               #_(step-fns/->exit-step-fn ::workflow/end)
                (step-fns/->print-error-step-fn ::workflow/end)])
 
 (defn tofu*
@@ -66,6 +67,43 @@
   (into (sorted-map) (ansible "render" {::bc/env :repl
                                         ::run/shell-opts {:err *err*
                                                           :out *out*}})))
+
+(comment
+  (let [tap (atom [])
+        _ (add-tap #(swap! tap conj %))]
+    (def step-fns [workflow/print-step-fn
+                   #_(step-fns/->exit-step-fn ::workflow/end)
+                   #_step-fns/tap-step-fn
+                   (step-fns/->print-error-step-fn ::workflow/end)])
+    (defn save-comp-opts
+      [args opts]
+      (let [tool-opts (workflow/parse-tool-args args)]
+        (merge tool-opts
+               opts
+               (core/ok)
+               {::comp-opts opts})))
+    (defn save-tool-opts
+      [step args {:keys [::comp-opts] :as opts}]
+      (let [tool-opts (workflow/parse-tool-args args)]
+        (merge tool-opts
+               comp-opts
+               (core/ok)
+               {step opts}
+               {::comp-opts comp-opts})))
+    (def resource*
+      (core/->workflow {:first-step ::start
+                        :wire-fn (fn [step step-fns]
+                                   (case step
+                                     ::start [(partial save-comp-opts "render") ::tofu]
+                                     ::tofu [(partial tofu* step-fns) ::post-tofu]
+                                     ::post-tofu [(partial save-tool-opts ::tofu "render") ::ansible]
+                                     ::ansible [(partial ansible* step-fns) ::end]
+                                     ::end [identity]))}))
+    (-> (sorted-map)
+        (into (resource* step-fns {::bc/env :repl
+                                   ::run/shell-opts {:err *err*
+                                                     :out *out*}}))
+        (into {::tap @tap}))))
 
 ;; (defn resource
 ;;     [any & [opts step-fns]]
