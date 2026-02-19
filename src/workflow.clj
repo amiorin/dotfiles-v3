@@ -1,27 +1,60 @@
 (ns workflow
-  "How to compose two workflow using a new interface.
-  The workflow interface is
-  [any & [opts step-fns]]
-  If `step-fns` is vector or `:default` the workflow is executed.
-  If `step-fns` is `nil`, `any` is converted to `opts`, merged with the provided `opts` and return.
-  The new interface in Babashka is:
-  ```
-  bb workflow-a ...
-  bb workflow-b ...
-  bb workflow-c=a+b ...
-  ```
-  The step-fns uses `atoms` to transform and share options between workflows.
+  "
+  How to make workflows developed indipendently composable.
 
-  New options
-  * ::working-dir: it must be unique per workflow
-  * ::working-dir-prefix: a prefix
-  * ::working-dirs: a mapping between names and dirs, to be able to invoke `tofu output --json`
+  * **shell-workflow**: Is a workflow that render template files and execute one
+  or more commands like Terraform or Ansible. It takes `params`.
+  * **comp-workflow**: Is a workflow that orchestrate multiple `shell-workflows`.
 
-  New options revised
-  * ::workflow-name: ::ansible
-  * ::workflow-path-fn: a function that returns the working directory of the workflow
-  * ::workflow-dirs: a mapping between the name and dirs, to be able to invoke
-  `tofu output --json` inside a step function.
+  ### Usage
+  ```text
+  bb <shell-workflow> <step|cmd>+ [-- last-command]
+  bb <comp-workflow> <step>+
+  ```
+
+  ### Example
+  ```sh
+  bb shell-wf-a render tofu:init -- tofu apply -auto-approve
+  bb shell-wf-b render ansible-playbook:main.yml
+  bb comp-wf-c create
+  ```
+
+  `comp-wf-c` is the composition of `shell-wf-a` and `shell-wf-b` and it only
+  supports create and delete. The development happens in `shell-wf-a` and
+  `shell-wf-b`.
+
+  ### Functions
+  * `run-steps` is the dynamic workflow.
+  * `parse-shell-args` is parsing a str or vec of args.
+  * `parse-comp-args` is parsing a str or vec of args.
+  * `prepare` is the common logic for render and exec workflows.
+
+  ### Options
+  * ::path-fn
+  * ::params
+  * ::name
+  * ::dirs
+
+  ### Naming convention for workflows
+  * `tofu*` is the lib version that requires the arguments `step-fns` and
+  `opts`.
+  * `tofu` is the Babashka version that requires the arguments `args` and an
+  optional `opts`.
+
+  Note: The booking of resource names and resources is not part of BigConfig
+  Workflow.
+
+  ### Sharing data between workflows
+  The problem with terraform is the coupling with a HCL able to read any
+  property of any resource. For example, AWS and Hetzner computation have
+  different way to output the IP address. If another tool like Ansible requires
+  the IP address, the coupling will be high.  This will not happen in BigConfig
+  Workflow. Replacing the first shell-workflow from Hetzner to AWS, will not
+  require changes to the second shell-workflow using Ansible because the code is
+  implemented a step of the comp-workflow.  BigConfig Workflow has `::params`
+  and the `comp-workflow` is responsible to adapt the `outputs` of the previous
+  `shell-workflow` to the `::params` of the next `shell-workflow` using `::dirs`
+  to execute discover the outputs using commands like `tofu output --json`.
   "
   (:require
    [big-config :as bc]
