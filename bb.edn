@@ -1,17 +1,15 @@
 {:deps {amiorin/clare-walter {:local/root "."}}
  :tasks
- {:requires ([step-v2 :as step-v2]
-             [workflow :as workflow])
+ {:requires ([workflow :as workflow])
   tidy {:doc "tidy clojure files"
         :task (do (shell "clojure-lsp clean-ns")
                   (shell "clojure-lsp format"))}
   help {:doc "the workflow help"
         :override-builtin true
         :task (println "Help")}
-  test (workflow/tofu *command-line-args*)
-  tofu {:doc "bb tofu render tofu:init lock tofu:apply:-auto-approve -- big-iron cesar-ford"
-        :task (step-v2/tofu *command-line-args* {:big-config/env :shell} :default)}
+  tofu {:doc "bb tofu render tofu:init lock tofu:apply:-auto-approve"
+        :task (workflow/tofu *command-line-args* {:big-config/env :shell})}
   ansible {:doc "bb ansible render ansible-playbook:main.yml unlock-any -- big-iron cesar-ford"
-           :task (step-v2/ansible *command-line-args* {:big-config/env :shell} :default)}
+           :task (workflow/ansible *command-line-args* {:big-config/env :shell})}
   resource {:doc "bb resource create --resource-name cesar-ford"
-            :task (step-v2/resource *command-line-args* {:big-config/env :shell} :default)}}}
+            :task (workflow/resource *command-line-args* {:big-config/env :shell})}}}
