@@ -1,11 +1,13 @@
 (ns clare
   (:require
+   [babashka.process :as p]
    [big-config :as bc]
    [big-config.core :as core]
    [big-config.render :as render]
    [big-config.run :as run]
    [big-config.step-fns :as step-fns]
-   [big-config.workflow :as workflow]))
+   [big-config.workflow :as workflow]
+   [cheshire.core :as json]))
 
 (def step-fns [workflow/print-step-fn
                #_step-fns/tap-step-fn
@@ -51,7 +53,6 @@
                                                                    :config "default.config.yml"}
                                                                   :raw]]}]}
                                opts)]
-
     (workflow/run-steps step-fns opts)))
 
 (defn ansible*
@@ -64,6 +65,20 @@
   (into (sorted-map) (ansible* "render" {::bc/env :repl
                                          ::run/shell-opts {:err *err*
                                                            :out *out*}})))
+
+(defn populate-params
+  [dirs]
+  (let [ip (or (-> (p/shell {:dir (::tofu dirs)
+                             :out :string} "tofu output --json")
+                   :out
+                   (json/parse-string keyword)
+                   :ipv4_address
+                   :value)
+               "1.2.3.4")]
+    {::workflow/params {:ipv4-address ip}}))
+
+(comment
+  (populate-params {::tofu ".dist/clare/tofu"}))
 
 (defn resource-create
   [step-fns opts]
@@ -88,11 +103,12 @@
                                                        ::tofu (merge (workflow/parse-args "render")
                                                                      opts
                                                                      {::comp-opts opts})
-                                                       (merge (workflow/parse-args "render")
-                                                              comp-opts
-                                                              {::workflow/dirs dirs}
-                                                              {step opts}
-                                                              {::comp-opts comp-opts}))]
+                                                       ::ansible (merge (workflow/parse-args "render")
+                                                                        comp-opts
+                                                                        {::workflow/dirs dirs}
+                                                                        {step opts}
+                                                                        (populate-params dirs)
+                                                                        {::comp-opts comp-opts}))]
 
                                           :else
                                           [next-step opts]))})
