@@ -103,7 +103,7 @@
                                                        ::tofu (merge (workflow/parse-args "render")
                                                                      opts
                                                                      {::comp-opts opts})
-                                                       ::ansible (merge (workflow/parse-args "render")
+                                                       ::ansible (merge (workflow/parse-args "render -- ansible-playbook main.yml")
                                                                         comp-opts
                                                                         {::workflow/dirs dirs}
                                                                         {step opts}
