@@ -24,6 +24,9 @@
                                opts)]
     (workflow/run-steps step-fns opts)))
 
+(comment
+  (workflow/parse-args "render -- ansible-playbook main.yml --start-at-task 'Install doomemacs'"))
+
 (defn tofu*
   [args & [opts]]
   (let [opts (merge (workflow/parse-args args)
@@ -58,6 +61,7 @@
 (defn ansible*
   [args & [opts]]
   (let [opts (merge (workflow/parse-args args)
+                    {::workflow/params {:ipv4-address "157.180.112.227"}}
                     opts)]
     (ansible step-fns opts)))
 
@@ -117,7 +121,7 @@
 
 (defn resource-delete
   [step-fns opts]
-  (let [delete-opts (merge (workflow/parse-args "render")
+  (let [delete-opts (merge (workflow/parse-args "render tofu:destroy:-auto-approve")
                            (select-keys opts [::bc/env ::run/shell-opts]))
         wf (core/->workflow {:first-step ::start
                              :wire-fn (fn [step step-fns]
@@ -143,7 +147,10 @@
 
 (defn resource*
   [args & [opts]]
-  (let [opts (merge (workflow/parse-args args)
+  (let [step-fns [workflow/print-step-fn
+                  (step-fns/->exit-step-fn ::end)
+                  (step-fns/->print-error-step-fn ::end)]
+        opts (merge (workflow/parse-args args)
                     opts)]
     (resource step-fns opts)))
 
