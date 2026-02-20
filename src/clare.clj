@@ -141,14 +141,19 @@
   (let [opts (merge {::workflow/create-fn 'clare/resource-create
                      ::workflow/delete-fn 'clare/resource-delete}
                     opts)
-        opts (workflow/run-steps step-fns opts)]
+        wf (core/->workflow {:first-step ::start
+                             :wire-fn (fn [step step-fns]
+                                        (case step
+                                          ::start [(partial workflow/run-steps step-fns) ::end-comp]
+                                          ::end-comp [identity]))})
+        opts (wf step-fns opts)]
     opts))
 
 (defn resource*
   [args & [opts]]
   (let [step-fns [workflow/print-step-fn
-                  (step-fns/->exit-step-fn ::end)
-                  (step-fns/->print-error-step-fn ::end)]
+                  (step-fns/->exit-step-fn ::end-comp)
+                  (step-fns/->print-error-step-fn ::end-comp)]
         opts (merge (workflow/parse-args args)
                     opts)]
     (resource step-fns opts)))
