@@ -3,10 +3,10 @@
    [cheshire.core :as json]
    [clj-yaml.core :as yaml]))
 
-(defn data-fn [{:keys [ipv4-address] :as data} _]
+(defn data-fn [{:keys [ip] :as data} _]
   (let [sudoer "root"
         main-user "ubuntu"
-        hosts [(or ipv4-address "77.42.91.213")]
+        hosts [(or ip "77.42.91.213")]
         users [{:name main-user
                 :uid "1000"
                 :doomemacs "6ea4332b854d311d7ec8ae6384fae8d9871f5730"

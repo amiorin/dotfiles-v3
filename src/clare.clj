@@ -7,7 +7,8 @@
    [big-config.run :as run]
    [big-config.step-fns :as step-fns]
    [big-config.workflow :as workflow]
-   [cheshire.core :as json]))
+   [cheshire.core :as json]
+   [com.rpl.specter :as s]))
 
 (def step-fns [workflow/print-step-fn
                #_step-fns/tap-step-fn
@@ -72,14 +73,12 @@
 
 (defn populate-params
   [dirs]
-  (let [ip (or (-> (p/shell {:dir (::tofu dirs)
-                             :out :string} "tofu output --json")
-                   :out
-                   (json/parse-string keyword)
-                   :ipv4_address
-                   :value)
-               "1.2.3.4")]
-    {::workflow/params {:ipv4-address ip}}))
+  (let [ip (-> (p/shell {:dir (::tofu dirs)
+                         :out :string} "tofu show --json")
+               :out
+               (json/parse-string keyword)
+               (->> (s/select-one [:values :root_module :resources s/FIRST :values :ipv4_address])))]
+    {::workflow/params {:ip ip}}))
 
 (comment
   (populate-params {::tofu ".dist/clare/tofu"}))
