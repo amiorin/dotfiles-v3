@@ -104,7 +104,7 @@
 
                                           (#{::tofu ::ansible} next-step)
                                           [next-step (case next-step
-                                                       ::tofu (merge (workflow/parse-args "render")
+                                                       ::tofu (merge (workflow/parse-args "render tofu:init tofu:apply:-auto-approve")
                                                                      opts
                                                                      {::comp-opts opts})
                                                        ::ansible (merge (workflow/parse-args "render -- ansible-playbook main.yml")
