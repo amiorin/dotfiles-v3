@@ -84,6 +84,9 @@
   [step-fns {:keys [::tofu-opts ::ansible-opts] :as opts}]
   (assert-args-present tofu ansible)
   (let [all-opts (atom {})
+        swap-opts (fn [kw prev-opts next-opts dirs]
+                    (swap! all-opts assoc kw prev-opts)
+                    (merge (core/ok) {::workflow/dirs dirs} next-opts))
         wf (core/->workflow {:first-step ::start
                              :wire-fn (fn [step step-fns]
                                         (case step
@@ -91,7 +94,7 @@
                                           ::tofu [(partial tofu step-fns) ::ansible]
                                           ::ansible [(partial ansible step-fns) ::end]
                                           ::end [identity]))
-                             :next-fn (fn [step next-step {:keys [::bc/exit] :as opts}]
+                             :next-fn (fn [step next-step {:keys [::bc/exit ::workflow/dirs] :as opts}]
                                         (cond
                                           (= step ::end)
                                           [nil opts]
@@ -101,47 +104,22 @@
 
                                           :else
                                           [next-step (case next-step
-                                                       ::tofu (do
-                                                                (swap! all-opts assoc :create-opts opts)
-                                                                (core/ok tofu-opts))
-                                                       ::ansible (do
-                                                                   (swap! all-opts assoc :tofu-opts opts)
-                                                                   (core/ok ansible-opts))
-                                                       (let [{:keys [create-opts tofu-opts]} @all-opts]
-                                                         (-> (core/ok create-opts)
+                                                       ::tofu (swap-opts :create-opts opts tofu-opts dirs)
+                                                       ::ansible (swap-opts :tofu-opts opts ansible-opts dirs)
+                                                       ::end (let [{:keys [create-opts tofu-opts]} @all-opts]
+                                                         (-> (swap-opts :ansible-opts opts create-opts dirs)
                                                              (assoc ::tofu-opts tofu-opts)
-                                                             (assoc ::ansible-opts opts))))]))})
-        create (wf step-fns opts)]
-    create))
+                                                             (assoc ::ansible-opts opts))))]))})]
+    (wf step-fns opts)))
 
 (comment
   (debug tap-values
     (resource-create [step-fns/bling-step-fn]
-                                                    {::tofu-opts (merge (workflow/parse-args "render tofu:init tofu:plan")
-                                                                        {::bc/env :repl})
-                                                     ::ansible-opts (merge (workflow/parse-args "render")
-                                                                           {::bc/env :repl})})
-    (ansible* "render" {::bc/env :repl}))
+                     {::tofu-opts (merge (workflow/parse-args "render tofu:init tofu:plan")
+                                         {::bc/env :repl})
+                      ::ansible-opts (merge (workflow/parse-args "render")
+                                            {::bc/env :repl})}))
   (-> tap-values))
-
-(comment
-  (let [tap-values (atom [])
-        done (promise)
-        f (fn [v]
-            (if (= v :done)
-              (deliver done true)
-              (swap! tap-values conj v)))]
-    (add-tap f)
-    (try
-      (let [_ (tap> :start)
-            res (into (sorted-map) )]
-        (tap> :done)
-        @done
-        (assoc res ::tap @tap-values))
-      (finally
-        (def tap-values# @tap-values)
-        (remove-tap f))))
-  (-> tap-values#))
 
 (defn resource-delete
   [step-fns opts]
