@@ -4,9 +4,8 @@
    [big-config :as bc]
    [big-config.core :as core]
    [big-config.render :as render]
-   [big-config.run :as run]
    [big-config.step-fns :as step-fns]
-   [big-config.utils :refer [assert-args-present debug]]
+   [big-config.utils :refer [debug]]
    [big-config.workflow :as workflow]
    [cheshire.core :as json]
    [com.rpl.specter :as s]))
@@ -82,7 +81,6 @@
 
 (defn resource-create
   [step-fns {:keys [::tofu-opts ::ansible-opts] :as opts}]
-  (assert-args-present tofu ansible)
   (let [tofu-opts (merge (workflow/parse-args "render tofu:init")
                          {::bc/env :repl}
                          tofu-opts)
@@ -126,20 +124,45 @@
   (-> tap-values))
 
 (defn resource-delete
-  [step-fns opts]
-  (let [delete-opts (merge (workflow/parse-args "render tofu:destroy:-auto-approve")
-                           (select-keys opts [::bc/env ::run/shell-opts]))
+  [step-fns {:keys [::tofu-opts] :as opts}]
+  (let [tofu-opts (merge (workflow/parse-args "render tofu:destroy:-auto-approve")
+                         {::bc/env :repl}
+                         tofu-opts)
+        all-opts (atom {})
         wf (core/->workflow {:first-step ::start
                              :wire-fn (fn [step step-fns]
                                         (case step
                                           ::start [core/ok ::tofu]
                                           ::tofu [(partial tofu step-fns) ::end]
-                                          ::end [identity]))})
-        delete (wf step-fns delete-opts)]
-    (merge opts (core/ok) {::delete delete})))
+                                          ::end [identity]))
+                             :next-fn (fn [step next-step {:keys [::bc/exit ::workflow/dirs] :as opts}]
+                                        (let [swap-opts! (fn [kw next-opts & opts-fns]
+                                                           (swap! all-opts assoc kw opts)
+                                                           (let [new-opts (merge (core/ok) {::workflow/dirs dirs} next-opts)]
+                                                             (reduce (fn [a f]
+                                                                       (f a)) new-opts opts-fns)))]
+                                          (cond
+                                            (= step ::end)
+                                            [nil opts]
+
+                                            (> exit 0)
+                                            [::end opts]
+
+                                            :else
+                                            [next-step (case next-step
+                                                         ::tofu (swap-opts! :create-opts tofu-opts)
+                                                         ::end (let [{:keys [create-opts tofu-opts]} @all-opts]
+                                                                 (-> (swap-opts! :ansible-opts create-opts)
+                                                                     (assoc ::tofu-opts tofu-opts)
+                                                                     (assoc ::ansible-opts opts))))])))})]
+    (wf step-fns opts)))
 
 (comment
-  (into (sorted-map) (resource-delete step-fns {::bc/env :repl})))
+  (debug tap-values
+    (resource-delete [(fn [f step opts]
+                        (tap> [step opts])
+                        (f step opts))]  {}))
+  (-> tap-values))
 
 (defn resource
   [step-fns opts]
@@ -158,7 +181,7 @@
     (resource [(fn [f step opts]
                  (tap> [step opts])
                  (f step opts))]
-              (merge (workflow/parse-args "create")
+              (merge (workflow/parse-args "create delete")
                      {::bc/env :repl})))
   (-> tap-values))
 
