@@ -6,7 +6,7 @@
    [big-config.render :as render]
    [big-config.run :as run]
    [big-config.step-fns :as step-fns]
-   [big-config.utils :refer [debug assert-args-present]]
+   [big-config.utils :refer [assert-args-present debug]]
    [big-config.workflow :as workflow]
    [cheshire.core :as json]
    [com.rpl.specter :as s]))
@@ -69,13 +69,13 @@
   (-> tap-values))
 
 (defn populate-params
-  [dirs]
+  [{:keys [::workflow/dirs] :as opts}]
   (let [ip (-> (p/shell {:dir (::tofu dirs)
                          :out :string} "tofu show --json")
                :out
                (json/parse-string keyword)
                (->> (s/select-one [:values :root_module :resources s/FIRST :values :ipv4_address])))]
-    {::workflow/params {:ip ip}}))
+    (assoc opts ::workflow/params {:ip ip})))
 
 (comment
   (populate-params {::tofu ".dist/clare/tofu"}))
@@ -83,10 +83,13 @@
 (defn resource-create
   [step-fns {:keys [::tofu-opts ::ansible-opts] :as opts}]
   (assert-args-present tofu ansible)
-  (let [all-opts (atom {})
-        swap-opts (fn [kw prev-opts next-opts dirs]
-                    (swap! all-opts assoc kw prev-opts)
-                    (merge (core/ok) {::workflow/dirs dirs} next-opts))
+  (let [tofu-opts (merge (workflow/parse-args "render tofu:init")
+                         {::bc/env :repl}
+                         tofu-opts)
+        ansible-opts (merge (workflow/parse-args "render")
+                            {::bc/env :repl}
+                            ansible-opts)
+        all-opts (atom {})
         wf (core/->workflow {:first-step ::start
                              :wire-fn (fn [step step-fns]
                                         (case step
@@ -95,30 +98,31 @@
                                           ::ansible [(partial ansible step-fns) ::end]
                                           ::end [identity]))
                              :next-fn (fn [step next-step {:keys [::bc/exit ::workflow/dirs] :as opts}]
-                                        (cond
-                                          (= step ::end)
-                                          [nil opts]
+                                        (let [swap-opts! (fn [kw next-opts & opts-fns]
+                                                           (swap! all-opts assoc kw opts)
+                                                           (let [new-opts (merge (core/ok) {::workflow/dirs dirs} next-opts)]
+                                                             (reduce (fn [a f]
+                                                                       (f a)) new-opts opts-fns)))]
+                                          (cond
+                                            (= step ::end)
+                                            [nil opts]
 
-                                          (> exit 0)
-                                          [::end opts]
+                                            (> exit 0)
+                                            [::end opts]
 
-                                          :else
-                                          [next-step (case next-step
-                                                       ::tofu (swap-opts :create-opts opts tofu-opts dirs)
-                                                       ::ansible (swap-opts :tofu-opts opts ansible-opts dirs)
-                                                       ::end (let [{:keys [create-opts tofu-opts]} @all-opts]
-                                                         (-> (swap-opts :ansible-opts opts create-opts dirs)
-                                                             (assoc ::tofu-opts tofu-opts)
-                                                             (assoc ::ansible-opts opts))))]))})]
+                                            :else
+                                            [next-step (case next-step
+                                                         ::tofu (swap-opts! :create-opts tofu-opts)
+                                                         ::ansible (-> (swap-opts! :tofu-opts ansible-opts populate-params))
+                                                         ::end (let [{:keys [create-opts tofu-opts]} @all-opts]
+                                                                 (-> (swap-opts! :ansible-opts create-opts)
+                                                                     (assoc ::tofu-opts tofu-opts)
+                                                                     (assoc ::ansible-opts opts))))])))})]
     (wf step-fns opts)))
 
 (comment
   (debug tap-values
-    (resource-create [step-fns/bling-step-fn]
-                     {::tofu-opts (merge (workflow/parse-args "render tofu:init tofu:plan")
-                                         {::bc/env :repl})
-                      ::ansible-opts (merge (workflow/parse-args "render")
-                                            {::bc/env :repl})}))
+    (resource-create [step-fns/bling-step-fn] {}))
   (-> tap-values))
 
 (defn resource-delete
@@ -139,16 +143,24 @@
 
 (defn resource
   [step-fns opts]
-  (let [opts (merge {::workflow/create-fn 'clare/resource-create
-                     ::workflow/delete-fn 'clare/resource-delete}
+  (let [opts (merge {::workflow/create-fn resource-create
+                     ::workflow/delete-fn resource-delete}
                     opts)
         wf (core/->workflow {:first-step ::start
                              :wire-fn (fn [step step-fns]
                                         (case step
                                           ::start [(partial workflow/run-steps step-fns) ::end-comp]
-                                          ::end-comp [identity]))})
-        opts (wf step-fns opts)]
-    opts))
+                                          ::end-comp [identity]))})]
+    (wf step-fns opts)))
+
+(comment
+  (debug tap-values
+    (resource [(fn [f step opts]
+                 (tap> [step opts])
+                 (f step opts))]
+              (merge (workflow/parse-args "create")
+                     {::bc/env :repl})))
+  (-> tap-values))
 
 (defn resource*
   [args & [opts]]
