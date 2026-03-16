@@ -49,6 +49,7 @@
 (setq cider-ns-refresh-show-log-buffer t)
 (setq cider-ns-save-files-on-refresh t)
 (setq cider-inspector-pretty-print t)
+(setq cider-repl-reuse-dead-repls 'any)
 (map! :map cider-inspector-mode-map
       :n "d" #'cider-inspector-def-current-val
       :n "y" #'cider-inspector-display-analytics
@@ -358,6 +359,8 @@
 
 ;; magit diff 2 panes instead of 3
 (setq magit-ediff-dwim-show-on-hunks t)
+(setq magit-published-branches nil)
+;; (add-hook 'magit-status-sections-hook #'magit-insert-worktrees t)
 
 ;; Hide unneeded UI elements (this can even be done in my/org-present-start!)
 (add-to-list 'default-frame-alist '(undecorated-round . t))
