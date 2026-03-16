@@ -3,11 +3,25 @@
    [babashka.fs :as fs]
    [babashka.process :as process]
    [big-config :as bc]
-   [big-config.render :as render :refer [discover]]
+   [big-config.render :as render]
    [big-config.run :as run]
    [big-config.selmer-filters]
-   [big-config.step :as step]
+   [big-config.step-fns :as step-fns]
+   [big-config.utils :refer [debug]]
+   [big-config.workflow :as workflow]
    [clojure.string :as str]))
+
+(defn discover
+  "discover all dirs inside a parent dir and return them as list of strings"
+  [parent-dir]
+  (let [profiles (atom [])]
+    (fs/walk-file-tree parent-dir {:max-depth 2
+                                   :pre-visit-dir (fn [dir _]
+                                                    (let [dir (str (fs/relativize parent-dir dir))]
+                                                      (when-not (str/blank? dir)
+                                                        (swap! profiles conj dir)))
+                                                    :continue)})
+    @profiles))
 
 (defn ->envrc-template []
   (let [private ".envrc.private"]
@@ -18,9 +32,12 @@
        :transform [["root"
                     {(subs private 1) private}]]})))
 
-(defn run-steps [s opts & step-fns]
-  (let [{:keys [profile]} (step/parse-module-and-profile s)
-        dir (format "dist/%s" profile)
+(def step-fns [workflow/print-step-fn
+               (step-fns/->exit-step-fn ::workflow/end)
+               (step-fns/->print-error-step-fn ::workflow/end)])
+
+(defn dotfiles [step-fns {:keys [::render/profile] :as opts}]
+  (let [dir (format "dist/%s" profile)
         envrc-template (->envrc-template)
         stage-1 {:template "stage-1"
                  :target-dir (format "resources/stage-2/%s" profile)
@@ -36,14 +53,22 @@
         templates (cond-> [stage-1 stage-2]
                     envrc-template (conj envrc-template))
         opts (merge opts
-                    {::run/shell-opts {:dir dir}
+                    {::workflow/name ::dotfiles
+                     ::run/shell-opts {:dir dir}
                      ::render/templates templates})]
-    (if step-fns
-      (apply step/run-steps s opts step-fns)
-      (step/run-steps s opts))))
+    (workflow/run-steps step-fns opts)))
+
+(defn dotfiles*
+  [args & [opts]]
+  (let [opts (merge (workflow/parse-args args)
+                    {::bc/env :shell}
+                    opts)]
+    (dotfiles step-fns opts)))
 
 (comment
-  (run-steps "render -- dotfiles ubuntu" {::bc/env :repl}))
+  (debug tap-values
+    (dotfiles* "render" {::render/profile "ubuntu"
+                         ::bc/env :repl})))
 
 (def home (System/getProperty "user.home"))
 
@@ -78,21 +103,20 @@
 (defn core
   {:org.babashka/cli {:exec-args {:profile (or (System/getenv "DOTFILES_PROFILE") "default")}
                       :coerce {:profile :string
-                               :only [:string]
                                :all :boolean}
                       :alias {:p :profile
-                              :a :all
-                              :o :only}}}
+                              :a :all}}}
   [{:keys [cmd profile all]} & [opts]]
-  (let [opts (or opts {::bc/env :shell})]
+  (let [opts (or opts {::bc/env :shell
+                       ::render/profile profile})]
     (case cmd
       :render (if all
                 (let [profiles (discover "resources/stage-2")]
                   (doseq [profile profiles]
                     (process/shell (format "bb render %s" profile))))
-                (run-steps (format "render -- dotfiles %s" profile) opts))
-      :diff (run-steps (format "render exec -- dotfiles %s bb diff" profile) opts)
-      :install (run-steps (format "render exec -- dotfiles %s bb install" profile) opts))))
+                (dotfiles* "render" opts))
+      :diff (dotfiles* "render exec -- bb diff" opts)
+      :install (dotfiles* "render exec -- bb install" opts))))
 
 (comment
   (core {:cmd :render

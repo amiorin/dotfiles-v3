@@ -2,10 +2,10 @@
   (:require
    [babashka.process :refer [shell]]
    [big-config :as bc]
-   [big-config.render :refer [discover]]
+   [big-config.render :as render]
    [clojure.string :as str]
    [clojure.test :refer [deftest is testing]]
-   [dotfiles :as sut]))
+   [dotfiles :as sut :refer [discover]]))
 
 (defn check-dir
   [dir]
@@ -31,5 +31,6 @@
   (testing "working directory is clean after running all modules"
     (let [prefix "resources/stage-2"]
       (doseq [profile (discover prefix)]
-        (sut/run-steps (format "render -- dotfiles %s" profile) {::bc/env :repl} []))
+        (sut/dotfiles* "render" {::bc/env :repl
+                                 ::render/profile profile} []))
       (is (check-dir prefix) (git-output prefix)))))
