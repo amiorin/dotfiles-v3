@@ -8,7 +8,6 @@ shift + cmd - o : skhd -k "shift + ctrl - 0x79"
 # history back and forward in chrome with cmd - [ and ]
 cmd - 0x2B : skhd -k "cmd - 0x21"
 cmd - 0x2F : skhd -k "cmd - 0x1E"
-# alt + shift - 0x21 : skhd -k "alt - 7"
-# alt + shift - 0x1E : skhd -k "alt - 8"
+# Emacs in the terminal doesn't support M-[
+# I use M-5 instead of M-[
 alt - 0x21 : skhd -k "alt - 5"
-# alt - 0x1E : skhd -k "alt - 6"
