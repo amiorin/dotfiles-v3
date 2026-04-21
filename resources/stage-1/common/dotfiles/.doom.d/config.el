@@ -123,7 +123,7 @@
 (defun open-term-on-right (arg)
   (interactive "P")
   (+evil/window-vsplit-and-follow)
-  (+vterm/here arg))
+  (ghostel arg))
 
 ;; make easier to find vterm in list buffers
 (setq vterm-buffer-name-string "vterm %s")
@@ -334,7 +334,7 @@
   (consult-customize
    consult-ripgrep consult-git-grep consult-grep
    consult-bookmark
-   consult--source-recent-file consult--source-project-recent-file consult--source-bookmark
+   consult-source-recent-file consult-source-project-recent-file consult-source-bookmark
    :preview-key "s-<return>")
   (when (modulep! :config default)
     (consult-customize
@@ -514,3 +514,13 @@
 
 ;; rainbow-delimiters
 (add-hook 'prog-mode-hook #'rainbow-delimiters-mode)
+
+(after! ghostel
+  (add-hook 'ghostel-mode-hook #'evil-ghostel-mode)
+  (add-hook 'ghostel-mode-hook (lambda () (flycheck-mode -1)))
+  (add-hook 'ghostel-mode-hook (lambda () (yas-minor-mode -1)))
+  (define-key evil-insert-state-map (kbd "C-d") nil)
+  (define-key evil-replace-state-map (kbd "C-d") nil)
+  (define-key evil-motion-state-map (kbd "C-d") nil)
+  (define-key ghostel-mode-map (kbd "C-c") #'ghostel-send-C-c)
+  (define-key ghostel-mode-map (kbd "C-d") #'ghostel-send-C-d))
