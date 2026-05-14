@@ -41,6 +41,12 @@ if status is-interactive
         set -gx SSH_AUTH_SOCK /tmp/$ZELLIJ_SESSION_NAME.agent
     end
 
+    # pnpm setup
+    set -gx PNPM_HOME "$HOME/.local/share/pnpm"
+    if not string match -q -- $PNPM_HOME $PATH
+        set -gx PATH "$PNPM_HOME/bin" $PATH
+    end
+
     function register-cmd
         set -l CMD $argv[1]
         set -l TARGET_DIR ~/.config/fish/completions
