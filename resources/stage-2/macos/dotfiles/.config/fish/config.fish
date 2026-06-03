@@ -20,6 +20,9 @@ if status is-interactive
 
     # github credentials
     set -gx GITHUB_TOKEN {{ "GITHUB_TOKEN" | lookup-env }}
+
+    # docker ssh
+    set -gx DOCKER_HOST ssh://walter
 {%- endif %}
 
     #asdf
@@ -39,6 +42,16 @@ if status is-interactive
     # agent setup
     if SSH_AUTH_SOCK=/tmp/$ZELLIJ_SESSION_NAME.agent ssh-add -l > /dev/null 2>&1
         set -gx SSH_AUTH_SOCK /tmp/$ZELLIJ_SESSION_NAME.agent
+    end
+
+    # pnpm setup
+{%- if profile = "macos" %}
+    set -gx PNPM_HOME "/Users/amiorin/Library/pnpm"
+{%- elif profile = "ubuntu" %}
+    set -gx PNPM_HOME "$HOME/.local/share/pnpm"
+{%- endif %}
+    if not string match -q -- $PNPM_HOME $PATH
+        set -gx PATH "$PNPM_HOME/bin" $PATH
     end
 
     function register-cmd

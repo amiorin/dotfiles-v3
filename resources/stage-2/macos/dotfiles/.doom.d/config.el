@@ -123,7 +123,7 @@
 (defun open-term-on-right (arg)
   (interactive "P")
   (+evil/window-vsplit-and-follow)
-  (ghostel arg))
+  (+vterm/here arg))
 
 ;; make easier to find vterm in list buffers
 (setq vterm-buffer-name-string "vterm %s")
