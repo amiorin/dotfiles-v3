@@ -39,6 +39,7 @@ plugins {
     session-manager { path "session-manager"; }
 }
 
+pane_frames false
 default_layout "minimal"
 scrollback_editor "happy-emacs"
 session_serialization false
