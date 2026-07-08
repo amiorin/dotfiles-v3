@@ -97,11 +97,9 @@ if status is-interactive
     set fish_cursor_external line
     set fish_cursor_visual block
 
-    alias e="emacsclient -a '' -t"
-{%- if profile = "macos" %}
-    alias ne="/opt/homebrew/bin/emacs --init-directory ~/.config/neoemacs -nw"
+    alias e="emacs"
+    alias ne="emacs --init-directory ~/.config/neoemacs -nw"
     alias zne="zellij --layout emacs"
-{%- endif %}
     alias za="zellij attach"
 
     set -g fish_greeting
