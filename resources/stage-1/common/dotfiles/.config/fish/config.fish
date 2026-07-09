@@ -97,7 +97,7 @@ if status is-interactive
     set fish_cursor_external line
     set fish_cursor_visual block
 
-    alias e="emacs"
+    alias e="emacsclient -a '' -t"
     alias ne="emacs --init-directory ~/.config/neoemacs -nw"
     alias zne="zellij --layout emacs"
     alias za="zellij attach"

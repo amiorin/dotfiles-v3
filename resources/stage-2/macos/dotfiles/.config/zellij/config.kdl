@@ -21,7 +21,6 @@ keybinds clear-defaults=true {
         bind "Super Ctrl v" { GoToTab 4; }
         bind "Super Ctrl b" { GoToTab 5; }
         bind "Super Ctrl e" { EditScrollback; }
-        bind "Super Ctrl f" { TogglePaneFrames; }
         bind "Super Ctrl s" {
             LaunchOrFocusPlugin "zellij:session-manager" {
                 floating true
