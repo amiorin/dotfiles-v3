@@ -1,7 +1,6 @@
 if status is-interactive
     set -gx DIRENV_LOG_FORMAT ""
 
-    SHELL=fish devbox global shellenv --recompute | source
 {%- if profile = "macos" %}
     /opt/homebrew/bin/brew shellenv | source
 {%- endif %}
@@ -20,6 +19,9 @@ if status is-interactive
 
     # github credentials
     set -gx GITHUB_TOKEN {{ "GITHUB_TOKEN" | lookup-env }}
+
+    # docker ssh
+    set -gx DOCKER_HOST ssh://walter
 {%- endif %}
 
     #asdf
@@ -29,11 +31,14 @@ if status is-interactive
         set _asdf_shims "$ASDF_DATA_DIR/shims"
     end
 
-    # Do not use fish_add_path (added in Fish 3.2) because it
-    # potentially changes the order of items in PATH
-    if not contains $_asdf_shims $PATH
-        set -gx --prepend PATH $_asdf_shims
-    end
+    # Always move the asdf shims to the FRONT of PATH so they win over
+    # system stubs like /usr/bin/java. A plain "prepend only if absent"
+    # guard is not enough: the inherited PATH often already contains the
+    # shims dir near the end (launchd/path_helper ordering), which would
+    # leave /usr/bin ahead of it. So drop any existing occurrence first,
+    # then prepend.
+    set -gx PATH (string match --invert -- $_asdf_shims $PATH)
+    set -gx --prepend PATH $_asdf_shims
     set --erase _asdf_shims
 
     # agent setup
@@ -42,7 +47,11 @@ if status is-interactive
     end
 
     # pnpm setup
+{%- if profile = "macos" %}
+    set -gx PNPM_HOME "/Users/amiorin/Library/pnpm"
+{%- elif profile = "ubuntu" %}
     set -gx PNPM_HOME "$HOME/.local/share/pnpm"
+{%- endif %}
     if not string match -q -- $PNPM_HOME $PATH
         set -gx PATH "$PNPM_HOME/bin" $PATH
     end
@@ -88,17 +97,10 @@ if status is-interactive
     set fish_cursor_external line
     set fish_cursor_visual block
 
-    if test "$INSIDE_EMACS" = vterm
-        set -gx EDITOR emacsclient
-    else
-        set -gx EDITOR "emacsclient -a '' -t"
-    end
-    alias emacs=$EDITOR
-    alias e=$EDITOR
-
-{%- if profile = "macos" %}
-    alias ze="zellij attach --create AMIORIN@silicon"
-{%- endif %}
+    alias e="emacsclient -a '' -t"
+    alias ne="emacs --init-directory ~/.config/neoemacs -nw"
+    alias zne="zellij --layout emacs"
+    alias za="zellij attach"
 
     set -g fish_greeting
     set -gx COLORTERM truecolor
