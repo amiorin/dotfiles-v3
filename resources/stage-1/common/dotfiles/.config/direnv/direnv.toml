@@ -2,4 +2,4 @@
 load_dotenv = true
 hide_env_diff = true
 [whitelist]
-prefix = ["/Users/amiorin/Library/Mobile Documents/iCloud~md~obsidian/Documents/alberto", "~/code/bigconfig", "~/code/personal", "~/code/of"]
+prefix = ["~/Library/Mobile Documents/iCloud~md~obsidian/Documents/alberto", "~/code/getcolors", "~/code/amiorin", "~/code/bigconfig-ai"]
